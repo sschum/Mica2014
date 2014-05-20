@@ -1,0 +1,26 @@
+####################################
+## Dropwizard options (some of them)             
+## For more options take a look at:
+## http://dropwizard.codahale.com/manual/core/#configuration-defaults
+
+# HTTP-specific options.
+http:
+  # The port on which the HTTP server listens for service requests.
+  # Because Java cannot drop privileges in a POSIX system, these
+  # ports cannot be in the range 1-1024. A port value of 0 will
+  # make the OS use an arbitrary unused port.
+  port: 40000
+
+  # The port on which the HTTP server listens for administrative
+  # requests. Subject to the same limitations as "port". If this is
+  # set to the same value as port, the admin routes will be mounted
+  # under /admin.
+  adminPort: 40001
+  
+  # nonblocking is required for websockets
+  connectorType: nonblocking
+
+  # The root path for the Jersey servlet.
+  rootPath: "/api/*"
+
+  bindHost: localhost
