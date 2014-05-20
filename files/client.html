@@ -1,0 +1,181 @@
+<html><head>
+<meta http-equiv="content-type" content="text/html; charset=windows-1252">
+<title>Battleships</title>
+
+<style>
+ html,body{font:normal 0.9em arial,helvetica;}
+ #log {width:512px; height:200px; border:1px solid #7F9DB9; overflow:auto;}
+ #msg {width:402px;}
+</style>
+
+<script>
+var socket;
+
+function init(){
+  var host = "ws://localhost:40000/battle";
+  try{
+    socket = new WebSocket(host);
+    log('WebSocket - status '+socket.readyState);
+    socket.onopen    = function(msg){ log("Connected - status "+this.readyState); };
+    socket.onmessage = function(msg){ log("< "+msg.data); };
+    socket.onclose   = function(msg){ log("Disconnected - status "+this.readyState); };
+  }
+  catch(ex){ log(ex); }
+  $("msg").focus();
+}
+
+function send(){
+  var txt,msg;
+  txt = $("msg");
+  msg = txt.value;
+  if(!msg){ alert("Message can not be empty"); return; }
+  txt.value="";
+  txt.focus();
+  try{ socket.send(msg); log('> '+msg); } catch(ex){ log(ex); }
+}
+function quit(){
+  log("Goodbye!");
+  socket.close();
+  socket=null;
+}
+
+// Utilities
+function $(id){ return document.getElementById(id); }
+function log(msg){ 
+    $("log").innerHTML+="<br>"+msg; 
+    var elem = document.getElementById('log');
+    elem.scrollTop = elem.scrollHeight;
+}
+function onkey(event){ if(event.keyCode==13){ send(); } }
+</script>
+
+</head>
+<body onload="init()">
+ <h3>Battleships-Human-Chat-Interface</h3>
+
+<!-- this is not an html-beauty-contest! -->
+
+<div id="log"><br>WebSocket - status 0<br>Connected - status 1</div>
+ <input id="msg" onkeypress="onkey(event)" type="textbox">
+ <button onclick="send()">Send</button>
+ <button onclick="quit()">Quit</button>
+
+
+<p>
+ <div>Basics:
+ <ul>
+ <li>Look up the basic rules on the internet ;-)
+ <li>The playingfield goes from A0-J9.
+ <li>Ships cannot touch each other, not even at their corners.
+ <li>If you hit, it's your turn again. If you miss, it's the other players turn. First player is chosen randomly.
+ <li>Using a special attack (see below) always ends your turn, no matter what the outcome is.
+ <li>The server is strictly single-game. After the game it will wait for the next two players. (Just hit reload to reconnect.)
+ <li>If you disconnect you lose.
+ <li>There might be some timeout-problems for slow humans, sorry, we're working on it.
+ <li>Coordinate-letters are not casesensitive, but the server itself always uses upper case.
+ <li>Messages from the server start with a message-code for easier parsing. See list below.
+ <li>Another parsing hint: no message will ever contain [A-J]\d unless it is meant to be a coordinate where something happened.
+ <li>Messagecodes starting with 9 are errors. A player who gives no invalid commands/moves should never see those.
+ <li>Always be prepared for additional/multiple messages and try to handle them! (All messages <i>can</i> be ignored, but you might miss some critical information.)
+ <li>If you find a bug, please report it. We might even let you keep it ;-)
+ </ul> 
+ <div>Commands:
+   <ul>
+   <li><i>play </i> to join a game. (Two players, one game at any one time.)</li>
+   <li><i>rename foo </i> to give yourself the name foo (works only after <i>play</i>).</li>
+   <li><i>A1,A2,A3,A4 </i> before the game starts, place a ship like that (here: a cruiser)
+   <li><i>defaultships </i> a shortcut to deploy all ships at once (for quicker testing
+   - you should not use that in a real game ;-) ). Equivalent to:
+    <ul>
+<li>       a1,a2,a3,a4,a5
+<li>       g1,g2,g3,g4,g5
+<li>       c1,c2,c3,c4
+<li>       c6,c7,c8,c9
+<li>       i1,i2,i3
+<li>       e1,e2,e3
+<li>       f7,f8
+<li>       i8,i9
+     </ul>
+   <li><i>F8 </i> launch a normal attack at square F8.
+   </ul>
+ </div>
+ <div style="width:800px">Ships:<br><p>
+ There are 4 classes of ships. A player has 2 ships of each class, for a
+ total of 8 ships. Each class has a special attack option. This option can
+ only be used as long as at least one segment of at least one of the
+ respective ships is still alive. If, for instance, both carriers are sunk
+ you can't drop any more clusterbombs. In addition, how often you can use
+ each special attack depends on one crucial precondition: the two ships of
+ that class must initially be placed such that they overlap either
+ horizontally or vertically. Only then can they properly prepare! The number
+ of rows or columns that they share is the maximum number that you can use
+ their power. E.g.: maximum number of clusterbombs a player can have at his
+ disposal is 5; fewer if the ships overlap only partially, only 1 if they
+ are placed orthogonally rather than in parallel. The catch: the more special
+ attacks you use, the more information you are giving away about the
+ placement of your ships. But you can also turn that around, by not using
+ attacks that would be available to you, in order to make your opponent
+ think that your ships don't overlap, while in fact they do! Note that only
+ the initial overlap at the beginning of the game counts. Damaging the
+ enemies ships does not reduce their special attacks untill both ships are
+ completely gone.
+ <p>
+   <table border=1>
+   <tr><th>Class</th>    <th>Size</th>          <th>Special Attack</th>    <th>Example Command</th></tr>
+   <tr><td>Carrier</td>  <td align=center>5</td><td>Clusterbomb: flattens the given area and the four surrounding areas at the same time! That means it could oneshot a destroyer or hit two different ships close to each other.</td><td align=center>+C5</td></tr>
+   <tr><td>Cruiser</td>  <td align=center>4</td><td>Wildfire: hurls a burning greenish liquid at the enemy. If a ship is hit then it is set on fire and will burn, one field per turn, in any direction, until it is destroyed. Luckily all ships adhere to strict safety distances from each other :-)</td><td align=center>*C5</td></tr>
+   <tr><td>Destroyer</td><td align=center>3</td><td>Spy-Drone: send this drone to a target area to find out how many ships are located in the 3x3 square centered on this spot. Doesn't do any damage but can save a lot of time later.</td><td align=center>#C5</td></tr>
+   <tr><td>Submarine</td><td align=center>2</td><td>Torpedo: the sub can launch a torpedo which will originate from the given position and head either <b>N</b>ord, <b>W</b>est, <b>S</b>&uuml;d or <b>O</b>st, until it hits an enemy ship or harmlessly reaches the edge of the playingfield. No wrap-around ;-) The given position must be one where you actually do have an active submarine!</td><td align=center>NC5</td></tr>
+   </table>
+ </div>
+ <div>
+ </div>
+ 
+ <div>
+ <p>
+ <b>Message Codes:</b>
+ <pre>
+    BUSY = 00
+    HELLO = 01
+    WAIT_FOR_SECOND_PLAYER_CONNECT = 02
+    NEW_NAME = 03
+    ACCEPTED_AS_OBSERVER = 04
+
+    PLACE_SHIPS = 10
+    NEXT_SHIP = 11
+    SHIP_READY = 12
+    ALL_SHIPS_READY = 13
+    DEFAULT_POSITIONS_ASSUMED = 14
+
+    WAIT_FOR_OTHER_PLAYERS_MOVE = 28
+    YOUR_TURN = 29
+    ENEMY_SHIP_MISSED = 30
+    ENEMY_SHIP_HIT= 31
+    ENEMY_SHIP_SUNK = 32
+    YOU_WIN = 33
+    YOUR_SHIP_MISSED = 34
+    YOUR_SHIP_HIT= 35
+    YOUR_SHIP_SUNK = 36
+    YOU_LOSE = 37
+    GAME_OVER = 38
+
+    CLUSTERBOMB = 40
+    WILDFIRE = 41
+    DRONE = 42
+    TORPEDO = 43
+    CLUSTERBOMBEE = 44
+    WILDFIREEE = 45
+    DRONEEE = 46
+    TORPEDOEE = 47
+
+    INVALID_SHIP = 90
+    INVALID_MOVE = 91
+    NOT_YOUR_TURN = 92
+    ERROR = 93
+    OUT_OF_SPECIALPOWERS = 94
+    INVALID_TORPEDO_SOURCE = 95
+ </pre></div>
+ <p>
+ </p>
+ 
+</body></html>
