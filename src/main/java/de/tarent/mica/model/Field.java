@@ -31,12 +31,12 @@ public class Field {
 		this.area = elements;
 	}
 
-	public Field(int heigth, int width) {
-		if(heigth <= 0 || width <= 0) throw new IllegalArgumentException("Width and/or height must be higher than 0!");
+	public Field(int height, int width) {
+		if(height <= 0 || width <= 0) throw new IllegalArgumentException("Width and/or height must be higher than 0!");
 		
-		this.area = new Element[heigth][width];
+		this.area = new Element[height][width];
 		
-		for(int i=0; i < heigth; i++){
+		for(int i=0; i < height; i++){
 			Arrays.fill(area[i], Element.UNBEKANNT);
 		}
 	}
