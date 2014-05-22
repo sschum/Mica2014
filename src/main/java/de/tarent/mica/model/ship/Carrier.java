@@ -10,7 +10,7 @@ import de.tarent.mica.model.Coord;
  */
 public class Carrier extends AbstractShip {
 
-	protected Carrier(Orientation orientation, Coord position) {
+	public Carrier(Orientation orientation, Coord position) {
 		super(5, orientation, position);
 	}
 
