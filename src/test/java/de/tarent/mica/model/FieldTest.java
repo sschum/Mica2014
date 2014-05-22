@@ -1,7 +1,9 @@
 package de.tarent.mica.model;
 
 import static de.tarent.mica.model.Field.Element.*;
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.*;
+
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -71,5 +73,23 @@ public class FieldTest {
 		assertEquals(WASSER, field.get(new Coord("A1")));
 		assertEquals(WASSER, field.get(new Coord("B0")));
 		assertEquals(SCHIFF, field.get(new Coord("B1")));
+	}
+	
+	@Test
+	public void getCoordinatesFor(){
+		Field field = new Field(new Element[][]{
+				new Element[]{UNBEKANNT, WASSER},
+				new Element[]{WASSER, SCHIFF},
+		});
+		
+		Set<Coord> result = field.getCoordinatesFor(UNBEKANNT);
+		assertTrue(result.contains(new Coord("A0")));
+		
+		result = field.getCoordinatesFor(WASSER);
+		assertTrue(result.contains(new Coord("A1")));
+		assertTrue(result.contains(new Coord("B0")));
+		
+		result = field.getCoordinatesFor(SCHIFF);
+		assertTrue(result.contains(new Coord("B1")));
 	}
 }
