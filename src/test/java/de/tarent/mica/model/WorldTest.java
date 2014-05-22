@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.ship.AbstractShip;
 import de.tarent.mica.model.ship.AbstractShip.Orientation;
 import de.tarent.mica.model.ship.Carrier;
@@ -71,5 +72,45 @@ public class WorldTest {
 				"D ? ? * ? ?\n" +
 				"E ? ? * ? ?\n", 
 			world.getOwnField().toString());
+	}
+	
+	@Test
+	public void registerHit(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(0, 0);
+		world.registerHit(coord);
+		
+		assertEquals(Element.SCHIFF, world.getEnemyField().get(coord));
+	}
+	
+	@Test
+	public void registerHit_outOfBounce(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(2, 2);
+		
+		try{
+			world.registerHit(coord);
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
+	}
+	
+	@Test
+	public void registerMiss(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(0, 0);
+		world.registerMiss(coord);
+		
+		assertEquals(Element.WASSER, world.getEnemyField().get(coord));
+	}
+	
+	@Test
+	public void registerMiss_outOfBounce(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(2, 2);
+		
+		try{
+			world.registerMiss(coord);
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
 	}
 }

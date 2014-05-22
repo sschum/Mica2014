@@ -29,6 +29,11 @@ public class World {
 		return enemyField;
 	}
 	
+	/**
+	 * Platziert ein Schiff auf das eigene Feld.
+	 * @param ship
+	 * @return
+	 */
 	public World placeOwnShip(AbstractShip ship){
 		validateShipPosition(ship);
 		
@@ -38,11 +43,11 @@ public class World {
 	}
 	
 	void validateShipPosition(AbstractShip ship) {
-		Dimension dim = getWorldDimension();
-		
 		for(Coord c : ship.getSpace()){
-			if(c.getX() < 0 || c.getX() >= dim.width || c.getY() < 0 || c.getX() >= dim.height){
-				throw new IllegalArgumentException("The given Ship(" + ship.getSpace() + ") is out of bounce!");
+			try{
+				checkOutOfBounce(ownField, c);
+			}catch(IllegalArgumentException e){
+				throw new IllegalArgumentException("The given Ship(" + ship + ") is out of bounce!", e);
 			}
 			
 			Element e = ownField.get(c);
@@ -50,6 +55,40 @@ public class World {
 				throw new IllegalArgumentException("This ship crosses another ship!");
 			}
 		}
+	}
+
+	void checkOutOfBounce(Field field, Coord c) {
+		Dimension dim = field.getDimension();
+		
+		if(c.getX() < 0 || c.getX() >= dim.width || c.getY() < 0 || c.getX() >= dim.height){
+			throw new IllegalArgumentException("The given Coord(" + c + ") is out of bounce!");
+		}
+	}
+	
+	/**
+	 * Trägt einen Treffer in das Gegnerische Feld ein.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public World registerHit(Coord c){
+		checkOutOfBounce(enemyField, c);
+		enemyField.set(c, Element.SCHIFF);
+		
+		return this;
+	}
+	
+	/**
+	 * Trägt eine Verfehlung in das Gegnerische Feld ein.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public World registerMiss(Coord c){
+		checkOutOfBounce(enemyField, c);
+		enemyField.set(c, Element.WASSER);
+		
+		return this;
 	}
 
 	public Dimension getWorldDimension() {

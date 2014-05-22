@@ -58,4 +58,9 @@ public abstract class AbstractShip {
 		return result;
 	}
 	
+	
+	@Override
+	public String toString() {
+		return getClass().getName() + " @ " + position + "(" + orientation + ") - [" + getSpace() + "]";
+	}
 }
