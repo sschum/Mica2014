@@ -1,5 +1,7 @@
 package de.tarent.mica.model;
 
+import java.util.Arrays;
+
 public class Field {
 	public static enum Element{	//TODO: Besseren Namen dafür finde ;)
 		UNBEKANNT('?'),
@@ -19,10 +21,32 @@ public class Field {
 	
 	private Element[][] area;
 	
+	/*
+	 * Only for tests
+	 */
 	Field(Element[][] elements) {
 		this.area = elements;
 	}
 
+	public Field(int heigth, int width) {
+		this.area = new Element[heigth][width];
+		
+		for(int i=0; i < heigth; i++){
+			Arrays.fill(area[i], Element.UNBEKANNT);
+		}
+	}
+	
+	public Element get(Coord c){
+		return area[c.getY()][c.getX()];
+	}
+	
+	public Field set(Coord c, Element e){
+		area[c.getY()][c.getX()] = e;
+		
+		return this;
+	}
+	
+	
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

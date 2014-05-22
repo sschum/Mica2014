@@ -38,4 +38,38 @@ public class FieldTest {
 				"J * ~ ~ ~ ~ ~ ~ ~ ~ ?\n", 
 				field.toString());
 	}
+	
+	@Test
+	public void testEmpty(){
+		assertEquals("  0 1\n" +
+					 "A ? ?\n" +
+					 "B ? ?\n",
+					 new Field(2, 2).toString());
+	}
+	
+	@Test
+	public void set(){
+		Field field = new Field(2, 2);
+		field.set(new Coord("A1"), SCHIFF);
+		field.set(new Coord("B0"), WASSER);
+		
+		assertEquals(
+				"  0 1\n" +
+				"A ? *\n" +
+				"B ~ ?\n", 
+				field.toString());
+	}
+	
+	@Test
+	public void get(){
+		Field field = new Field(new Element[][]{
+				new Element[]{UNBEKANNT, WASSER},
+				new Element[]{WASSER, SCHIFF},
+		});
+		
+		assertEquals(UNBEKANNT, field.get(new Coord("A0")));
+		assertEquals(WASSER, field.get(new Coord("A1")));
+		assertEquals(WASSER, field.get(new Coord("B0")));
+		assertEquals(SCHIFF, field.get(new Coord("B1")));
+	}
 }
