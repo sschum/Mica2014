@@ -1,6 +1,6 @@
 package de.tarent.mica.model;
 
-import java.util.ArrayList;
+import java.awt.Dimension;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
@@ -32,6 +32,8 @@ public class Field {
 	}
 
 	public Field(int heigth, int width) {
+		if(heigth <= 0 || width <= 0) throw new IllegalArgumentException("Width and/or height must be higher than 0!");
+		
 		this.area = new Element[heigth][width];
 		
 		for(int i=0; i < heigth; i++){
@@ -46,6 +48,9 @@ public class Field {
 	 * @return
 	 */
 	public Element get(Coord c){
+		if(c.getX() >= area[0].length || c.getY() >= area.length)
+			throw new IllegalArgumentException("The given Coordinate(" + c + ") is out of bounce!");
+		
 		return area[c.getY()][c.getX()];
 	}
 	
@@ -57,6 +62,11 @@ public class Field {
 	 * @return
 	 */
 	public Field set(Coord c, Element e){
+		if(c.getX() >= area[0].length || c.getY() >= area.length)
+			throw new IllegalArgumentException("The given Coordinate(" + c + ") is out of bounce!");
+		if(e == null)
+			throw new NullPointerException("Element must not be null!");
+		
 		area[c.getY()][c.getX()] = e;
 		
 		return this;
@@ -82,6 +92,10 @@ public class Field {
 		}
 		
 		return result;
+	}
+	
+	public Dimension getDimension(){
+		return new Dimension(area[0].length, area.length);
 	}
 	
 	@Override

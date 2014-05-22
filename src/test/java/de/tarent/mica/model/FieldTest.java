@@ -3,6 +3,7 @@ package de.tarent.mica.model;
 import static de.tarent.mica.model.Field.Element.*;
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
 import java.util.Set;
 
 import org.junit.Test;
@@ -50,6 +51,14 @@ public class FieldTest {
 	}
 	
 	@Test
+	public void testInvalidDimension(){
+		try{
+			new Field(0, 0);
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
+	}
+	
+	@Test
 	public void set(){
 		Field field = new Field(2, 2);
 		field.set(new Coord("A1"), SCHIFF);
@@ -63,6 +72,22 @@ public class FieldTest {
 	}
 	
 	@Test
+	public void set_invalidCoord(){
+		try{
+			new Field(1,1).set(new Coord(1, 1), WASSER);
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
+	}
+	
+	@Test
+	public void set_nullElement(){
+		try{
+			new Field(1,1).set(new Coord(0, 0), null);
+			fail("It should be thrown an NullPointerException.");
+		}catch(NullPointerException e){}
+	}
+	
+	@Test
 	public void get(){
 		Field field = new Field(new Element[][]{
 				new Element[]{UNBEKANNT, WASSER},
@@ -73,6 +98,14 @@ public class FieldTest {
 		assertEquals(WASSER, field.get(new Coord("A1")));
 		assertEquals(WASSER, field.get(new Coord("B0")));
 		assertEquals(SCHIFF, field.get(new Coord("B1")));
+	}
+	
+	@Test
+	public void get_invalidCoord(){
+		try{
+			new Field(1,1).get(new Coord(1, 1));
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
 	}
 	
 	@Test
@@ -91,5 +124,10 @@ public class FieldTest {
 		
 		result = field.getCoordinatesFor(SCHIFF);
 		assertTrue(result.contains(new Coord("B1")));
+	}
+	
+	@Test
+	public void getDimension(){
+		assertEquals(new Dimension(1, 2), new Field(2, 1).getDimension());
 	}
 }
