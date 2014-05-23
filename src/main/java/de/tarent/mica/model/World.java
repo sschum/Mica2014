@@ -1,6 +1,8 @@
 package de.tarent.mica.model;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Collection;
 
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.ship.AbstractShip;
@@ -15,10 +17,14 @@ public class World {
 
 	private Field ownField;
 	private Field enemyField;
+	private Field enemyView;
+	
+	private Collection<AbstractShip> ownShips = new ArrayList<AbstractShip>();
 	
 	public World(int height, int width) {
 		ownField = new Field(height, width);
 		enemyField = new Field(height, width);
+		enemyView = new Field(height, width);
 	}
 	
 	public Field getOwnField() {
@@ -27,6 +33,10 @@ public class World {
 
 	public Field getEnemyField() {
 		return enemyField;
+	}
+	
+	public Field getEnemyView() {
+		return enemyView;
 	}
 	
 	/**
@@ -39,6 +49,8 @@ public class World {
 		
 		for(Coord c : ship.getSpace()) ownField.set(c, Element.SCHIFF);
 
+		ownShips.add(ship);
+		
 		return this;
 	}
 	
@@ -85,12 +97,40 @@ public class World {
 	 * @return
 	 */
 	public World registerMiss(Coord c){
-		checkOutOfBounce(enemyField, c);
+		checkOutOfBounce(enemyView, c);
 		enemyField.set(c, Element.WASSER);
 		
 		return this;
 	}
-
+	
+	/**
+	 * Trägt einen Treffer in das eigene Feld ein.
+	 * Dieses Feld ist die Sicht des Gegners.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public World registerEnemyHit(Coord c){
+		checkOutOfBounce(enemyView, c);
+		enemyView.set(c, Element.SCHIFF);
+		
+		return this;
+	}
+	
+	/**
+	 * Trägt eine Verfehlung in das eigene Feld ein.
+	 * Dieses Feld ist die Sicht des Gegners.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public World registerEnemyMiss(Coord c){
+		checkOutOfBounce(enemyView, c);
+		enemyView.set(c, Element.WASSER);
+		
+		return this;
+	}
+	
 	public Dimension getWorldDimension() {
 		return ownField.getDimension();
 	}

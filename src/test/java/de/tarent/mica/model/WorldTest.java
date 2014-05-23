@@ -113,4 +113,44 @@ public class WorldTest {
 			fail("It should be thrown an IllegalArgumentException.");
 		}catch(IllegalArgumentException e){}
 	}
+	
+	@Test
+	public void registerEnemyHit(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(0, 0);
+		world.registerEnemyHit(coord);
+		
+		assertEquals(Element.SCHIFF, world.getEnemyView().get(coord));
+	}
+	
+	@Test
+	public void registerEnemyHit_outOfBounce(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(2, 2);
+		
+		try{
+			world.registerEnemyHit(coord);
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
+	}
+	
+	@Test
+	public void registerEnemyMiss(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(0, 0);
+		world.registerEnemyMiss(coord);
+		
+		assertEquals(Element.WASSER, world.getEnemyView().get(coord));
+	}
+	
+	@Test
+	public void registerEnemyMiss_outOfBounce(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(2, 2);
+		
+		try{
+			world.registerEnemyMiss(coord);
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
+	}
 }
