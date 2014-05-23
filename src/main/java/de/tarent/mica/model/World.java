@@ -85,6 +85,19 @@ public class World {
 	 */
 	public World registerHit(Coord c){
 		checkOutOfBounce(enemyField, c);
+		enemyField.set(c, Element.TREFFER);
+		
+		return this;
+	}
+	
+	/**
+	 * Trägt ein Schiff in das Gegnerische Feld ein.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public World registerShip(Coord c){
+		checkOutOfBounce(enemyField, c);
 		enemyField.set(c, Element.SCHIFF);
 		
 		return this;
@@ -112,7 +125,7 @@ public class World {
 	 */
 	public World registerEnemyHit(Coord c){
 		checkOutOfBounce(enemyView, c);
-		enemyView.set(c, Element.SCHIFF);
+		enemyView.set(c, Element.TREFFER);
 		
 		return this;
 	}
@@ -127,6 +140,20 @@ public class World {
 	public World registerEnemyMiss(Coord c){
 		checkOutOfBounce(enemyView, c);
 		enemyView.set(c, Element.WASSER);
+		
+		return this;
+	}
+	
+	/**
+	 * Trägt ein Schiff in das eigene Feld ein.
+	 * Dieses Feld ist die Sicht des Gegners.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public World registerEnemyShip(Coord c){
+		checkOutOfBounce(enemyView, c);
+		enemyView.set(c, Element.SCHIFF);
 		
 		return this;
 	}

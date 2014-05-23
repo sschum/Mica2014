@@ -9,6 +9,7 @@ public class Field {
 	public static enum Element{	//TODO: Besseren Namen dafür finde ;)
 		UNBEKANNT('?'),
 		SCHIFF('*'),
+		TREFFER('+'),
 		WASSER('~');
 		
 		private char sign;
