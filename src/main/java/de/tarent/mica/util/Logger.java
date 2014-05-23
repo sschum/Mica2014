@@ -32,4 +32,22 @@ public class Logger {
 		if(t == null) LOG.log(Level.FINER, message);
 		else LOG.log(Level.FINER, message, t);
 	}
+
+	public static void info(String message) {
+		info(message, null);
+	}
+	
+	public static void info(String message, Throwable t) {
+		if(t == null) LOG.log(Level.INFO, message);
+		else LOG.log(Level.INFO, message, t);
+	}
+
+	public static void warn(String message) {
+		info(message, null);
+	}
+	
+	public static void warn(String message, Throwable t) {
+		if(t == null) LOG.log(Level.WARNING, message);
+		else LOG.log(Level.WARNING, message, t);
+	}
 }
