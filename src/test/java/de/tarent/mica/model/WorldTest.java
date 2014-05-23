@@ -80,7 +80,7 @@ public class WorldTest {
 		Coord coord = new Coord(0, 0);
 		world.registerHit(coord);
 		
-		assertEquals(Element.SCHIFF, world.getEnemyField().get(coord));
+		assertEquals(Element.TREFFER, world.getEnemyField().get(coord));
 	}
 	
 	@Test
@@ -115,12 +115,32 @@ public class WorldTest {
 	}
 	
 	@Test
+	public void registerShip(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(0, 0);
+		world.registerShip(coord);
+		
+		assertEquals(Element.SCHIFF, world.getEnemyField().get(coord));
+	}
+	
+	@Test
+	public void registerShip_outOfBounce(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(2, 2);
+		
+		try{
+			world.registerShip(coord);
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
+	}
+	
+	@Test
 	public void registerEnemyHit(){
 		World world = new World(1, 1);
 		Coord coord = new Coord(0, 0);
 		world.registerEnemyHit(coord);
 		
-		assertEquals(Element.SCHIFF, world.getEnemyView().get(coord));
+		assertEquals(Element.TREFFER, world.getEnemyView().get(coord));
 	}
 	
 	@Test
@@ -150,6 +170,26 @@ public class WorldTest {
 		
 		try{
 			world.registerEnemyMiss(coord);
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
+	}
+	
+	@Test
+	public void registerEnemyShip(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(0, 0);
+		world.registerEnemyShip(coord);
+		
+		assertEquals(Element.SCHIFF, world.getEnemyView().get(coord));
+	}
+	
+	@Test
+	public void registerEnemyShip_outOfBounce(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(2, 2);
+		
+		try{
+			world.registerEnemyShip(coord);
 			fail("It should be thrown an IllegalArgumentException.");
 		}catch(IllegalArgumentException e){}
 	}

@@ -3,6 +3,7 @@ package de.tarent.mica.model;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Set;
 
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.ship.AbstractShip;
@@ -114,6 +115,17 @@ public class World {
 		enemyField.set(c, Element.WASSER);
 		
 		return this;
+	}
+
+	/**
+	 * Liefert Alle bekannten Positionen der Gegnerischen Schiffe.
+	 * Ist keine Position bekannt, wird dennoch ein Set geliefert.
+	 * Dieses ist dann jedoch leer!
+	 * 
+	 * @return
+	 */
+	public Set<Coord> getShipCoordinates(){
+		return enemyField.getCoordinatesFor(Element.SCHIFF);
 	}
 	
 	/**

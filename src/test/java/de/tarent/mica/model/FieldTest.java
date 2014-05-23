@@ -20,7 +20,7 @@ public class FieldTest {
 				new Element[]{WASSER, WASSER, UNBEKANNT, WASSER, WASSER, WASSER, WASSER, SCHIFF, WASSER, WASSER},
 				new Element[]{WASSER, WASSER, WASSER, UNBEKANNT, WASSER, WASSER, SCHIFF, WASSER, WASSER, WASSER},
 				new Element[]{WASSER, WASSER, WASSER, WASSER, UNBEKANNT, SCHIFF, WASSER, WASSER, WASSER, WASSER},
-				new Element[]{WASSER, WASSER, WASSER, WASSER, SCHIFF, UNBEKANNT, WASSER, WASSER, WASSER, WASSER},
+				new Element[]{TREFFER, TREFFER, TREFFER, TREFFER, SCHIFF, UNBEKANNT, TREFFER, TREFFER, TREFFER, TREFFER},
 				new Element[]{WASSER, WASSER, WASSER, SCHIFF, WASSER, WASSER, UNBEKANNT, WASSER, WASSER, WASSER},
 				new Element[]{WASSER, WASSER, SCHIFF, WASSER, WASSER, WASSER, WASSER, UNBEKANNT, WASSER, WASSER},
 				new Element[]{WASSER, SCHIFF, WASSER, WASSER, WASSER, WASSER, WASSER, WASSER, UNBEKANNT, WASSER},
@@ -34,7 +34,7 @@ public class FieldTest {
 				"C ~ ~ ? ~ ~ ~ ~ * ~ ~\n"+ 
 				"D ~ ~ ~ ? ~ ~ * ~ ~ ~\n"+ 
 				"E ~ ~ ~ ~ ? * ~ ~ ~ ~\n"+ 
-				"F ~ ~ ~ ~ * ? ~ ~ ~ ~\n"+ 
+				"F + + + + * ? + + + +\n"+ 
 				"G ~ ~ ~ * ~ ~ ? ~ ~ ~\n"+ 
 				"H ~ ~ * ~ ~ ~ ~ ? ~ ~\n"+ 
 				"I ~ * ~ ~ ~ ~ ~ ~ ? ~\n"+ 
