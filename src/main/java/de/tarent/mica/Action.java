@@ -10,7 +10,8 @@ import de.tarent.mica.model.Coord;
  */
 public class Action {
 	public static enum Type {
-		ATTACK, CLUSTERBOMB, WILDFIRE, SPY_DRONE, TORPEDO
+		ATTACK, CLUSTERBOMB, WILDFIRE, SPY_DRONE, 
+		TORPEDO_NORD, TORPEDO_OST, TORPEDO_SUED, TORPEDO_WEST
 	}
 	
 	private final Type type;

@@ -29,6 +29,9 @@ public class MessageDispatcherTest {
 		
 		toTest.onMessage(msg(PLACE_SHIPS));
 		verify(controller).placeShips();
+		
+		toTest.onMessage(msg(YOUR_TURN));
+		verify(controller).myTurn();
 	}
 
 }
