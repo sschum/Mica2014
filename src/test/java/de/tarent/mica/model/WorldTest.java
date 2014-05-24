@@ -139,7 +139,8 @@ public class WorldTest {
 	
 	@Test
 	public void registerEnemyHit(){
-		World world = new World(1, 1);
+		World world = new World(2, 2);
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord(0, 0)));
 		Coord coord = new Coord(0, 0);
 		world.registerEnemyHit(coord);
 		

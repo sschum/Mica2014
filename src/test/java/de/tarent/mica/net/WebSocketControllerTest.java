@@ -99,6 +99,8 @@ public class WebSocketControllerTest {
 	
 	@Test
 	public void myTurn(){
+		toTestSpy.started();
+		
 		doReturn(new Action(Type.ATTACK, new Coord("A1"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();
 		verify(toTestSpy).send(eq("A1"));
