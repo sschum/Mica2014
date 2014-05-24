@@ -264,8 +264,6 @@ public class WebSocketController extends WebSocketClient implements Controller {
 			}
 			break;
 		}
-		
-		System.out.println(world);
 	}
 	
 	/**
