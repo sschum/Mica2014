@@ -1,5 +1,6 @@
 package de.tarent.mica;
 
+import de.tarent.mica.model.World;
 import de.tarent.mica.model.ship.Carrier;
 import de.tarent.mica.model.ship.Cruiser;
 import de.tarent.mica.model.ship.Destroyer;
@@ -41,9 +42,10 @@ public interface GameActionHandler {
 	/**
 	 * Diese Methode wird aufgerufen, wenn man nach dem nächsten Schritt gefragt wird.
 	 * 
+	 * @param world Die aktuelle Spielewelt. 
 	 * @return Die nächste Aktion, die ausgeführt werden soll.
 	 */
-	public Action getNextAction();
+	public Action getNextAction(World world);
 	
 	/**
 	 * Diese Methode wird aufgerufen, wenn das Spiel zuende ist.
