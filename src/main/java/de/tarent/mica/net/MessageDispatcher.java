@@ -18,6 +18,7 @@ import de.tarent.mica.util.Logger;
  */
 public class MessageDispatcher {
 	private Pattern messagePattern = Pattern.compile("^([0-9]*):.*$");
+	private Pattern hitMessagePattern = Pattern.compile("^[0-9]*:.*Enemy ship hit at ([A-Za-z]*[0-9]*).$");
 	private Pattern enemyHitMessagePattern = Pattern.compile("^[0-9]*:.*The enemy hits .* at ([A-Za-z]*[0-9]*)\\.$");
 	private Pattern enemyHitBurnedMessagePattern = Pattern.compile("^[0-9]*:.*Your .* burned at ([A-Za-z]*[0-9]*)!$");
 	private Pattern enemyMissMessagePattern = Pattern.compile("^[0-9]*:.*Enemy shoots at ([A-Za-z]*[0-9]*) and misses\\.$");
@@ -41,9 +42,11 @@ public class MessageDispatcher {
 				switch(mc){
 				case NEW_NAME:
 				case WAIT_FOR_SECOND_PLAYER_CONNECT:
+				case WAIT_FOR_OTHER_PLAYERS_MOVE:
 				case NEXT_SHIP:
 				case SHIP_READY:
 				case ALL_SHIPS_READY:
+				case TORPEDOEE:
 					//ignorierte Messages...
 					return;
 				case HELLO:
@@ -60,8 +63,14 @@ public class MessageDispatcher {
 					controller.myTurn();
 					return;
 				case ENEMY_SHIP_HIT:
-					controller.hit();
+					matcher = hitMessagePattern.matcher(message);
+					if(matcher.matches()){
+						controller.hit(new Coord(matcher.group(1)));
+					}else{
+						controller.hit(null);
+					}
 					return;
+				case TORPEDO:
 				case ENEMY_SHIP_MISSED:
 					controller.missed();
 					return;

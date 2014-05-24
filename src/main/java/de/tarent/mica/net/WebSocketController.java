@@ -190,13 +190,43 @@ public class WebSocketController extends WebSocketClient implements Controller {
 	
 	/**
 	 * Der Spieler hat getroffen...
+	 * @param coord Wo hab ich getroffen (optional)
 	 */
-	void hit() {
+	void hit(Coord coord) {
 		Action lastAction = actionHistory.get(actionHistory.size() - 1);
 		
 		switch(lastAction.getType()){
 		case ATTACK:
 			world.registerHit(lastAction.getCoord()); break;
+			
+		/*
+		 * Bei den Torpedos weis ich, dass diese so weit laufen, bis sie auf
+		 * ein Schiff stoßen oder ins leere lief. 
+		 */
+		case TORPEDO_NORD:
+			for(int y=lastAction.getCoord().getY() - 1; y > coord.getY(); y--){
+				world.registerMiss(new Coord(coord.getX(), y));
+			}
+			world.registerHit(coord);
+			break;
+		case TORPEDO_OST:
+			for(int x=lastAction.getCoord().getX() + 1; x < coord.getX(); x++){
+				world.registerMiss(new Coord(x, coord.getY()));
+			}
+			world.registerHit(coord);
+			break;
+		case TORPEDO_SUED:
+			for(int y=lastAction.getCoord().getY() + 1; y < coord.getY(); y++){
+				world.registerMiss(new Coord(coord.getX(), y));
+			}
+			world.registerHit(coord);
+			break;
+		case TORPEDO_WEST:
+			for(int x=lastAction.getCoord().getX() - 1; x > coord.getX(); x--){
+				world.registerMiss(new Coord(x, coord.getY()));
+			}
+			world.registerHit(coord);
+			break;
 		}
 	}
 
@@ -209,7 +239,33 @@ public class WebSocketController extends WebSocketClient implements Controller {
 		switch(lastAction.getType()){
 		case ATTACK:
 			world.registerMiss(lastAction.getCoord()); break;
+		/*
+		 * Bei den Torpedos weis ich, dass diese so weit laufen, bis sie auf
+		 * ein Schiff stoßen oder ins leere lief. 
+		 */
+		case TORPEDO_NORD:
+			for(int y=lastAction.getCoord().getY() - 1; y >= 0; y--){
+				world.registerMiss(new Coord(lastAction.getCoord().getX(), y));
+			}
+			break;
+		case TORPEDO_OST:
+			for(int x=lastAction.getCoord().getX() + 1; x < world.getWorldDimension().width; x++){
+				world.registerMiss(new Coord(x, lastAction.getCoord().getY()));
+			}
+			break;
+		case TORPEDO_SUED:
+			for(int y=lastAction.getCoord().getY() + 1; y < world.getWorldDimension().height; y++){
+				world.registerMiss(new Coord(lastAction.getCoord().getX(), y));
+			}
+			break;
+		case TORPEDO_WEST:
+			for(int x=lastAction.getCoord().getX() - 1; x >= 0; x--){
+				world.registerMiss(new Coord(x, lastAction.getCoord().getY()));
+			}
+			break;
 		}
+		
+		System.out.println(world);
 	}
 	
 	/**
@@ -284,7 +340,7 @@ public class WebSocketController extends WebSocketClient implements Controller {
 			
 			@Override
 			public Action getNextAction(World world) {
-				return new Action(Type.SPY_DRONE, new Coord("F1"));
+				return new Action(Type.TORPEDO_WEST, new Coord("F7"));
 			}
 			
 			@Override
