@@ -1,7 +1,9 @@
 package de.tarent.mica.model.ship;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.tarent.mica.model.Coord;
 
@@ -19,6 +21,9 @@ public abstract class AbstractShip {
 	protected final int size;
 	protected Orientation orientation;
 	protected Coord position;
+	protected boolean isSunken;
+	protected boolean isBurning;
+	protected Set<Coord> attackCoords = new HashSet<Coord>();
 	
 	protected AbstractShip(int size, Orientation orientation, Coord position){
 		this.size = size;
@@ -58,7 +63,26 @@ public abstract class AbstractShip {
 		return result;
 	}
 	
-	
+	public boolean isSunken() {
+		return attackCoords.size() == size;
+	}
+
+	public boolean isBurning() {
+		return isBurning;
+	}
+
+	public void setBurning(boolean isBurning) {
+		this.isBurning = isBurning;
+	}
+
+	public boolean isAttacked() {
+		return !attackCoords.isEmpty();
+	}
+
+	public void addAttackCoord(Coord coord) {
+		attackCoords.add(coord);
+	}
+
 	@Override
 	public String toString() {
 		return getClass().getName() + " @ " + position + "(" + orientation + ") - [" + getSpace() + "]";
