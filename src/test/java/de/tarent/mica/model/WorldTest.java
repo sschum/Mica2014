@@ -7,10 +7,10 @@ import javax.lang.model.SourceVersion;
 import org.junit.Test;
 
 import de.tarent.mica.model.Field.Element;
-import de.tarent.mica.model.ship.AbstractShip;
-import de.tarent.mica.model.ship.AbstractShip.Orientation;
-import de.tarent.mica.model.ship.Carrier;
-import de.tarent.mica.model.ship.Submarine;
+import de.tarent.mica.model.element.AbstractShip;
+import de.tarent.mica.model.element.Carrier;
+import de.tarent.mica.model.element.Submarine;
+import de.tarent.mica.model.element.AbstractShip.Orientation;
 
 public class WorldTest {
 

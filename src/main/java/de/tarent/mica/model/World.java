@@ -7,7 +7,7 @@ import java.util.Collections;
 import java.util.Set;
 
 import de.tarent.mica.model.Field.Element;
-import de.tarent.mica.model.ship.AbstractShip;
+import de.tarent.mica.model.element.AbstractShip;
 
 /**
  * Diese Klasse representiert die Spielwelt.
@@ -46,7 +46,7 @@ public class World {
 	 * @param ship
 	 * @return
 	 */
-	public World placeOwnShip(AbstractShip ship){
+	public synchronized World placeOwnShip(AbstractShip ship){
 		validateShipPosition(ship);
 		
 		for(Coord c : ship.getSpace()) ownField.set(c, Element.SCHIFF);

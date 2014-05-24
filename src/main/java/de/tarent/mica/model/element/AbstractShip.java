@@ -1,4 +1,4 @@
-package de.tarent.mica.model.ship;
+package de.tarent.mica.model.element;
 
 import java.util.ArrayList;
 import java.util.HashSet;

@@ -1,4 +1,4 @@
-package de.tarent.mica.model.ship;
+package de.tarent.mica.model.element;
 
 import de.tarent.mica.model.Coord;
 

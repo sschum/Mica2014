@@ -1,10 +1,10 @@
 package de.tarent.mica;
 
 import de.tarent.mica.model.World;
-import de.tarent.mica.model.ship.Carrier;
-import de.tarent.mica.model.ship.Cruiser;
-import de.tarent.mica.model.ship.Destroyer;
-import de.tarent.mica.model.ship.Submarine;
+import de.tarent.mica.model.element.Carrier;
+import de.tarent.mica.model.element.Cruiser;
+import de.tarent.mica.model.element.Destroyer;
+import de.tarent.mica.model.element.Submarine;
 
 
 /**

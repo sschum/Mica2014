@@ -16,11 +16,11 @@ import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.GameActionHandler.Fleet;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
-import de.tarent.mica.model.ship.Carrier;
-import de.tarent.mica.model.ship.Destroyer;
-import de.tarent.mica.model.ship.Submarine;
-import de.tarent.mica.model.ship.AbstractShip.Orientation;
-import de.tarent.mica.model.ship.Cruiser;
+import de.tarent.mica.model.element.Carrier;
+import de.tarent.mica.model.element.Cruiser;
+import de.tarent.mica.model.element.Destroyer;
+import de.tarent.mica.model.element.Submarine;
+import de.tarent.mica.model.element.AbstractShip.Orientation;
 import de.tarent.mica.util.Logger;
 
 /**
