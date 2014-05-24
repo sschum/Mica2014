@@ -33,13 +33,23 @@ public class MessageDispatcher {
 				switch(mc){
 				case NEW_NAME:
 				case WAIT_FOR_SECOND_PLAYER_CONNECT:
+				case NEXT_SHIP:
+				case SHIP_READY:
+				case ALL_SHIPS_READY:
 					//ignorierte Messages...
 					return;
 				case HELLO:
+					controller.started();
 					controller.rename();
 					return;
 				case PLACE_SHIPS:
 					controller.placeShips();
+					return;
+				case INVALID_MOVE:
+				case INVALID_TORPEDO_SOURCE:
+				case OUT_OF_SPECIALPOWERS:
+				case YOUR_TURN:
+					controller.myTurn();
 					return;
 				default:
 					break;
