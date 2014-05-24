@@ -2,6 +2,8 @@ package de.tarent.mica.net;
 
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_17;
@@ -33,6 +35,7 @@ public class WebSocketController extends WebSocketClient implements Controller {
 	private String name;
 	private GameActionHandler actionHandler;
 	private World world;
+	private List<Action> actionHistory;
 	
 	public WebSocketController(String host, int port) throws URISyntaxException {
 		super(new URI("ws://" + host + ":" + port + "/battle"), new Draft_17());
@@ -95,6 +98,7 @@ public class WebSocketController extends WebSocketClient implements Controller {
 		//spiel wurde gestartet...
 		//welt kann initialisiert werden
 		world = new World(10, 10);
+		actionHistory = new ArrayList<Action>();
 	}
 	
 	void rename() {
@@ -148,6 +152,8 @@ public class WebSocketController extends WebSocketClient implements Controller {
 		case TORPEDO_WEST:
 			torpedo(action.getType(), action.getCoord()); break;
 		}
+		
+		actionHistory.add(action);
 	}
 	
 	private void torpedo(Type type, Coord coord) {
@@ -180,6 +186,49 @@ public class WebSocketController extends WebSocketClient implements Controller {
 	private void attack(Coord coord) {
 		send(coord.toString());
 	}
+	
+	/**
+	 * Der Spieler hat getroffen...
+	 */
+	void hit() {
+		Action lastAction = actionHistory.get(actionHistory.size() - 1);
+		
+		switch(lastAction.getType()){
+		case ATTACK:
+			world.registerHit(lastAction.getCoord()); break;
+		}
+	}
+
+	/**
+	 * Der Spieler hat verfehlt...
+	 */
+	void missed() {
+		Action lastAction = actionHistory.get(actionHistory.size() - 1);
+		
+		switch(lastAction.getType()){
+		case ATTACK:
+			world.registerMiss(lastAction.getCoord()); break;
+		}
+	}
+	
+	/**
+	 * Der Gegner hat getroffen...
+	 * 
+	 * @param coord Wo?
+	 */
+	void enemyHit(Coord coord) {
+		world.registerEnemyHit(coord);
+	}
+
+	/**
+	 * Der Gegner hat verfehlt...
+	 * 
+	 * @param coord Wo?
+	 */
+	void enemyMissed(Coord coord) {
+		world.registerEnemyMiss(coord);
+	}
+	
 
 	public static void main(String[] args) throws URISyntaxException {
 		WebSocketController controller = new WebSocketController("localhost", 40000);
@@ -199,8 +248,7 @@ public class WebSocketController extends WebSocketClient implements Controller {
 			
 			@Override
 			public Action getNextAction(World world) {
-				// TODO Auto-generated method stub
-				return null;
+				return new Action(Type.ATTACK, new Coord("F1"));
 			}
 			
 			@Override

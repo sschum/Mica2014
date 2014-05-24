@@ -32,7 +32,7 @@ public interface GameActionHandler {
 	 */
 	public Fleet getFleet();
 	
-	/**
+	/** TODO: Benötige ich diese Methode wirklich?
 	 * Diese Methode wird aufgerufen, sobald der Gegner eine Aktion durchgeführt hat.
 	 * 
 	 * @param action Die Aktion, die der Gegner durchgeführt hat.
