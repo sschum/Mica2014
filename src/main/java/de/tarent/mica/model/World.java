@@ -23,7 +23,7 @@ public class World {
 	private Collection<AbstractShip> ownShips = new ArrayList<AbstractShip>();
 	
 	public World(int height, int width) {
-		ownField = new Field(height, width);
+		ownField = new Field(height, width, Element.WASSER);
 		enemyField = new Field(height, width);
 		enemyView = new Field(height, width);
 	}

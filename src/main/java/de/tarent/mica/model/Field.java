@@ -5,6 +5,8 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import sun.awt.UNIXToolkit;
+
 public class Field {
 	public static enum Element{	//TODO: Besseren Namen dafür finde ;)
 		UNBEKANNT('?'),
@@ -33,12 +35,16 @@ public class Field {
 	}
 
 	public Field(int height, int width) {
+		this(height, width, Element.UNBEKANNT);
+	}
+	
+	public Field(int height, int width, Element fillWith) {
 		if(height <= 0 || width <= 0) throw new IllegalArgumentException("Width and/or height must be higher than 0!");
 		
 		this.area = new Element[height][width];
 		
 		for(int i=0; i < height; i++){
-			Arrays.fill(area[i], Element.UNBEKANNT);
+			Arrays.fill(area[i], fillWith);
 		}
 	}
 	
