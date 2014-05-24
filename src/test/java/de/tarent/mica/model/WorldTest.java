@@ -2,12 +2,15 @@ package de.tarent.mica.model;
 
 import static org.junit.Assert.*;
 
+import javax.lang.model.SourceVersion;
+
 import org.junit.Test;
 
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.ship.AbstractShip;
 import de.tarent.mica.model.ship.AbstractShip.Orientation;
 import de.tarent.mica.model.ship.Carrier;
+import de.tarent.mica.model.ship.Submarine;
 
 public class WorldTest {
 
@@ -26,11 +29,11 @@ public class WorldTest {
 			"o)============(o\n" +
 			"\n" +
 			"  0 1 2 3 4\n" +
-			"A ? ? ? ? ?\n" +
-			"B ? ? ? ? ?\n" +
-			"C ? ? ? ? ?\n" +
-			"D ? ? ? ? ?\n" +
-			"E ? ? ? ? ?\n", 
+			"A ~ ~ ~ ~ ~\n" +
+			"B ~ ~ ~ ~ ~\n" +
+			"C ~ ~ ~ ~ ~\n" +
+			"D ~ ~ ~ ~ ~\n" +
+			"E ~ ~ ~ ~ ~\n", 
 			world.toString());
 	}
 	
@@ -66,11 +69,11 @@ public class WorldTest {
 		
 		assertEquals(
 				"  0 1 2 3 4\n" +
-				"A ? ? * ? ?\n" +
-				"B ? ? * ? ?\n" +
-				"C ? ? * ? ?\n" +
-				"D ? ? * ? ?\n" +
-				"E ? ? * ? ?\n", 
+				"A ~ ~ * ~ ~\n" +
+				"B ~ ~ * ~ ~\n" +
+				"C ~ ~ * ~ ~\n" +
+				"D ~ ~ * ~ ~\n" +
+				"E ~ ~ * ~ ~\n", 
 			world.getOwnField().toString());
 	}
 	
@@ -192,5 +195,15 @@ public class WorldTest {
 			world.registerEnemyShip(coord);
 			fail("It should be thrown an IllegalArgumentException.");
 		}catch(IllegalArgumentException e){}
+	}
+	
+	@Test
+	public void getShip(){
+		World world = new World(5, 5);
+		AbstractShip ship = new Submarine(Orientation.SUED, new Coord("A0"));
+		world.placeOwnShip(ship);
+		
+		assertSame(ship, world.getShip(new Coord("A0")));
+		assertSame(ship, world.getShip(new Coord("B0")));
 	}
 }

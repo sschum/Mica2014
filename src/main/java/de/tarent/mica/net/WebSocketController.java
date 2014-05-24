@@ -219,6 +219,15 @@ public class WebSocketController extends WebSocketClient implements Controller {
 	void enemyHit(Coord coord) {
 		world.registerEnemyHit(coord);
 	}
+	
+	/**
+	 * Der Gegner hat getroffen... Das Schiff brennt...
+	 * 
+	 * @param coord Wo?
+	 */
+	void enemyBurnHit(Coord coord) {
+		world.registerEnemyBurn(coord);
+	}
 
 	/**
 	 * Der Gegner hat verfehlt...
@@ -229,6 +238,14 @@ public class WebSocketController extends WebSocketClient implements Controller {
 		world.registerEnemyMiss(coord);
 	}
 	
+	/**
+	 * Ein Schiff des Spielers wurde versenkt...
+	 * 
+	 * @param coord Welches?
+	 */
+	void enemySunk(Coord coord) {
+		world.registerEnemySunk(coord);
+	}
 
 	public static void main(String[] args) throws URISyntaxException {
 		WebSocketController controller = new WebSocketController("localhost", 40000);
