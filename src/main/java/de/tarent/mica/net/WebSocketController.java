@@ -19,6 +19,7 @@ import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
+import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.Submarine;
 import de.tarent.mica.model.element.AbstractShip.Orientation;
 import de.tarent.mica.util.Logger;
@@ -212,6 +213,15 @@ public class WebSocketController extends WebSocketClient implements Controller {
 	}
 	
 	/**
+	 * Der Spieler hat den Gegner spioniert...
+	 * 
+	 * @param spyArea
+	 */
+	void spy(SpyArea spyArea) {
+		world.registerSpy(spyArea);
+	}
+	
+	/**
 	 * Der Gegner hat getroffen...
 	 * 
 	 * @param coord Wo?
@@ -246,6 +256,15 @@ public class WebSocketController extends WebSocketClient implements Controller {
 	void enemySunk(Coord coord) {
 		world.registerEnemySunk(coord);
 	}
+	
+	/**
+	 * Der Spieler wurde von dem Gegner ausspioniert...
+	 * 
+	 * @param spyArea
+	 */
+	void enemySpy(SpyArea spyArea) {
+		world.registerEnemySpy(spyArea);
+	}
 
 	public static void main(String[] args) throws URISyntaxException {
 		WebSocketController controller = new WebSocketController("localhost", 40000);
@@ -265,7 +284,7 @@ public class WebSocketController extends WebSocketClient implements Controller {
 			
 			@Override
 			public Action getNextAction(World world) {
-				return new Action(Type.ATTACK, new Coord("F1"));
+				return new Action(Type.SPY_DRONE, new Coord("F1"));
 			}
 			
 			@Override
@@ -285,5 +304,4 @@ public class WebSocketController extends WebSocketClient implements Controller {
 			}
 		});
 	}
-
 }

@@ -6,6 +6,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import de.tarent.mica.model.Coord;
+import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.util.Logger;
 
 /**
@@ -21,6 +22,8 @@ public class MessageDispatcher {
 	private Pattern enemyHitBurnedMessagePattern = Pattern.compile("^[0-9]*:.*Your .* burned at ([A-Za-z]*[0-9]*)!$");
 	private Pattern enemyMissMessagePattern = Pattern.compile("^[0-9]*:.*Enemy shoots at ([A-Za-z]*[0-9]*) and misses\\.$");
 	private Pattern playerSunkMessagePattern = Pattern.compile("^[0-9]*:.* at ([A-Za-z]*[0-9]*)!.*$");
+	private Pattern spyMesssagePattern = Pattern.compile("^[0-9]*:.*The drone found ([0-9]*) ship segments at ([A-Za-z]*[0-9]*)!$");
+	private Pattern enemySpyMessagePattern = Pattern.compile("^[0-9]*:.* at ([A-Za-z]*[0-9]*)!.*$");
 
 	private WebSocketController controller;
 	
@@ -62,6 +65,11 @@ public class MessageDispatcher {
 				case ENEMY_SHIP_MISSED:
 					controller.missed();
 					return;
+				case DRONE:
+					matcher = spyMesssagePattern.matcher(message);
+					matcher.matches();
+					controller.spy(new SpyArea(new Coord(matcher.group(2)), Integer.parseInt(matcher.group(1))));
+					return;
 				case YOUR_SHIP_HIT:
 					matcher = enemyHitMessagePattern.matcher(message);
 					if(matcher.matches()){
@@ -81,6 +89,11 @@ public class MessageDispatcher {
 					matcher = playerSunkMessagePattern.matcher(message);
 					matcher.matches();
 					controller.enemySunk(new Coord(matcher.group(1)));
+					return;
+				case DRONEEE:
+					matcher = enemySpyMessagePattern.matcher(message);
+					matcher.matches();
+					controller.enemySpy(new SpyArea(new Coord(matcher.group(1))));
 					return;
 				default:
 					break;

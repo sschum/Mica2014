@@ -5,14 +5,13 @@ import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-import sun.awt.UNIXToolkit;
-
 public class Field {
 	public static enum Element{	//TODO: Besseren Namen dafür finde ;)
 		UNBEKANNT('?'),
 		SCHIFF('*'),
 		TREFFER('+'),
-		WASSER('~');
+		WASSER('~'),
+		SPIONAGE('/');
 		
 		private char sign;
 		

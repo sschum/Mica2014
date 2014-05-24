@@ -1,13 +1,13 @@
 package de.tarent.mica.model;
 
 import java.awt.Dimension;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
 
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.element.AbstractShip;
+import de.tarent.mica.model.element.SpyArea;
 
 /**
  * Diese Klasse representiert die Spielwelt.
@@ -21,7 +21,8 @@ public class World {
 	private Field enemyField;
 	private Field enemyView;
 	
-	private Collection<AbstractShip> ownShips = new ArrayList<AbstractShip>();
+	private Set<AbstractShip> ownShips = new HashSet<AbstractShip>();
+	private Set<SpyArea> ownSpies = new HashSet<SpyArea>();
 	
 	public World(int height, int width) {
 		ownField = new Field(height, width, Element.WASSER);
@@ -119,6 +120,21 @@ public class World {
 	}
 	
 	/**
+	 * Trägt ein Spionagebereich in das Gegnerische Feld ein.
+	 * 
+	 * @param spy
+	 * @return
+	 */
+	public World registerSpy(SpyArea spy){
+		checkOutOfBounce(enemyView, spy.getCoord());
+		enemyField.set(spy.getCoord(), Element.SPIONAGE);
+		
+		ownSpies.add(spy);
+		
+		return this;
+	}
+	
+	/**
 	 * Liefert Alle bekannten Positionen der Gegnerischen Schiffe.
 	 * Ist keine Position bekannt, wird dennoch ein Set geliefert.
 	 * Dieses ist dann jedoch leer!
@@ -127,6 +143,15 @@ public class World {
 	 */
 	public Set<Coord> getShipCoordinates(){
 		return enemyField.getCoordinatesFor(Element.SCHIFF);
+	}
+	
+	/**
+	 * Liefert alle Spionagebereiche des Spielers.
+	 * 
+	 * @return
+	 */
+	public Set<SpyArea> getSpyAreas(){
+		return Collections.unmodifiableSet(ownSpies);
 	}
 	
 	/**
@@ -208,14 +233,28 @@ public class World {
 	}
 	
 	/**
-	 * Liefert alle Spielerschiffe. Diese {@link Collection} darf und kann
+	 * Trägt ein Spionagebereich in das eigene Feld ein.
+	 * Dieses Feld ist die Sicht des Gegners.
+	 * 
+	 * @param spy
+	 * @return
+	 */
+	public World registerEnemySpy(SpyArea spyArea) {
+		checkOutOfBounce(enemyView, spyArea.getCoord());
+		enemyView.set(spyArea.getCoord(), Element.SPIONAGE);
+		
+		return this;
+	}
+	
+	/**
+	 * Liefert alle Spielerschiffe. Diese {@link Set} darf und kann
 	 * nicht verändert werden!
 	 * 
 	 * @return
 	 */
 	@SuppressWarnings("unchecked")
-	public Collection<AbstractShip> getOwnShips(){
-		return Collections.unmodifiableCollection((Collection<AbstractShip>) ownField);
+	public Set<AbstractShip> getOwnShips(){
+		return Collections.unmodifiableSet((Set<AbstractShip>) ownField);
 	}
 	
 	/**
