@@ -29,8 +29,14 @@ public class Logger {
 	}
 	
 	public static void debug(String message, Throwable t){
-		if(t == null) LOG.log(Level.FINER, message);
-		else LOG.log(Level.FINER, message, t);
+		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+		
+		if(t == null){
+			LOG.log(Level.FINER, createMessage(stacktrace[3], message));
+		}
+		else{
+			LOG.log(Level.FINER, createMessage(stacktrace[2], message), t);
+		}
 	}
 
 	public static void info(String message) {
@@ -38,8 +44,14 @@ public class Logger {
 	}
 	
 	public static void info(String message, Throwable t) {
-		if(t == null) LOG.log(Level.INFO, message);
-		else LOG.log(Level.INFO, message, t);
+		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+		
+		if(t == null){
+			LOG.log(Level.INFO, createMessage(stacktrace[3], message));
+		}
+		else{
+			LOG.log(Level.INFO, createMessage(stacktrace[2], message), t);
+		}
 	}
 
 	public static void warn(String message) {
@@ -47,7 +59,17 @@ public class Logger {
 	}
 	
 	public static void warn(String message, Throwable t) {
-		if(t == null) LOG.log(Level.WARNING, message);
-		else LOG.log(Level.WARNING, message, t);
+		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+		
+		if(t == null){
+			LOG.log(Level.WARNING, createMessage(stacktrace[3], message));
+		}
+		else{
+			LOG.log(Level.WARNING, createMessage(stacktrace[2], message), t);
+		}
+	}
+	
+	private static String createMessage(StackTraceElement ste, String message){
+		return ste.getClassName() + "." + ste.getMethodName() + ":" + ste.getLineNumber() + " " + message;
 	}
 }
