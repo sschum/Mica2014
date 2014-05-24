@@ -3,6 +3,7 @@ package de.tarent.mica.model;
 import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Set;
 
 import de.tarent.mica.model.Field.Element;
@@ -116,7 +117,7 @@ public class World {
 		
 		return this;
 	}
-
+	
 	/**
 	 * Liefert Alle bekannten Positionen der Gegnerischen Schiffe.
 	 * Ist keine Position bekannt, wird dennoch ein Set geliefert.
@@ -139,6 +140,25 @@ public class World {
 		checkOutOfBounce(enemyView, c);
 		enemyView.set(c, Element.TREFFER);
 		
+		AbstractShip ship = getShip(c);
+		ship.addAttackCoord(c);
+		
+		return this;
+	}
+	
+	/**
+	 * Trägt einen Treffer in das eigene Feld ein.
+	 * Dieses Feld ist die Sicht des Gegners.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public World registerEnemyBurn(Coord c){
+		registerEnemyHit(c);
+		
+		AbstractShip ship = getShip(c);
+		ship.setBurning(true);
+		
 		return this;
 	}
 	
@@ -157,6 +177,23 @@ public class World {
 	}
 	
 	/**
+	 * Trägt ein Schiff als versunken ein.
+	 * Dieses Feld ist die Sicht des Gegners.
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public World registerEnemySunk(Coord c){
+		AbstractShip ship = getShip(c);
+		
+		for(Coord cc : ship.getSpace()){
+			registerEnemyHit(cc);
+		}
+		
+		return this;
+	}
+	
+	/**
 	 * Trägt ein Schiff in das eigene Feld ein.
 	 * Dieses Feld ist die Sicht des Gegners.
 	 * 
@@ -168,6 +205,33 @@ public class World {
 		enemyView.set(c, Element.SCHIFF);
 		
 		return this;
+	}
+	
+	/**
+	 * Liefert alle Spielerschiffe. Diese {@link Collection} darf und kann
+	 * nicht verändert werden!
+	 * 
+	 * @return
+	 */
+	@SuppressWarnings("unchecked")
+	public Collection<AbstractShip> getOwnShips(){
+		return Collections.unmodifiableCollection((Collection<AbstractShip>) ownField);
+	}
+	
+	/**
+	 * Liefert das eigene Schiff, was an der gegebenen Position stationiert ist.
+	 * 
+	 * @param coord
+	 * @return Das eigene Schiff an der gegebenen Koordinate. Null wenn kein Schiff an dieser Koordinate vorhanden ist.
+	 */
+	public AbstractShip getShip(Coord coord){
+		for(AbstractShip ship : ownShips){
+			if(ship.getSpace().contains(coord)){
+				return ship;
+			}
+		}
+		
+		return null;
 	}
 	
 	public Dimension getWorldDimension() {
