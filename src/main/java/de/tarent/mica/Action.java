@@ -10,7 +10,7 @@ import de.tarent.mica.model.Coord;
  */
 public class Action {
 	public static enum Type {
-		ATTACK, CLUSTERBOMB, WILDFIRE, SPY_DRONE, 
+		MISSED, ATTACK, CLUSTERBOMB, WILDFIRE, SPY_DRONE, 
 		TORPEDO_NORD, TORPEDO_OST, TORPEDO_SUED, TORPEDO_WEST
 	}
 	
@@ -27,5 +27,10 @@ public class Action {
 	}
 	public Coord getCoord() {
 		return coord;
+	}
+	
+	@Override
+	public String toString() {
+		return type + "@" + coord;
 	}
 }
