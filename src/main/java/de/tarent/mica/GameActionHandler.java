@@ -25,6 +25,13 @@ public interface GameActionHandler {
 		public Submarine submarine2;
 	}
 	
+	public static class GameStats {
+		public World world;
+		public boolean won;
+		public String playerName;
+		public String enemyName;
+	}
+	
 	/**
 	 * Diese Methode wird aufgerufen, wenn die eigene Flotte gesetzt werden soll.
 	 * 
@@ -50,7 +57,7 @@ public interface GameActionHandler {
 	/**
 	 * Diese Methode wird aufgerufen, wenn das Spiel zuende ist.
 	 * 
-	 * @param win True wenn der Spieler gewonnen hat. Andernfals false.
+	 * @param stats Das Spielergebnis.
 	 */
-	public void handleGameOver(boolean won);
+	public void handleGameOver(GameStats stats);
 }

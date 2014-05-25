@@ -18,6 +18,7 @@ import de.tarent.mica.util.Logger;
  */
 class MessageDispatcher {
 	private Pattern messagePattern = Pattern.compile("^([0-9]*):.*$");
+	private Pattern renameMessagePattern = Pattern.compile("^[0-9]*:.*Player '#([0-9]*)' is now known as '(.*)'.$");
 	private Pattern hitMessagePattern = Pattern.compile("^[0-9]*:.*Enemy ship hit at ([A-Za-z]*[0-9]*)\\.$");
 	private Pattern enemyHitMessagePattern = Pattern.compile("^[0-9]*:.*The enemy hits .*at ([A-Za-z]*[0-9]*)\\.$");
 	private Pattern enemyHitBurnedMessagePattern = Pattern.compile("^[0-9]*:.*Your .*burned at ([A-Za-z]*[0-9]*)!$");
@@ -41,14 +42,24 @@ class MessageDispatcher {
 			MessageCode mc = MessageCode.fromCode(msgCode);
 			if(mc != null){
 				switch(mc){
-				case NEW_NAME:
+				case TORPEDOEE: //TODO: wenn man von einem Torpedo getroffen wurde, weis man zum. dass in den Himelsrichtungen irgendow ein U-Bot sein muss!
+				case WILDFIREEE: //wird durch den YOUR_SHIP_HIT abgebildet (wenn es brennt war es eine Wildfire-Attacke!)
 				case WAIT_FOR_SECOND_PLAYER_CONNECT:
 				case WAIT_FOR_OTHER_PLAYERS_MOVE:
 				case NEXT_SHIP:
 				case SHIP_READY:
 				case ALL_SHIPS_READY:
-				case TORPEDOEE:
 					//ignorierte Messages...
+					return;
+				case NEW_NAME:
+					matcher = renameMessagePattern.matcher(message);
+					matcher.matches();
+					if(Integer.parseInt(matcher.group(1)) == 1){
+						controller.renamed(matcher.group(2));	//TODO:es ist nicht gesagt, dass der Spieler immer Nr1 ist!
+					}else{
+						controller.enemyRenamed(matcher.group(2));
+					}
+					
 					return;
 				case HELLO:
 					controller.started();
@@ -110,6 +121,12 @@ class MessageDispatcher {
 					matcher = enemyClusterMessagePattern.matcher(message);
 					matcher.matches();
 					controller.enemyClusterbombed(new Coord(matcher.group(1)));
+					return;
+				case ENEMY_SHIP_SUNK:
+					//TODO: Warte auf klärung bzgl. letzter Koordinate
+					return;
+				case GAME_OVER:
+					controller.gameOver(true);
 					return;
 				default:
 					break;

@@ -1,13 +1,22 @@
 package de.tarent.mica.net;
 
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileWriter;
+import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.nio.channels.NotYetConnectedException;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 
 import org.java_websocket.drafts.Draft_17;
 import org.java_websocket.handshake.ServerHandshake;
 
 import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
+import de.tarent.mica.GameActionHandler.GameStats;
 import de.tarent.mica.Controller;
 import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.model.Coord;
@@ -27,9 +36,36 @@ import de.tarent.mica.util.Logger;
  */
 public class WebSocketController extends EnemyActionCommandController implements Controller {
 	private final MessageDispatcher dispatcher = new MessageDispatcher(this);
+	protected List<String> messageLog;
 	
 	public WebSocketController(String host, int port) throws URISyntaxException {
 		super(new URI("ws://" + host + ":" + port + "/battle"), new Draft_17());
+	}
+
+	/**
+	 * Schreibt den protokolierten Nachrichtenaustausch in eine Datei.
+	 * 
+	 * @param dest
+	 * @throws IOException 
+	 */
+	public void writeMessageLog(File dest) throws IOException {
+		BufferedWriter bw = null;
+		try{
+			bw = new BufferedWriter(new FileWriter(dest));
+			for(String msg : messageLog){
+				bw.write(msg + "\n");
+			}
+			bw.flush();
+		}finally{
+			if(bw != null) try{ bw.close(); }catch(IOException e){}
+		}
+	}
+	
+	protected void logMessage(String message){
+		messageLog.add("[R]" + message);
+	}
+	protected void logSend(String message){
+		messageLog.add("[S]" + message);
 	}
 	
 	/* ************************
@@ -39,13 +75,22 @@ public class WebSocketController extends EnemyActionCommandController implements
 	
 	@Override
 	public void onOpen(ServerHandshake handshake) {
+		messageLog = Collections.synchronizedList(new ArrayList<String>());
+		
 		Logger.debug("ServerHandshake: " + handshake);
-		Logger.info("Start new game with as " + name + "...");
+		Logger.info("Start new game with as " + ownName + "...");
 		play();
 	}
 	
 	@Override
+	public void send(String text) throws NotYetConnectedException {
+		logSend(text);
+		super.send(text);
+	}
+	
+	@Override
 	public void onMessage(String message) {
+		logMessage(message);
 		Logger.debug("Incoming Message: " + message);
 		dispatcher.onMessage(message);	//der dispatcher kümmert sich um die nachrichtenverarbeitung
 	}
@@ -67,23 +112,40 @@ public class WebSocketController extends EnemyActionCommandController implements
 	
 	@Override
 	public void play(String name, GameActionHandler actionHandler) {
-		this.name = name;
+		if(name != null)this.ownName = name;
+		
 		this.actionHandler = actionHandler;
+		
 		try {
 			connectBlocking();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
 	}
+	
+	void gameOver(boolean won) {
+		close();
+		GameStats stats = new GameStats();
+		stats.world = world;
+		stats.playerName = ownName;
+		stats.enemyName = enemyName;
+		stats.won = won;
+		
+		actionHandler.handleGameOver(stats);
+	}
 
-	public static void main(String[] args) throws URISyntaxException {
-		WebSocketController controller = new WebSocketController("localhost", 40000);
+	public static void main(String[] args) throws URISyntaxException, IOException {
+		final WebSocketController controller = new WebSocketController("localhost", 40000);
 		controller.play("Rainu", new GameActionHandler() {
 			
 			@Override
-			public void handleGameOver(boolean won) {
-				// TODO Auto-generated method stub
-				
+			public void handleGameOver(GameStats stats) {
+				try {
+					controller.writeMessageLog(new File("/tmp/RayShip_" + stats.playerName + "_vs_" + stats.enemyName + ".log"));
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
 			}
 			
 			@Override
@@ -94,7 +156,7 @@ public class WebSocketController extends EnemyActionCommandController implements
 			
 			@Override
 			public Action getNextAction(World world) {
-				return new Action(Type.CLUSTERBOMB, new Coord("C2"));
+				return new Action(Type.CLUSTERBOMB, new Coord("E2"));
 			}
 			
 			@Override
