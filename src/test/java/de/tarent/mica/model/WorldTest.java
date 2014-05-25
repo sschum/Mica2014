@@ -2,6 +2,8 @@ package de.tarent.mica.model;
 
 import static org.junit.Assert.*;
 
+import java.util.Set;
+
 import javax.lang.model.SourceVersion;
 
 import org.junit.Test;
@@ -9,6 +11,7 @@ import org.junit.Test;
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.element.AbstractShip;
 import de.tarent.mica.model.element.Carrier;
+import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.Submarine;
 import de.tarent.mica.model.element.AbstractShip.Orientation;
 
@@ -118,6 +121,26 @@ public class WorldTest {
 	}
 	
 	@Test
+	public void registerSpy(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(0, 0);
+		world.registerSpy(new SpyArea(coord));
+		
+		assertEquals(Element.SPIONAGE, world.getEnemyField().get(coord));
+	}
+	
+	@Test
+	public void registerSpy_outOfBounce(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(2, 2);
+		
+		try{
+			world.registerSpy(new SpyArea(coord));
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
+	}
+	
+	@Test
 	public void registerShip(){
 		World world = new World(1, 1);
 		Coord coord = new Coord(0, 0);
@@ -199,6 +222,47 @@ public class WorldTest {
 	}
 	
 	@Test
+	public void registerEnemyBurn(){
+		World world = new World(5, 5);
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord(0,0)));
+		world.registerEnemyBurn(new Coord(0,0));
+		
+		assertEquals(Element.TREFFER, world.getEnemyView().get(new Coord(0,0)));
+		assertTrue(world.getShip(new Coord(0,0)).isBurning());
+	}
+	
+	@Test
+	public void registerEnemySunk(){
+		World world = new World(5, 5);
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord(0,0)));
+		
+		world.registerEnemySunk(new Coord(0,0));
+		assertEquals(Element.TREFFER, world.getEnemyView().get(new Coord(0,0)));
+		assertEquals(Element.TREFFER, world.getEnemyView().get(new Coord(0,1)));
+		assertTrue(world.getShip(new Coord(0,0)).isSunken());
+	}
+	
+	@Test
+	public void registerEnemySpy(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(0, 0);
+		world.registerEnemySpy(new SpyArea(coord));
+		
+		assertEquals(Element.SPIONAGE, world.getEnemyView().get(coord));
+	}
+	
+	@Test
+	public void registerEnemySpy_outOfBounce(){
+		World world = new World(1, 1);
+		Coord coord = new Coord(2, 2);
+		
+		try{
+			world.registerEnemySpy(new SpyArea(coord));
+			fail("It should be thrown an IllegalArgumentException.");
+		}catch(IllegalArgumentException e){}
+	}
+	
+	@Test
 	public void getShip(){
 		World world = new World(5, 5);
 		AbstractShip ship = new Submarine(Orientation.SUED, new Coord("A0"));
@@ -206,5 +270,23 @@ public class WorldTest {
 		
 		assertSame(ship, world.getShip(new Coord("A0")));
 		assertSame(ship, world.getShip(new Coord("B0")));
+	}
+	
+	@Test
+	public void getShipCoordinates(){
+		World world = new World(5, 5);
+		world.registerShip(new Coord(0, 0));
+		Set<Coord> result = world.getShipCoordinates();
+		assertEquals(1, result.size());
+		assertTrue(result.contains(new Coord(0, 0)));
+	}
+	
+	@Test
+	public void getSpyAreas(){
+		World world = new World(5, 5);
+		world.registerSpy(new SpyArea(new Coord(0,0)));
+		Set<SpyArea> result = world.getSpyAreas();
+		assertEquals(1, result.size());
+		assertTrue(result.contains(new SpyArea(new Coord(0,0))));
 	}
 }

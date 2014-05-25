@@ -35,7 +35,7 @@ import de.tarent.mica.util.Logger;
  *
  */
 public class WebSocketController extends EnemyActionCommandController implements Controller {
-	private final MessageDispatcher dispatcher = new MessageDispatcher(this);
+	protected MessageDispatcher dispatcher = new MessageDispatcher(this);
 	protected List<String> messageLog;
 	
 	public WebSocketController(String host, int port) throws URISyntaxException {
