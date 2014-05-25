@@ -15,6 +15,7 @@ import de.tarent.mica.Controller;
 import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.GameActionHandler.Fleet;
 import de.tarent.mica.model.Coord;
+import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
@@ -200,6 +201,57 @@ public class WebSocketController extends WebSocketClient implements Controller {
 			world.registerHit(lastAction.getCoord()); break;
 			
 		/*
+		 * Eine Clusterbomb fügt ein "Kreuzschaden" hinzu.
+		 * 
+		 *   0 1 2
+		 * A   +
+		 * B + c +
+		 * C   +
+		 */
+		case CLUSTERBOMB:
+			//Da man sich nicht darauf verlassen sollte, in welcher reihenfolge die Nachrichten eintreffen
+			//werde ich das Kreuz als Fehlschlag eintragen, sofern kein Treffer verzeichnet ist
+			Coord lastCoord = lastAction.getCoord();
+			
+			//mittelpunkt
+			if(!Element.TREFFER.equals(world.getEnemyField().get(lastCoord))){
+				world.registerMiss(lastCoord);
+			}
+			//nord
+			Coord nord = new Coord(lastCoord.getX(), lastCoord.getY() - 1);
+			try{
+				if(!Element.TREFFER.equals(world.getEnemyField().get(nord))){
+					world.registerMiss(nord);
+				}
+			}catch(IllegalArgumentException e){}
+			//ost
+			Coord ost = new Coord(lastCoord.getX() + 1, lastCoord.getY());
+			try{
+				if(!Element.TREFFER.equals(world.getEnemyField().get(ost))){
+					world.registerMiss(ost);
+				}
+			}catch(IllegalArgumentException e){}
+			//sued
+			Coord sued = new Coord(lastCoord.getX(), lastCoord.getY() + 1);
+			try{
+				if(!Element.TREFFER.equals(world.getEnemyField().get(sued))){
+					world.registerMiss(sued);
+				}
+			}catch(IllegalArgumentException e){}
+			//west
+			Coord west = new Coord(lastCoord.getX() - 1, lastCoord.getY());
+			try{
+				if(!Element.TREFFER.equals(world.getEnemyField().get(west))){
+					world.registerMiss(west);
+				}
+			}catch(IllegalArgumentException e){}
+			
+			if(coord != null){
+				world.registerHit(coord);
+			}
+			
+			break;
+		/*
 		 * Bei den Torpedos weis ich, dass diese so weit laufen, bis sie auf
 		 * ein Schiff stoßen oder ins leere lief. 
 		 */
@@ -228,6 +280,8 @@ public class WebSocketController extends WebSocketClient implements Controller {
 			world.registerHit(coord);
 			break;
 		}
+		
+		System.out.println(world.getEnemyField());
 	}
 
 	/**
@@ -338,7 +392,7 @@ public class WebSocketController extends WebSocketClient implements Controller {
 			
 			@Override
 			public Action getNextAction(World world) {
-				return new Action(Type.TORPEDO_WEST, new Coord("F7"));
+				return new Action(Type.CLUSTERBOMB, new Coord("C2"));
 			}
 			
 			@Override

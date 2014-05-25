@@ -62,6 +62,7 @@ public class MessageDispatcher {
 				case YOUR_TURN:
 					controller.myTurn();
 					return;
+				case CLUSTERBOMB:
 				case ENEMY_SHIP_HIT:
 					matcher = hitMessagePattern.matcher(message);
 					if(matcher.matches()){
