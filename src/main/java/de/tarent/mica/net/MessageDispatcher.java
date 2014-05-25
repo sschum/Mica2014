@@ -16,7 +16,7 @@ import de.tarent.mica.util.Logger;
  * @author rainu
  *
  */
-public class MessageDispatcher {
+class MessageDispatcher {
 	private Pattern messagePattern = Pattern.compile("^([0-9]*):.*$");
 	private Pattern hitMessagePattern = Pattern.compile("^[0-9]*:.*Enemy ship hit at ([A-Za-z]*[0-9]*)\\.$");
 	private Pattern enemyHitMessagePattern = Pattern.compile("^[0-9]*:.*The enemy hits .*at ([A-Za-z]*[0-9]*)\\.$");

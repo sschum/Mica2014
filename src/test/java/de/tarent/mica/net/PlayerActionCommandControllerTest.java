@@ -1,10 +1,15 @@
 package de.tarent.mica.net;
 
-import static org.junit.Assert.*;
-import static org.mockito.Mockito.*;
+import static org.mockito.Matchers.any;
+import static org.mockito.Matchers.anyString;
+import static org.mockito.Matchers.eq;
+import static org.mockito.Mockito.doNothing;
+import static org.mockito.Mockito.doReturn;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 
 import java.awt.Dimension;
-import java.lang.reflect.Field;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
@@ -12,7 +17,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
-import sun.nio.cs.HistoricallyNamedCharset;
 import de.tarent.mica.Action;
 import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.Action.Type;
@@ -25,17 +29,14 @@ import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.Submarine;
 import de.tarent.mica.model.element.AbstractShip.Orientation;
 
-public class WebSocketControllerTest {
-	WebSocketController toTest;
-	WebSocketController toTestSpy;
+public class PlayerActionCommandControllerTest {
+	PlayerActionCommandController toTest;
+	PlayerActionCommandController toTestSpy;
 	GameActionHandler gameHandler;
 	
 	@Before
 	public void setup() throws Exception{
 		toTest = new WebSocketController("localhost", 1312);
-		toTestSpy = Mockito.spy(toTest);
-		doNothing().when(toTestSpy).send(anyString());
-		doReturn(true).when(toTestSpy).connectBlocking();
 		
 		Fleet fleet = new Fleet();
 		
@@ -50,70 +51,17 @@ public class WebSocketControllerTest {
 		
 		gameHandler = Mockito.mock(GameActionHandler.class);
 		doReturn(fleet).when(gameHandler).getFleet();
-		toTestSpy.play("Rainu", gameHandler);
-	}		
-	
-	private Object getPrivate(String fieldName, Object object) throws Exception{
-		Field field = object.getClass().getDeclaredField(fieldName);
-		field.setAccessible(true);
-		try{
-			return field.get(object);
-		}finally{
-			field.setAccessible(false);
-		}
-	}
-	
-	private void setPrivate(String fieldName, Object object, Object toSet) throws Exception{
-		Field field = object.getClass().getDeclaredField(fieldName);
-		field.setAccessible(true);
-		try{
-			field.set(object, toSet);
-		}finally{
-			field.setAccessible(false);
-		}
-	}
-	
-	@Test
-	public void play(){
-		toTestSpy.play();
-		verify(toTestSpy).send(eq("play"));
-	}
-	
-	@Test
-	public void started() throws Exception{
-		assertNull(getPrivate("world", toTest));
-		toTest.started();
 		
-		World world = (World)getPrivate("world", toTest);
-		assertNotNull(world);
-		assertEquals(new Dimension(10, 10), world.getWorldDimension());
-	}
-	
-	@Test
-	public void rename(){
-		toTestSpy.rename();
-		verify(toTestSpy).send(eq("rename Rainu"));
-	}
-	
-	@Test
-	public void placeShips() throws Exception{
-		toTestSpy.started();
-		toTestSpy.placeShips();
+		toTest.actionHistory = new ArrayList<Action>();
+		toTest.actionHandler = gameHandler;
 		
-	    verify(toTestSpy).send(eq("A1,A2,A3,A4,A5"));
-	    verify(toTestSpy).send(eq("G1,G2,G3,G4,G5"));
-	    verify(toTestSpy).send(eq("C1,C2,C3,C4"));
-	    verify(toTestSpy).send(eq("C6,C7,C8,C9"));
-	    verify(toTestSpy).send(eq("I1,I2,I3"));
-	    verify(toTestSpy).send(eq("E1,E2,E3"));
-	    verify(toTestSpy).send(eq("F7,F8"));
-	    verify(toTestSpy).send(eq("I8,I9"));
+		toTestSpy = Mockito.spy(toTest);
+		doNothing().when(toTestSpy).send(anyString());
+		doReturn(true).when(toTestSpy).connectBlocking();
 	}
 	
 	@Test
 	public void myTurn(){
-		toTestSpy.started();
-		
 		doReturn(new Action(Type.ATTACK, new Coord("A1"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();
 		verify(toTestSpy).send(eq("A1"));
@@ -151,8 +99,8 @@ public class WebSocketControllerTest {
 	public void hit_attack() throws Exception{
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.ATTACK, new Coord(0, 0)));
-		setPrivate("world", toTest, world);
-		setPrivate("actionHistory", toTest, actionHistory);
+		toTest.world = world;
+		toTest.actionHistory = actionHistory;
 		
 		toTest.hit(null);
 		
@@ -163,8 +111,8 @@ public class WebSocketControllerTest {
 	public void hit_torpedoNord() throws Exception{
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_NORD, new Coord(0, 10)));
-		setPrivate("world", toTest, world);
-		setPrivate("actionHistory", toTest, actionHistory);
+		toTest.world = world;
+		toTest.actionHistory = actionHistory;
 		
 		toTest.hit(new Coord(0, 0));
 		
@@ -178,8 +126,8 @@ public class WebSocketControllerTest {
 	public void hit_torpedoSued() throws Exception{
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_SUED, new Coord(0, 0)));
-		setPrivate("world", toTest, world);
-		setPrivate("actionHistory", toTest, actionHistory);
+		toTest.world = world;
+		toTest.actionHistory = actionHistory;
 		
 		toTest.hit(new Coord(0, 10));
 		
@@ -193,8 +141,8 @@ public class WebSocketControllerTest {
 	public void hit_torpedoWest() throws Exception{
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_WEST, new Coord(10, 0)));
-		setPrivate("world", toTest, world);
-		setPrivate("actionHistory", toTest, actionHistory);
+		toTest.world = world;
+		toTest.actionHistory = actionHistory;
 		
 		toTest.hit(new Coord(0, 0));
 		
@@ -208,8 +156,8 @@ public class WebSocketControllerTest {
 	public void hit_torpedoOst() throws Exception{
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_OST, new Coord(0, 0)));
-		setPrivate("world", toTest, world);
-		setPrivate("actionHistory", toTest, actionHistory);
+		toTest.world = world;
+		toTest.actionHistory = actionHistory;
 		
 		toTest.hit(new Coord(10, 0));
 		
@@ -223,8 +171,8 @@ public class WebSocketControllerTest {
 	public void missed_attack() throws Exception{
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.ATTACK, new Coord(0, 0)));
-		setPrivate("world", toTest, world);
-		setPrivate("actionHistory", toTest, actionHistory);
+		toTest.world = world;
+		toTest.actionHistory = actionHistory;
 		
 		toTest.missed();
 		
@@ -236,8 +184,8 @@ public class WebSocketControllerTest {
 		World world = mock(World.class);
 		doReturn(new Dimension(10, 10)).when(world).getWorldDimension();
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_NORD, new Coord(0, 10)));
-		setPrivate("world", toTest, world);
-		setPrivate("actionHistory", toTest, actionHistory);
+		toTest.world = world;
+		toTest.actionHistory = actionHistory;
 		
 		toTest.missed();
 		
@@ -251,8 +199,8 @@ public class WebSocketControllerTest {
 		World world = mock(World.class);
 		doReturn(new Dimension(10, 10)).when(world).getWorldDimension();
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_SUED, new Coord(0, 0)));
-		setPrivate("world", toTest, world);
-		setPrivate("actionHistory", toTest, actionHistory);
+		toTest.world = world;
+		toTest.actionHistory = actionHistory;
 		
 		toTest.missed();
 		
@@ -266,8 +214,8 @@ public class WebSocketControllerTest {
 		World world = mock(World.class);
 		doReturn(new Dimension(10, 10)).when(world).getWorldDimension();
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_WEST, new Coord(10, 0)));
-		setPrivate("world", toTest, world);
-		setPrivate("actionHistory", toTest, actionHistory);
+		toTest.world = world;
+		toTest.actionHistory = actionHistory;
 		
 		toTest.missed();
 		
@@ -281,8 +229,8 @@ public class WebSocketControllerTest {
 		World world = mock(World.class);
 		doReturn(new Dimension(10, 10)).when(world).getWorldDimension();
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_OST, new Coord(0, 0)));
-		setPrivate("world", toTest, world);
-		setPrivate("actionHistory", toTest, actionHistory);
+		toTest.world = world;
+		toTest.actionHistory = actionHistory;
 		
 		toTest.missed();
 		

@@ -2,10 +2,7 @@ package de.tarent.mica.net;
 
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.ArrayList;
-import java.util.List;
 
-import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft_17;
 import org.java_websocket.handshake.ServerHandshake;
 
@@ -13,16 +10,13 @@ import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
 import de.tarent.mica.Controller;
 import de.tarent.mica.GameActionHandler;
-import de.tarent.mica.GameActionHandler.Fleet;
 import de.tarent.mica.model.Coord;
-import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.World;
+import de.tarent.mica.model.element.AbstractShip.Orientation;
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
-import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.Submarine;
-import de.tarent.mica.model.element.AbstractShip.Orientation;
 import de.tarent.mica.util.Logger;
 
 /**
@@ -31,13 +25,8 @@ import de.tarent.mica.util.Logger;
  * @author rainu
  *
  */
-public class WebSocketController extends WebSocketClient implements Controller {
+public class WebSocketController extends EnemyActionCommandController implements Controller {
 	private final MessageDispatcher dispatcher = new MessageDispatcher(this);
-	
-	private String name;
-	private GameActionHandler actionHandler;
-	private World world;
-	private List<Action> actionHistory;
 	
 	public WebSocketController(String host, int port) throws URISyntaxException {
 		super(new URI("ws://" + host + ":" + port + "/battle"), new Draft_17());
@@ -85,293 +74,6 @@ public class WebSocketController extends WebSocketClient implements Controller {
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	/* ************
-	 * Command-Methoden
-	 * ************
-	 */
-	
-	void play(){
-		send("play");
-	}
-	
-	void started() {
-		//spiel wurde gestartet...
-		//welt kann initialisiert werden
-		world = new World(10, 10);
-		actionHistory = new ArrayList<Action>();
-	}
-	
-	void rename() {
-		send("rename " + name);
-	}
-	
-	void placeShips() {
-		Fleet fleet = actionHandler.getFleet();
-		sendFleetToServer(fleet);
-		setFleetIntoModel(fleet);
-		
-		Logger.info("Player fleet configuration:\n" + world.getOwnField());
-	}
-
-	private void sendFleetToServer(Fleet fleet) {
-		send(fleet.carrier1.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.carrier2.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.cruiser1.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.cruiser2.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.destroyer1.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.destroyer2.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.submarine1.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.submarine2.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-	}
-
-	private void setFleetIntoModel(Fleet fleet) {
-		world.placeOwnShip(fleet.carrier1);
-		world.placeOwnShip(fleet.carrier2);
-		world.placeOwnShip(fleet.cruiser1);
-		world.placeOwnShip(fleet.cruiser2);
-		world.placeOwnShip(fleet.destroyer1);
-		world.placeOwnShip(fleet.destroyer2);
-		world.placeOwnShip(fleet.submarine1);
-		world.placeOwnShip(fleet.submarine2);
-	}
-	
-	void myTurn(){
-		Action action = actionHandler.getNextAction(world);
-		switch(action.getType()){
-		case ATTACK:
-			attack(action.getCoord()); break;
-		case CLUSTERBOMB:
-			clusterbomb(action.getCoord()); break;
-		case SPY_DRONE:
-			spyDrone(action.getCoord()); break;
-		case WILDFIRE:
-			wildfire(action.getCoord()); break;
-		case TORPEDO_NORD:
-		case TORPEDO_OST:
-		case TORPEDO_SUED:
-		case TORPEDO_WEST:
-			torpedo(action.getType(), action.getCoord()); break;
-		}
-		
-		actionHistory.add(action);
-	}
-	
-	private void torpedo(Type type, Coord coord) {
-		switch(type){
-		case TORPEDO_NORD:
-			send("N" + coord); return;
-		case TORPEDO_OST:
-			send("O" + coord); return;
-		case TORPEDO_SUED:
-			send("S" + coord); return;
-		case TORPEDO_WEST:
-			send("W" + coord); return;
-		default:
-			throw new IllegalStateException("This code schould be never reached!");	
-		}
-	}
-
-	private void wildfire(Coord coord) {
-		send("*" + coord);
-	}
-
-	private void spyDrone(Coord coord) {
-		send("#" + coord);
-	}
-
-	private void clusterbomb(Coord coord) {
-		send("+" + coord);
-	}
-
-	private void attack(Coord coord) {
-		send(coord.toString());
-	}
-	
-	/**
-	 * Der Spieler hat getroffen...
-	 * @param coord Wo hab ich getroffen (optional)
-	 */
-	void hit(Coord coord) {
-		Action lastAction = actionHistory.get(actionHistory.size() - 1);
-		
-		switch(lastAction.getType()){
-		case ATTACK:
-			world.registerHit(lastAction.getCoord()); break;
-			
-		/*
-		 * Eine Clusterbomb fügt ein "Kreuzschaden" hinzu.
-		 * 
-		 *   0 1 2
-		 * A   +
-		 * B + c +
-		 * C   +
-		 */
-		case CLUSTERBOMB:
-			//Da man sich nicht darauf verlassen sollte, in welcher reihenfolge die Nachrichten eintreffen
-			//werde ich das Kreuz als Fehlschlag eintragen, sofern kein Treffer verzeichnet ist
-			Coord lastCoord = lastAction.getCoord();
-			
-			//mittelpunkt
-			if(!Element.TREFFER.equals(world.getEnemyField().get(lastCoord))){
-				world.registerMiss(lastCoord);
-			}
-			//nord
-			Coord nord = new Coord(lastCoord.getX(), lastCoord.getY() - 1);
-			try{
-				if(!Element.TREFFER.equals(world.getEnemyField().get(nord))){
-					world.registerMiss(nord);
-				}
-			}catch(IllegalArgumentException e){}
-			//ost
-			Coord ost = new Coord(lastCoord.getX() + 1, lastCoord.getY());
-			try{
-				if(!Element.TREFFER.equals(world.getEnemyField().get(ost))){
-					world.registerMiss(ost);
-				}
-			}catch(IllegalArgumentException e){}
-			//sued
-			Coord sued = new Coord(lastCoord.getX(), lastCoord.getY() + 1);
-			try{
-				if(!Element.TREFFER.equals(world.getEnemyField().get(sued))){
-					world.registerMiss(sued);
-				}
-			}catch(IllegalArgumentException e){}
-			//west
-			Coord west = new Coord(lastCoord.getX() - 1, lastCoord.getY());
-			try{
-				if(!Element.TREFFER.equals(world.getEnemyField().get(west))){
-					world.registerMiss(west);
-				}
-			}catch(IllegalArgumentException e){}
-			
-			if(coord != null){
-				world.registerHit(coord);
-			}
-			
-			break;
-		/*
-		 * Bei den Torpedos weis ich, dass diese so weit laufen, bis sie auf
-		 * ein Schiff stoßen oder ins leere lief. 
-		 */
-		case TORPEDO_NORD:
-			for(int y=lastAction.getCoord().getY() - 1; y > coord.getY(); y--){
-				world.registerMiss(new Coord(coord.getX(), y));
-			}
-			world.registerHit(coord);
-			break;
-		case TORPEDO_OST:
-			for(int x=lastAction.getCoord().getX() + 1; x < coord.getX(); x++){
-				world.registerMiss(new Coord(x, coord.getY()));
-			}
-			world.registerHit(coord);
-			break;
-		case TORPEDO_SUED:
-			for(int y=lastAction.getCoord().getY() + 1; y < coord.getY(); y++){
-				world.registerMiss(new Coord(coord.getX(), y));
-			}
-			world.registerHit(coord);
-			break;
-		case TORPEDO_WEST:
-			for(int x=lastAction.getCoord().getX() - 1; x > coord.getX(); x--){
-				world.registerMiss(new Coord(x, coord.getY()));
-			}
-			world.registerHit(coord);
-			break;
-		}
-		
-		System.out.println(world.getEnemyField());
-	}
-
-	/**
-	 * Der Spieler hat verfehlt...
-	 */
-	void missed() {
-		Action lastAction = actionHistory.get(actionHistory.size() - 1);
-		
-		switch(lastAction.getType()){
-		case ATTACK:
-			world.registerMiss(lastAction.getCoord()); break;
-		/*
-		 * Bei den Torpedos weis ich, dass diese so weit laufen, bis sie auf
-		 * ein Schiff stoßen oder ins leere lief. 
-		 */
-		case TORPEDO_NORD:
-			for(int y=lastAction.getCoord().getY() - 1; y >= 0; y--){
-				world.registerMiss(new Coord(lastAction.getCoord().getX(), y));
-			}
-			break;
-		case TORPEDO_OST:
-			for(int x=lastAction.getCoord().getX() + 1; x < world.getWorldDimension().width; x++){
-				world.registerMiss(new Coord(x, lastAction.getCoord().getY()));
-			}
-			break;
-		case TORPEDO_SUED:
-			for(int y=lastAction.getCoord().getY() + 1; y < world.getWorldDimension().height; y++){
-				world.registerMiss(new Coord(lastAction.getCoord().getX(), y));
-			}
-			break;
-		case TORPEDO_WEST:
-			for(int x=lastAction.getCoord().getX() - 1; x >= 0; x--){
-				world.registerMiss(new Coord(x, lastAction.getCoord().getY()));
-			}
-			break;
-		}
-	}
-	
-	/**
-	 * Der Spieler hat den Gegner spioniert...
-	 * 
-	 * @param spyArea
-	 */
-	void spy(SpyArea spyArea) {
-		world.registerSpy(spyArea);
-	}
-	
-	/**
-	 * Der Gegner hat getroffen...
-	 * 
-	 * @param coord Wo?
-	 */
-	void enemyHit(Coord coord) {
-		world.registerEnemyHit(coord);
-	}
-	
-	/**
-	 * Der Gegner hat getroffen... Das Schiff brennt...
-	 * 
-	 * @param coord Wo?
-	 */
-	void enemyBurnHit(Coord coord) {
-		world.registerEnemyBurn(coord);
-	}
-
-	/**
-	 * Der Gegner hat verfehlt...
-	 * 
-	 * @param coord Wo?
-	 */
-	void enemyMissed(Coord coord) {
-		world.registerEnemyMiss(coord);
-	}
-	
-	/**
-	 * Ein Schiff des Spielers wurde versenkt...
-	 * 
-	 * @param coord Welches?
-	 */
-	void enemySunk(Coord coord) {
-		world.registerEnemySunk(coord);
-	}
-	
-	/**
-	 * Der Spieler wurde von dem Gegner ausspioniert...
-	 * 
-	 * @param spyArea
-	 */
-	void enemySpy(SpyArea spyArea) {
-		world.registerEnemySpy(spyArea);
 	}
 
 	public static void main(String[] args) throws URISyntaxException {
