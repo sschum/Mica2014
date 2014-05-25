@@ -88,7 +88,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 			break;
 			
 		/*
-		 * Eine Clusterbomb fügt ein "Kreuzschaden" hinzu.
+		 * Eine Clusterbomb fügt ein "Kreuzschaden" zu.
 		 * 
 		 *   0 1 2
 		 * A   +
