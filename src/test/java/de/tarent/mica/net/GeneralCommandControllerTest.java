@@ -64,7 +64,7 @@ public class GeneralCommandControllerTest {
 	@Test
 	public void started() throws Exception{
 		assertNull(toTest.world);
-		toTest.started();
+		toTest.started(1);
 		
 		World world = toTest.world;
 		assertNotNull(world);
@@ -79,7 +79,7 @@ public class GeneralCommandControllerTest {
 	
 	@Test
 	public void placeShips() throws Exception{
-		toTestSpy.started();
+		toTestSpy.started(1);
 		toTestSpy.placeShips();
 		
 	    verify(toTestSpy).send(eq("A1,A2,A3,A4,A5"));

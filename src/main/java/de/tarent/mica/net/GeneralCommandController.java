@@ -21,6 +21,7 @@ import de.tarent.mica.util.Logger;
  *
  */
 abstract class GeneralCommandController extends WebSocketClient {
+	protected int ownNumber;
 	protected String ownName;
 	protected String enemyName;
 	protected GameActionHandler actionHandler;
@@ -35,19 +36,20 @@ abstract class GeneralCommandController extends WebSocketClient {
 		send("play");
 	}
 	
-	void started() {
+	void started(int playerNumber) {
 		//spiel wurde gestartet...
 		//welt kann initialisiert werden
 		world = new World(10, 10);
 		actionHistory = new ArrayList<Action>();
+		ownNumber = playerNumber;
 	}
 	
-	void renamed(String playerName) {
-		this.ownName = playerName;
-	}
-	
-	void enemyRenamed(String enemyName){
-		this.enemyName = enemyName;
+	void renamed(int playerNumber, String playerName) {
+		if(playerNumber == ownNumber){
+			this.ownName = playerName;
+		}else{
+			this.enemyName = playerName;
+		}
 	}
 	
 	void rename() {

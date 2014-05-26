@@ -31,7 +31,8 @@ public class MessageDispatcherTest {
 	
 	@Test
 	public void onMessage(){
-		toTest.onMessage(msg(HELLO));
+		toTest.onMessage(msg(HELLO, "Hello, player #1."));
+		verify(controller).started(1);
 		verify(controller).rename();
 		
 		toTest.onMessage(msg(PLACE_SHIPS));

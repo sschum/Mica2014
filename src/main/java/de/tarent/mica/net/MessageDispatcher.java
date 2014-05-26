@@ -18,6 +18,7 @@ import de.tarent.mica.util.Logger;
  */
 class MessageDispatcher {
 	private Pattern messagePattern = Pattern.compile("^([0-9]*):.*$");
+	private Pattern helloMessagePattern = Pattern.compile("^[0-9]*:.*Hello, player #([0-9]*).$");
 	private Pattern renameMessagePattern = Pattern.compile("^[0-9]*:.*Player '#([0-9]*)' is now known as '(.*)'.$");
 	private Pattern hitMessagePattern = Pattern.compile("^[0-9]*:.*Enemy ship hit at ([A-Za-z]*[0-9]*)\\.$");
 	private Pattern enemyHitMessagePattern = Pattern.compile("^[0-9]*:.*The enemy hits .*at ([A-Za-z]*[0-9]*)\\.$");
@@ -54,15 +55,14 @@ class MessageDispatcher {
 				case NEW_NAME:
 					matcher = renameMessagePattern.matcher(message);
 					matcher.matches();
-					if(Integer.parseInt(matcher.group(1)) == 1){
-						controller.renamed(matcher.group(2));	//TODO:es ist nicht gesagt, dass der Spieler immer Nr1 ist!
-					}else{
-						controller.enemyRenamed(matcher.group(2));
-					}
 					
+					controller.renamed(Integer.parseInt(matcher.group(1)), matcher.group(2));
 					return;
 				case HELLO:
-					controller.started();
+					matcher = helloMessagePattern.matcher(message);
+					matcher.matches();
+					
+					controller.started(Integer.parseInt(matcher.group(1)));
 					controller.rename();
 					return;
 				case PLACE_SHIPS:
