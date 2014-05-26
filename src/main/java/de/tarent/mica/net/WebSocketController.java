@@ -127,10 +127,10 @@ public class WebSocketController extends EnemyActionCommandController implements
 	void gameOver(boolean won) {
 		close();
 		GameStats stats = new GameStats();
-		stats.world = world;
-		stats.playerName = ownName;
-		stats.enemyName = enemyName;
-		stats.won = won;
+		stats.setWorld(world);
+		stats.setPlayerName(ownName);
+		stats.setEnemyName(enemyName);
+		stats.setWon(won);
 		
 		actionHandler.handleGameOver(stats);
 	}
@@ -142,7 +142,7 @@ public class WebSocketController extends EnemyActionCommandController implements
 			@Override
 			public void handleGameOver(GameStats stats) {
 				try {
-					controller.writeMessageLog(new File("/tmp/RayShip_" + stats.playerName + "_vs_" + stats.enemyName + ".log"));
+					controller.writeMessageLog(new File("/tmp/RayShip_" + stats.getPlayerName() + "_vs_" + stats.getEnemyName() + ".log"));
 				} catch (IOException e) {
 					// TODO Auto-generated catch block
 					e.printStackTrace();

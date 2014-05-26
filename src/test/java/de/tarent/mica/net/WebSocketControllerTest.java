@@ -72,6 +72,6 @@ public class WebSocketControllerTest {
 		
 		ArgumentCaptor<GameStats> cap = ArgumentCaptor.forClass(GameStats.class);
 		verify(toTestSpy.actionHandler).handleGameOver(cap.capture());
-		assertFalse(cap.getValue().won);
+		assertFalse(cap.getValue().isWon());
 	}
 }
