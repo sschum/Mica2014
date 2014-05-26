@@ -1,6 +1,5 @@
-package de.tarent.mica;
+package de.tarent.mica.model;
 
-import de.tarent.mica.model.World;
 
 public class GameStats {
 	public World world;

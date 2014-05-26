@@ -1,5 +1,7 @@
 package de.tarent.mica;
 
+import de.tarent.mica.model.Fleet;
+import de.tarent.mica.model.GameStats;
 import de.tarent.mica.model.World;
 
 

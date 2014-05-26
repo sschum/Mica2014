@@ -1,4 +1,4 @@
-package de.tarent.mica;
+package de.tarent.mica.model;
 
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;

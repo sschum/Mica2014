@@ -8,8 +8,8 @@ import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 
 import de.tarent.mica.Action;
-import de.tarent.mica.Fleet;
 import de.tarent.mica.GameActionHandler;
+import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.World;
 import de.tarent.mica.util.Logger;
 

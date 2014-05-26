@@ -11,7 +11,7 @@ import org.junit.Test;
 import org.mockito.ArgumentCaptor;
 
 import de.tarent.mica.GameActionHandler;
-import de.tarent.mica.GameStats;
+import de.tarent.mica.model.GameStats;
 
 public class WebSocketControllerTest {
 
