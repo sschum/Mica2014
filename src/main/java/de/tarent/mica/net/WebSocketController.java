@@ -164,14 +164,14 @@ public class WebSocketController extends EnemyActionCommandController implements
 			public Fleet getFleet() {
 				Fleet fleet = new Fleet();
 				
-				fleet.carrier1 = new Carrier(Orientation.OST, new Coord("A1"));
-				fleet.carrier2 = new Carrier(Orientation.OST, new Coord("G1"));
-				fleet.cruiser1 = new Cruiser(Orientation.OST, new Coord("C1"));
-				fleet.cruiser2 = new Cruiser(Orientation.OST, new Coord("C6"));
-				fleet.destroyer1 = new Destroyer(Orientation.OST, new Coord("I1"));
-				fleet.destroyer2 = new Destroyer(Orientation.OST, new Coord("E1"));
-				fleet.submarine1 = new Submarine(Orientation.OST, new Coord("F7"));
-				fleet.submarine2 = new Submarine(Orientation.OST, new Coord("I8"));
+				fleet.setCarrier1(new Carrier(Orientation.OST, new Coord("A1")));
+				fleet.setCarrier2(new Carrier(Orientation.OST, new Coord("G1")));
+				fleet.setCruiser1(new Cruiser(Orientation.OST, new Coord("C1")));
+				fleet.setCruiser2(new Cruiser(Orientation.OST, new Coord("C6")));
+				fleet.setDestroyer1(new Destroyer(Orientation.OST, new Coord("I1")));
+				fleet.setDestroyer2(new Destroyer(Orientation.OST, new Coord("E1")));
+				fleet.setSubmarine1(new Submarine(Orientation.OST, new Coord("F7")));
+				fleet.setSubmarine2(new Submarine(Orientation.OST, new Coord("I8")));
 				
 				return fleet;
 			}

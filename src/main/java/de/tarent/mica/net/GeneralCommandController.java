@@ -67,24 +67,24 @@ abstract class GeneralCommandController extends WebSocketClient {
 	}
 
 	private void sendFleetToServer(Fleet fleet) {
-		send(fleet.carrier1.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.carrier2.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.cruiser1.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.cruiser2.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.destroyer1.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.destroyer2.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.submarine1.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.submarine2.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
+		send(fleet.getCarrier1().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
+		send(fleet.getCarrier2().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
+		send(fleet.getCruiser1().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
+		send(fleet.getCruiser2().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
+		send(fleet.getDestroyer1().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
+		send(fleet.getDestroyer2().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
+		send(fleet.getSubmarine1().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
+		send(fleet.getSubmarine2().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
 	}
 
 	private void setFleetIntoModel(Fleet fleet) {
-		world.placeOwnShip(fleet.carrier1);
-		world.placeOwnShip(fleet.carrier2);
-		world.placeOwnShip(fleet.cruiser1);
-		world.placeOwnShip(fleet.cruiser2);
-		world.placeOwnShip(fleet.destroyer1);
-		world.placeOwnShip(fleet.destroyer2);
-		world.placeOwnShip(fleet.submarine1);
-		world.placeOwnShip(fleet.submarine2);
+		world.placeOwnShip(fleet.getCarrier1());
+		world.placeOwnShip(fleet.getCarrier2());
+		world.placeOwnShip(fleet.getCruiser1());
+		world.placeOwnShip(fleet.getCruiser2());
+		world.placeOwnShip(fleet.getDestroyer1());
+		world.placeOwnShip(fleet.getDestroyer2());
+		world.placeOwnShip(fleet.getSubmarine1());
+		world.placeOwnShip(fleet.getSubmarine2());
 	}
 }
