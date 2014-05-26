@@ -15,8 +15,8 @@ import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mockito;
 
+import de.tarent.mica.Fleet;
 import de.tarent.mica.GameActionHandler;
-import de.tarent.mica.GameActionHandler.Fleet;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Carrier;

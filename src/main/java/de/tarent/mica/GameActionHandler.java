@@ -1,10 +1,6 @@
 package de.tarent.mica;
 
 import de.tarent.mica.model.World;
-import de.tarent.mica.model.element.Carrier;
-import de.tarent.mica.model.element.Cruiser;
-import de.tarent.mica.model.element.Destroyer;
-import de.tarent.mica.model.element.Submarine;
 
 
 /**
@@ -14,24 +10,6 @@ import de.tarent.mica.model.element.Submarine;
  *
  */
 public interface GameActionHandler {
-	public static class Fleet {
-		public Carrier carrier1;
-		public Carrier carrier2;
-		public Cruiser cruiser1;
-		public Cruiser cruiser2;
-		public Destroyer destroyer1;
-		public Destroyer destroyer2;
-		public Submarine submarine1;
-		public Submarine submarine2;
-	}
-	
-	public static class GameStats {
-		public World world;
-		public boolean won;
-		public String playerName;
-		public String enemyName;
-	}
-	
 	/**
 	 * Diese Methode wird aufgerufen, wenn die eigene Flotte gesetzt werden soll.
 	 * 
