@@ -82,9 +82,63 @@ public abstract class AbstractShip {
 	public void addAttackCoord(Coord coord) {
 		attackCoords.add(coord);
 	}
+	
+	public Orientation getOrientation() {
+		return orientation;
+	}
+
+	public Coord getPosition() {
+		return position;
+	}
+
+	@Override
+	public int hashCode() {
+		final int prime = 31;
+		int result = 1;
+		result = prime * result
+				+ ((attackCoords == null) ? 0 : attackCoords.hashCode());
+		result = prime * result + (isBurning ? 1231 : 1237);
+		result = prime * result + (isSunken ? 1231 : 1237);
+		result = prime * result
+				+ ((orientation == null) ? 0 : orientation.hashCode());
+		result = prime * result
+				+ ((position == null) ? 0 : position.hashCode());
+		result = prime * result + size;
+		return result;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		AbstractShip other = (AbstractShip) obj;
+		if (attackCoords == null) {
+			if (other.attackCoords != null)
+				return false;
+		} else if (!attackCoords.equals(other.attackCoords))
+			return false;
+		if (isBurning != other.isBurning)
+			return false;
+		if (isSunken != other.isSunken)
+			return false;
+		if (orientation != other.orientation)
+			return false;
+		if (position == null) {
+			if (other.position != null)
+				return false;
+		} else if (!position.equals(other.position))
+			return false;
+		if (size != other.size)
+			return false;
+		return true;
+	}
 
 	@Override
 	public String toString() {
-		return getClass().getName() + " @ " + position + "(" + orientation + ") - [" + getSpace() + "]";
+		return getClass().getSimpleName() + " @ " + position + "(" + orientation + ") - [" + getSpace() + "]";
 	}
 }
