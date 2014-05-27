@@ -1,1 +1,1 @@
-java -jar uber-battleships-server-0.1.jar server config.yaml
+java -jar target/uber-battleships-server-0.2.jar server config.yaml
