@@ -8,7 +8,11 @@ import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
+import de.tarent.mica.model.element.Carrier;
+import de.tarent.mica.model.element.Cruiser;
+import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.SpyArea;
+import de.tarent.mica.model.element.Submarine;
 
 /**
  * Diese ist ein Teil des {@link WebSocketController}s. Diese Klasse beinhaltet
@@ -246,6 +250,15 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		for(int x=lastAction.getCoord().getX() - 1; x >= 0; x--){
 			world.registerMiss(new Coord(x, lastAction.getCoord().getY()));
 		}
+	}
+	
+	/**
+	 * Der Spieler hat ein Schiff versenkt.
+	 * 
+	 * @param shipType Welches Schiff wurde versenkt?
+	 */
+	void sunk(String shipType) {
+		//TODO:implements me!
 	}
 	
 	/**

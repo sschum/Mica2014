@@ -289,4 +289,21 @@ public class WorldTest {
 		assertEquals(1, result.size());
 		assertTrue(result.contains(new SpyArea(new Coord(0,0))));
 	}
+	
+	@Test
+	public void getPotentialShips(){
+		World world = new World(10, 10);
+		world.registerHit(new Coord("A1")); world.registerHit(new Coord("A2")); world.registerHit(new Coord("A3")); world.registerHit(new Coord("A4")); world.registerHit(new Coord("A5"));
+		world.registerHit(new Coord("G1")); world.registerHit(new Coord("G2")); world.registerHit(new Coord("G3")); world.registerHit(new Coord("G4")); world.registerHit(new Coord("G5"));
+		world.registerHit(new Coord("C1")); world.registerHit(new Coord("C2")); world.registerHit(new Coord("C3")); world.registerHit(new Coord("C4")); 
+		world.registerHit(new Coord("C6")); world.registerHit(new Coord("C7")); world.registerHit(new Coord("C8")); world.registerHit(new Coord("C9")); 
+		world.registerHit(new Coord("I1")); world.registerHit(new Coord("I2")); world.registerHit(new Coord("I3")); 
+		world.registerHit(new Coord("E1")); world.registerHit(new Coord("E2")); world.registerHit(new Coord("E3")); 
+		world.registerHit(new Coord("F7")); world.registerHit(new Coord("F8"));
+		world.registerHit(new Coord("I8")); world.registerHit(new Coord("I9"));
+		
+		Set<Set<Coord>> result = world.getPotentialShips();
+		
+		assertEquals(8, result.size());
+	}
 }

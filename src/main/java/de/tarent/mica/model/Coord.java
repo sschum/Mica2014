@@ -1,5 +1,7 @@
 package de.tarent.mica.model;
 
+import java.util.Comparator;
+
 /**
  * Diese Klasse representiert eine Coordinate eines Spielfeldes.
  * 
@@ -8,6 +10,16 @@ package de.tarent.mica.model;
  *
  */
 public class Coord{
+	public static Comparator<Coord> COMPARATOR = new Comparator<Coord>() {
+		@Override
+		public int compare(Coord o1, Coord o2) {
+			int compareOfLetter = Character.compare(o1.getYChar(), o2.getYChar());
+			if(compareOfLetter != 0) return compareOfLetter;
+			
+			return Integer.compare(o1.getX(), o2.getX());
+		}
+	};
+	
 	private final int x;
 	private final int y;
 	

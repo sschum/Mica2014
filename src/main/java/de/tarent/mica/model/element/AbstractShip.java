@@ -1,6 +1,7 @@
 package de.tarent.mica.model.element;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -18,6 +19,28 @@ public abstract class AbstractShip {
 		NORD, OST, SUED, WEST, UNBEKANNT
 	}
 	
+	private static Set<Class<? extends AbstractShip>> knownShips = new HashSet<Class<? extends AbstractShip>>();
+	
+	public static Set<Class<? extends AbstractShip>> getKnownShipTypes(){
+		return Collections.unmodifiableSet(knownShips);
+	}
+	
+	public static void registerShipClass(Class<? extends AbstractShip> clazz){
+		knownShips.add(clazz);
+	}
+	
+	//registriere bekannte Unterklassen...
+	static {
+		registerShipClass(Carrier.class);
+		registerShipClass(Cruiser.class);
+		registerShipClass(Destroyer.class);
+		registerShipClass(Submarine.class);
+	}
+	
+	public static int getSizeOf(Class<? extends AbstractShip> shipType){
+		return shipType.getAnnotation(ShipStats.class).size();
+	}
+	
 	protected final int size;
 	protected Orientation orientation;
 	protected Coord position;
@@ -29,6 +52,14 @@ public abstract class AbstractShip {
 		this.size = size;
 		this.orientation = orientation;
 		this.position = position;
+		
+		if(!getClass().isAnnotationPresent(ShipStats.class)){
+			throw new IllegalStateException("The class " + getClass().getName() + " has no " + ShipStats.class + " annotation!");
+		}
+		
+		if(!knownShips.contains(getClass())){
+			registerShipClass(getClass());
+		}
 	}
 	
 	public List<Coord> getSpace(){

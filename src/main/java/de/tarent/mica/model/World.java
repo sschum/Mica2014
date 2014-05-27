@@ -1,13 +1,20 @@
 package de.tarent.mica.model;
 
 import java.awt.Dimension;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.List;
 import java.util.Set;
 
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.element.AbstractShip;
+import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.ShipFactory;
 import de.tarent.mica.model.element.SpyArea;
+import de.tarent.mica.model.element.UnknownShip;
 
 /**
  * Diese Klasse representiert die Spielwelt.
@@ -23,6 +30,8 @@ public class World {
 	
 	private Set<AbstractShip> ownShips = new HashSet<AbstractShip>();
 	private Set<SpyArea> ownSpies = new HashSet<SpyArea>();
+	
+	private Set<AbstractShip> enemyShips = new HashSet<AbstractShip>();
 	
 	public World(int height, int width) {
 		ownField = new Field(height, width, Element.WASSER);
@@ -90,6 +99,16 @@ public class World {
 		checkOutOfBounce(enemyField, c);
 		enemyField.set(c, Element.TREFFER);
 		
+		for(AbstractShip ship : enemyShips){
+			if(isNeighbor(c, ship.getSpace())){
+				ship.addAttackCoord(c);
+				return this;
+			}
+		}
+		
+		//kein schiff gefunden... neues anlegen
+		enemyShips.add(new UnknownShip(c));
+				
 		return this;
 	}
 	
@@ -119,6 +138,114 @@ public class World {
 		return this;
 	}
 	
+	/**
+	 * Liefert alle bisherigen Treffer als Cluster zurück.
+	 * Diese Cluster sind Schiffe, die noch nicht(!) gesunken
+	 * sind!
+	 * 
+	 * @return
+	 */
+	public Set<Set<Coord>> getPotentialShips(){
+		List<Coord> allCoords = new ArrayList<Coord>(enemyField.getCoordinatesFor(Element.TREFFER));
+		Collections.sort(allCoords, Coord.COMPARATOR);
+		
+		Iterator<Coord> iter = allCoords.iterator();
+		Set<Set<Coord>> result = new HashSet<Set<Coord>>();
+
+		for(;iter.hasNext(); iter.remove()){
+			Coord next = iter.next();
+			
+			boolean added = false;
+			for(Set<Coord> curCluster : result){
+				if(isNeighbor(next, curCluster)){
+					curCluster.add(next);
+					added = true;
+					break;
+				}
+			}
+			if(added) continue;
+			
+			Set<Coord> newCluser = new HashSet<Coord>();
+			result.add(newCluser);
+			
+			newCluser.add(next);
+		}
+		
+		return result;
+	}
+	
+	private boolean isNeighbor(Coord toTest, Collection<Coord> cluster) {
+		for(Coord coord : cluster){
+			/*
+			 *   0 1 2
+			 * A   +
+			 * B + c +
+			 * C   +
+			 */
+			
+			if(	new Coord(coord.getX() + 1, coord.getY()).equals(toTest) ||
+				new Coord(coord.getX(), coord.getY() + 1).equals(toTest) ||
+				new Coord(coord.getX() - 1, coord.getY()).equals(toTest) ||
+				new Coord(coord.getX(), coord.getY() - 1).equals(toTest) ){
+
+				return true;
+			}
+		}
+		return false;
+	}
+	
+	/**
+	 * Registriert ein Schiff als gesunken. Alle Schiffstreffer müssen
+	 * zuvor registriert wurden sein, da sonst von dem falsche Schiffstyp
+	 * ausgegangen wird!
+	 * 
+	 * @param c
+	 */
+	public void registerSunk(Coord c){
+		AbstractShip transformed = null;
+		Iterator<AbstractShip> iter = enemyShips.iterator();
+		while(iter.hasNext()){
+			AbstractShip ship = iter.next();
+			if(ship instanceof UnknownShip){
+				transformed = transformShip((UnknownShip)ship);
+				
+				if(transformed == null){
+					throw new IllegalStateException("This code should be never reached!");
+				}
+				
+				//neues durch altes ersetzen...
+				iter.remove();
+				enemyShips.add(transformed);
+				break;
+			}
+		}
+	}
+
+	AbstractShip transformShip(UnknownShip ship) {
+		Orientation orientation = getOrientation(ship);
+		int finalSize = ship.getSpace().size();
+		
+		return ShipFactory.build(ship.getPosition(), orientation, finalSize);
+	}
+
+	Orientation getOrientation(UnknownShip ship) {
+		List<Coord> coords = ship.getSpace();
+		Coord c1 = coords.get(0);
+		Coord c2 = coords.get(1);
+		
+		if(new Coord(c1.getX() + 1, c1.getY()).equals(c2)){
+			return Orientation.OST;
+		}else if(new Coord(c1.getX(), c1.getY() + 1).equals(c2)){
+			return Orientation.SUED;
+		}else if(new Coord(c1.getX() - 1, c1.getY()).equals(c2)){
+			return Orientation.WEST;
+		}else if(new Coord(c1.getX(), c1.getY() - 1).equals(c2)){
+			return Orientation.NORD;
+		}else {
+			return Orientation.UNBEKANNT;
+		}
+	}
+
 	/**
 	 * Trägt ein Spionagebereich in das Gegnerische Feld ein.
 	 * 
