@@ -14,6 +14,7 @@ import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.Submarine;
 import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.UnknownShip;
 
 public class WorldTest {
 
@@ -305,5 +306,15 @@ public class WorldTest {
 		Set<Set<Coord>> result = world.getPotentialShips();
 		
 		assertEquals(8, result.size());
+	}
+		
+	@Test
+	public void registerSunk(){
+		World world = new World(5, 5);
+		world.registerHit(new Coord("A1")); world.registerHit(new Coord("A2"));
+		world.registerSunk(new Coord("A1"));
+		
+		assertEquals(1, world.getEnemyShips().size());
+		assertTrue(world.getEnemyShips().iterator().next() instanceof Submarine);
 	}
 }

@@ -44,7 +44,6 @@ public abstract class AbstractShip {
 	protected final int size;
 	protected Orientation orientation;
 	protected Coord position;
-	protected boolean isSunken;
 	protected boolean isBurning;
 	protected Set<Coord> attackCoords = new HashSet<Coord>();
 	
@@ -129,7 +128,6 @@ public abstract class AbstractShip {
 		result = prime * result
 				+ ((attackCoords == null) ? 0 : attackCoords.hashCode());
 		result = prime * result + (isBurning ? 1231 : 1237);
-		result = prime * result + (isSunken ? 1231 : 1237);
 		result = prime * result
 				+ ((orientation == null) ? 0 : orientation.hashCode());
 		result = prime * result
@@ -153,8 +151,6 @@ public abstract class AbstractShip {
 		} else if (!attackCoords.equals(other.attackCoords))
 			return false;
 		if (isBurning != other.isBurning)
-			return false;
-		if (isSunken != other.isSunken)
 			return false;
 		if (orientation != other.orientation)
 			return false;

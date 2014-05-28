@@ -202,19 +202,25 @@ public class World {
 	 * @param c
 	 */
 	public void registerSunk(Coord c){
-		AbstractShip transformed = null;
-		Iterator<AbstractShip> iter = enemyShips.iterator();
+		//fragt mich nicht, warum man erst eine kopie machen muss
+		//... der EnemyShips-Iterator löscht den Eintrag nicht O.o
+		List<AbstractShip> copyOfEnemyShips = new ArrayList<AbstractShip>(enemyShips);
+		Iterator<AbstractShip> iter = copyOfEnemyShips.iterator();
 		while(iter.hasNext()){
 			AbstractShip ship = iter.next();
-			if(ship instanceof UnknownShip){
-				transformed = transformShip((UnknownShip)ship);
+			if(ship instanceof UnknownShip && ship.getSpace().contains(c)){
+				AbstractShip transformed = transformShip((UnknownShip)ship);
 				
 				if(transformed == null){
 					throw new IllegalStateException("This code should be never reached!");
 				}
 				
 				//neues durch altes ersetzen...
+				for(Coord shipCoord : ship.getSpace())
+					transformed.addAttackCoord(shipCoord);
+
 				iter.remove();
+				enemyShips = new HashSet<AbstractShip>(copyOfEnemyShips);
 				enemyShips.add(transformed);
 				break;
 			}
@@ -379,9 +385,19 @@ public class World {
 	 * 
 	 * @return
 	 */
-	@SuppressWarnings("unchecked")
 	public Set<AbstractShip> getOwnShips(){
-		return Collections.unmodifiableSet((Set<AbstractShip>) ownField);
+		return Collections.unmodifiableSet(ownShips);
+	}
+
+	/**
+	 * Liefert alle generische Schiffe. Sind diese Schiffe noch nicht
+	 * gesunken, sind es {@link UnknownShip}s. Andernfals die entsprechende
+	 * Kindklasse.
+	 * 
+	 * @return
+	 */
+	public Set<AbstractShip> getEnemyShips(){
+		return Collections.unmodifiableSet(enemyShips);
 	}
 	
 	/**

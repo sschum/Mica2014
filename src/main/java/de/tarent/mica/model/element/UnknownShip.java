@@ -27,7 +27,7 @@ public class UnknownShip extends AbstractShip {
 			addAttackCoord(c);
 		}
 		if(attackCoords.size() > 0){
-			position = attackCoords.iterator().next();
+			position = coords[0];
 		}
 	}
 
@@ -38,4 +38,5 @@ public class UnknownShip extends AbstractShip {
 		
 		return space;
 	}
+	
 }
