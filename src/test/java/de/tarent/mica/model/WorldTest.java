@@ -10,12 +10,12 @@ import javax.lang.model.SourceVersion;
 import org.junit.Test;
 
 import de.tarent.mica.model.Field.Element;
-import de.tarent.mica.model.element.AbstractShip;
+import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.Submarine;
-import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.Ship.Orientation;
 import de.tarent.mica.model.element.UnknownShip;
 
 public class WorldTest {
@@ -47,7 +47,7 @@ public class WorldTest {
 	public void validateShipPosition_outOfBounce(){
 		World world = new World(1, 1);
 		
-		AbstractShip ship = new Carrier(Orientation.NORD, new Coord(0, 0));
+		Ship ship = new Carrier(Orientation.NORD, new Coord(0, 0));
 		try{
 			world.validateShipPosition(ship);
 			fail("It should be thrown an IllegalArgumentException.");
@@ -58,7 +58,7 @@ public class WorldTest {
 	public void validateShipPosition_crossAnotherShip(){
 		World world = new World(5, 5);
 		
-		AbstractShip ship = new Carrier(Orientation.SUED, new Coord(2, 0));
+		Ship ship = new Carrier(Orientation.SUED, new Coord(2, 0));
 		world.placeOwnShip(ship);
 		try{
 			world.validateShipPosition(ship);
@@ -70,7 +70,7 @@ public class WorldTest {
 	public void placeOwnShip(){
 		World world = new World(5, 5);
 		
-		AbstractShip ship = new Carrier(Orientation.SUED, new Coord(2, 0));
+		Ship ship = new Carrier(Orientation.SUED, new Coord(2, 0));
 		world.placeOwnShip(ship);
 		
 		assertEquals(
@@ -268,7 +268,7 @@ public class WorldTest {
 	@Test
 	public void getShip(){
 		World world = new World(5, 5);
-		AbstractShip ship = new Submarine(Orientation.SUED, new Coord("A0"));
+		Ship ship = new Submarine(Orientation.SUED, new Coord("A0"));
 		world.placeOwnShip(ship);
 		
 		assertSame(ship, world.getShip(new Coord("A0")));
@@ -318,7 +318,7 @@ public class WorldTest {
 		
 		assertEquals(1, world.getEnemyShips().size());
 		
-		AbstractShip ship = world.getEnemyShips().iterator().next();
+		Ship ship = world.getEnemyShips().iterator().next();
 		assertTrue(ship instanceof Destroyer);
 		assertEquals(new Coord("A1"), ship.getPosition());
 		assertEquals(Orientation.OST, ship.getOrientation());

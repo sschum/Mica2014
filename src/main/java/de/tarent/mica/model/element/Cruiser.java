@@ -9,9 +9,9 @@ import de.tarent.mica.model.Coord;
  *
  */
 @ShipStats(size = Cruiser.SIZE)
-public class Cruiser extends AbstractShip {
+public class Cruiser extends Ship {
 	static {
-		AbstractShip.registerShipClass(Cruiser.class);
+		Ship.registerShipClass(Cruiser.class);
 	}
 	
 	public static final int SIZE = 4;

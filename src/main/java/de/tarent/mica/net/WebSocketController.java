@@ -22,7 +22,7 @@ import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.GameStats;
 import de.tarent.mica.model.World;
-import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.Ship.Orientation;
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;

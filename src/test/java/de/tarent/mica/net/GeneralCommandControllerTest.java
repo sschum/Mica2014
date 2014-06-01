@@ -23,7 +23,7 @@ import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.Submarine;
-import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.Ship.Orientation;
 
 public class GeneralCommandControllerTest {
 	GeneralCommandController toTest;

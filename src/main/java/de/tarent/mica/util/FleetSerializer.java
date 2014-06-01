@@ -11,8 +11,8 @@ import java.util.regex.Pattern;
 
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Fleet;
-import de.tarent.mica.model.element.AbstractShip;
-import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.Ship;
+import de.tarent.mica.model.element.Ship.Orientation;
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
@@ -54,14 +54,14 @@ public class FleetSerializer {
 		}
 	}
 	
-	private static String toString(AbstractShip ship){
+	private static String toString(Ship ship){
 		if(ship == null) return "#";
 		
 		return ship.getPosition() + "_" + ship.getOrientation() + "_" + ship.getSpace().size();
 	}
 	
 	private static Pattern shipPattern = Pattern.compile("^([A-Za-z]*[0-9]*)_([A-Za-z0-9_]*)_([0-9]*)$");
-	private static AbstractShip fromString(String ship){
+	private static Ship fromString(String ship){
 		Matcher matcher = shipPattern.matcher(ship);
 		if(!matcher.matches()) return null;
 		
@@ -86,7 +86,7 @@ public class FleetSerializer {
 			for(String line = null; (line = br.readLine()) != null;){
 				if(line.startsWith("#")) continue;	//# sind Kommentare!
 				
-				AbstractShip ship = fromString(line);
+				Ship ship = fromString(line);
 				if(ship instanceof Carrier){
 					if(fleet.getCarrier1() == null){
 						fleet.setCarrier1((Carrier)ship);

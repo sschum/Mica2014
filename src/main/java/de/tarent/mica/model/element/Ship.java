@@ -14,18 +14,18 @@ import de.tarent.mica.model.Coord;
  * @author rainu
  *
  */
-public abstract class AbstractShip {
+public abstract class Ship {
 	public static enum Orientation{
 		NORD, OST, SUED, WEST, UNBEKANNT
 	}
 	
-	private static Set<Class<? extends AbstractShip>> knownShips = new HashSet<Class<? extends AbstractShip>>();
+	private static Set<Class<? extends Ship>> knownShips = new HashSet<Class<? extends Ship>>();
 	
-	public static Set<Class<? extends AbstractShip>> getKnownShipTypes(){
+	public static Set<Class<? extends Ship>> getKnownShipTypes(){
 		return Collections.unmodifiableSet(knownShips);
 	}
 	
-	public static void registerShipClass(Class<? extends AbstractShip> clazz){
+	public static void registerShipClass(Class<? extends Ship> clazz){
 		knownShips.add(clazz);
 	}
 	
@@ -37,7 +37,7 @@ public abstract class AbstractShip {
 		registerShipClass(Submarine.class);
 	}
 	
-	public static int getSizeOf(Class<? extends AbstractShip> shipType){
+	public static int getSizeOf(Class<? extends Ship> shipType){
 		return shipType.getAnnotation(ShipStats.class).size();
 	}
 	
@@ -47,7 +47,7 @@ public abstract class AbstractShip {
 	protected boolean isBurning;
 	protected Set<Coord> attackCoords = new HashSet<Coord>();
 	
-	protected AbstractShip(int size, Orientation orientation, Coord position){
+	protected Ship(int size, Orientation orientation, Coord position){
 		this.size = size;
 		this.orientation = orientation;
 		this.position = position;
@@ -144,7 +144,7 @@ public abstract class AbstractShip {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractShip other = (AbstractShip) obj;
+		Ship other = (Ship) obj;
 		if (attackCoords == null) {
 			if (other.attackCoords != null)
 				return false;

@@ -5,7 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.tarent.mica.model.Coord;
-import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.Ship.Orientation;
 
 /**
  * Ein Unkbekanntes Schiff... Seine größe ist unbekannt.
@@ -14,9 +14,9 @@ import de.tarent.mica.model.element.AbstractShip.Orientation;
  *
  */
 @ShipStats(size = UnknownShip.SIZE)
-public class UnknownShip extends AbstractShip {
+public class UnknownShip extends Ship {
 	static {
-		AbstractShip.registerShipClass(UnknownShip.class);
+		Ship.registerShipClass(UnknownShip.class);
 	}
 	
 	public static final int SIZE = -1;

@@ -10,8 +10,8 @@ import java.util.List;
 import java.util.Set;
 
 import de.tarent.mica.model.Field.Element;
-import de.tarent.mica.model.element.AbstractShip;
-import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.Ship;
+import de.tarent.mica.model.element.Ship.Orientation;
 import de.tarent.mica.model.element.ShipFactory;
 import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.UnknownShip;
@@ -28,10 +28,10 @@ public class World {
 	private Field enemyField;
 	private Field enemyView;
 	
-	private Set<AbstractShip> ownShips = new HashSet<AbstractShip>();
+	private Set<Ship> ownShips = new HashSet<Ship>();
 	private Set<SpyArea> ownSpies = new HashSet<SpyArea>();
 	
-	private Set<AbstractShip> enemyShips = new HashSet<AbstractShip>();
+	private Set<Ship> enemyShips = new HashSet<Ship>();
 	
 	public World(int height, int width) {
 		ownField = new Field(height, width, Element.WASSER);
@@ -70,7 +70,7 @@ public class World {
 	 * @param ship
 	 * @return
 	 */
-	public synchronized World placeOwnShip(AbstractShip ship){
+	public synchronized World placeOwnShip(Ship ship){
 		validateShipPosition(ship);
 		
 		for(Coord c : ship.getSpace()) ownField.set(c, Element.SCHIFF);
@@ -80,7 +80,7 @@ public class World {
 		return this;
 	}
 	
-	void validateShipPosition(AbstractShip ship) {
+	void validateShipPosition(Ship ship) {
 		for(Coord c : ship.getSpace()){
 			try{
 				checkOutOfBounce(ownField, c);
@@ -113,7 +113,7 @@ public class World {
 		checkOutOfBounce(enemyField, c);
 		enemyField.set(c, Element.TREFFER);
 		
-		for(AbstractShip ship : enemyShips){
+		for(Ship ship : enemyShips){
 			if(isNeighbor(c, ship.getSpace())){
 				ship.addAttackCoord(c);
 				return this;
@@ -218,12 +218,12 @@ public class World {
 	public void registerSunk(Coord c){
 		//fragt mich nicht, warum man erst eine kopie machen muss
 		//... der EnemyShips-Iterator löscht den Eintrag nicht O.o
-		List<AbstractShip> copyOfEnemyShips = new ArrayList<AbstractShip>(enemyShips);
-		Iterator<AbstractShip> iter = copyOfEnemyShips.iterator();
+		List<Ship> copyOfEnemyShips = new ArrayList<Ship>(enemyShips);
+		Iterator<Ship> iter = copyOfEnemyShips.iterator();
 		while(iter.hasNext()){
-			AbstractShip ship = iter.next();
+			Ship ship = iter.next();
 			if(ship instanceof UnknownShip && ship.getSpace().contains(c)){
-				AbstractShip transformed = transformShip((UnknownShip)ship);
+				Ship transformed = transformShip((UnknownShip)ship);
 				
 				if(transformed == null){
 					throw new IllegalStateException("This code should be never reached!");
@@ -234,14 +234,14 @@ public class World {
 					transformed.addAttackCoord(shipCoord);
 
 				iter.remove();
-				enemyShips = new HashSet<AbstractShip>(copyOfEnemyShips);
+				enemyShips = new HashSet<Ship>(copyOfEnemyShips);
 				enemyShips.add(transformed);
 				break;
 			}
 		}
 	}
 
-	AbstractShip transformShip(UnknownShip ship) {
+	Ship transformShip(UnknownShip ship) {
 		Orientation orientation = ship.getOrientation();
 		int finalSize = ship.getSpace().size();
 		
@@ -309,7 +309,7 @@ public class World {
 		checkOutOfBounce(enemyView, c);
 		enemyView.set(c, Element.TREFFER);
 		
-		AbstractShip ship = getShip(c);
+		Ship ship = getShip(c);
 		ship.addAttackCoord(c);
 		
 		return this;
@@ -325,7 +325,7 @@ public class World {
 	public World registerEnemyBurn(Coord c){
 		registerEnemyHit(c);
 		
-		AbstractShip ship = getShip(c);
+		Ship ship = getShip(c);
 		ship.setBurning(true);
 		
 		return this;
@@ -353,7 +353,7 @@ public class World {
 	 * @return
 	 */
 	public World registerEnemySunk(Coord c){
-		AbstractShip ship = getShip(c);
+		Ship ship = getShip(c);
 		
 		for(Coord cc : ship.getSpace()){
 			registerEnemyHit(cc);
@@ -396,7 +396,7 @@ public class World {
 	 * 
 	 * @return
 	 */
-	public Set<AbstractShip> getOwnShips(){
+	public Set<Ship> getOwnShips(){
 		return Collections.unmodifiableSet(ownShips);
 	}
 
@@ -407,7 +407,7 @@ public class World {
 	 * 
 	 * @return
 	 */
-	public Set<AbstractShip> getEnemyShips(){
+	public Set<Ship> getEnemyShips(){
 		return Collections.unmodifiableSet(enemyShips);
 	}
 	
@@ -417,8 +417,8 @@ public class World {
 	 * @param coord
 	 * @return Das eigene Schiff an der gegebenen Koordinate. Null wenn kein Schiff an dieser Koordinate vorhanden ist.
 	 */
-	public AbstractShip getShip(Coord coord){
-		for(AbstractShip ship : ownShips){
+	public Ship getShip(Coord coord){
+		for(Ship ship : ownShips){
 			if(ship.getSpace().contains(coord)){
 				return ship;
 			}
@@ -433,8 +433,8 @@ public class World {
 	 * @param coord
 	 * @return Das eigene Schiff an der gegebenen Koordinate. Null wenn kein Schiff an dieser Koordinate vorhanden ist.
 	 */
-	public AbstractShip getEnemyShip(Coord coord){
-		for(AbstractShip ship : enemyShips){
+	public Ship getEnemyShip(Coord coord){
+		for(Ship ship : enemyShips){
 			if(ship.getSpace().contains(coord)){
 				return ship;
 			}

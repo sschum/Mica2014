@@ -2,7 +2,11 @@ package de.tarent.mica.net;
 
 import java.net.URI;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.java_websocket.drafts.Draft;
 
@@ -10,7 +14,7 @@ import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
-import de.tarent.mica.model.element.AbstractShip;
+import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.SpyArea;
 
 /**
@@ -269,6 +273,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	 * 
 	 * @param shipType Welches Schiff wurde versenkt?
 	 */
+	private static final Set<Element> bl = Collections.unmodifiableSet(new HashSet<Element>(Arrays.asList(Element.SCHIFF, Element.TREFFER)));
 	void sunk(String shipType) {
 		//TODO: versuchen ein schiff brennen zu lassen und dann ein schiff zu versinken: In einer Runde zwei schiffe versenkt?!
 		Coord lastHit = hitHistory.get(hitHistory.size() - 1);
@@ -276,13 +281,42 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		
 		//wenn ein schiff versunken wird, weis ich, das um ihn herum nichts sein kann
 		//da man keine Schiffe nebeneinander platzieren kann/darf
-		for(AbstractShip ship : world.getEnemyShips()){
+		for(Ship ship : world.getEnemyShips()){
 			if(!ship.isSunken()) continue;
 			
 			for(Coord c : ship.getSpace()){
-				//TODO:...
+				//NORD
+				Coord neighbor = c.getNorthNeighbor();
+				if(	world.isInWorld(neighbor) && 
+					!bl.contains(world.getEnemyField().get(neighbor))){
+					
+					world.registerNothing(neighbor);
+				}
+				//OST
+				neighbor = c.getEastNeighbor();
+				if(	world.isInWorld(neighbor) && 
+					!bl.contains(world.getEnemyField().get(neighbor))){
+					
+					world.registerNothing(neighbor);
+				}
+				//SUED
+				neighbor = c.getSouthNeighbor();
+				if(	world.isInWorld(neighbor) && 
+					!bl.contains(world.getEnemyField().get(neighbor))){
+					
+					world.registerNothing(neighbor);
+				}
+				//WEST
+				neighbor = c.getWestNeighbor();
+				if(	world.isInWorld(neighbor) && 
+					!bl.contains(world.getEnemyField().get(neighbor))){
+					
+					world.registerNothing(neighbor);
+				}
 			}
 		}
+		
+		System.out.println(world);
 	}
 	
 	/**
