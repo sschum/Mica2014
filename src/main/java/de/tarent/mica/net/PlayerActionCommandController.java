@@ -1,6 +1,8 @@
 package de.tarent.mica.net;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.java_websocket.drafts.Draft;
 
@@ -8,11 +10,7 @@ import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
-import de.tarent.mica.model.element.Carrier;
-import de.tarent.mica.model.element.Cruiser;
-import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.SpyArea;
-import de.tarent.mica.model.element.Submarine;
 
 /**
  * Diese ist ein Teil des {@link WebSocketController}s. Diese Klasse beinhaltet
@@ -22,11 +20,21 @@ import de.tarent.mica.model.element.Submarine;
  *
  */
 abstract class PlayerActionCommandController extends GeneralCommandController {
-
+	private List<Action> actionHistory;
+	private List<Coord> hitHistory;
+	
 	PlayerActionCommandController(URI serverUri, Draft draft) {
 		super(serverUri, draft);
 	}
 
+	@Override
+	void started(int playerNumber) {
+		super.started(playerNumber);
+
+		actionHistory = new ArrayList<Action>();
+		hitHistory = new ArrayList<Coord>();
+	}
+	
 	void myTurn(){
 		Action action = actionHandler.getNextAction(world);
 		switch(action.getType()){
@@ -85,6 +93,9 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	 */
 	void hit(Coord coord) {
 		Action lastAction = actionHistory.get(actionHistory.size() - 1);
+		
+		if(coord != null) hitHistory.add(coord);
+		else hitHistory.add(lastAction.getCoord());
 		
 		switch(lastAction.getType()){
 		case ATTACK:
@@ -258,7 +269,12 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	 * @param shipType Welches Schiff wurde versenkt?
 	 */
 	void sunk(String shipType) {
-		//TODO:implements me!
+		//TODO: versuchen ein schiff brennen zu lassen und dann ein schiff zu versinken: In einer Runde zwei schiffe versenkt?!
+		Coord lastHit = hitHistory.get(hitHistory.size() - 1);
+		world.registerSunk(lastHit);
+		
+		System.out.println(world.getEnemyShips());
+		System.out.println(world);
 	}
 	
 	/**

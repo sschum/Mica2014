@@ -166,6 +166,6 @@ public abstract class AbstractShip {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " @ " + position + "(" + orientation + ") - [" + getSpace() + "]";
+		return getClass().getSimpleName() + " @ " + position + "(" + orientation + ") " + (isSunken() ? "\u03EE" : "") + (isBurning() ? "\u03DF" : "") + "- [" + getSpace() + "]";
 	}
 }

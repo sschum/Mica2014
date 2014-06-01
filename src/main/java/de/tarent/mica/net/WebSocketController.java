@@ -33,7 +33,7 @@ import de.tarent.mica.util.Logger;
  * Diese Klasse ist dafür zuständig, mit dem SpielServer zu komunizieren.
  * 
  * @author rainu
- *
+ * TODO: Erweiterte Logit nicht in diese Controllerhirarchie! (Hier nur Treffer auswerten alles andere jmd anderen überlassen)
  */
 public class WebSocketController extends EnemyActionCommandController implements Controller {
 	protected MessageDispatcher dispatcher = new MessageDispatcher(this);

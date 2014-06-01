@@ -1,12 +1,7 @@
 package de.tarent.mica.net;
 
-import static org.mockito.Matchers.any;
-import static org.mockito.Matchers.anyString;
-import static org.mockito.Matchers.eq;
-import static org.mockito.Mockito.doNothing;
-import static org.mockito.Mockito.doReturn;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
+import static org.junit.Assert.*;
+import static org.mockito.Mockito.*;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
@@ -52,7 +47,8 @@ public class PlayerActionCommandControllerTest {
 		gameHandler = Mockito.mock(GameActionHandler.class);
 		doReturn(fleet).when(gameHandler).getFleet();
 		
-		toTest.actionHistory = new ArrayList<Action>();
+		Utils.setPrivate("actionHistory", toTest, new ArrayList<Action>());
+		Utils.setPrivate("hitHistory", toTest, new ArrayList<Action>());
 		toTest.actionHandler = gameHandler;
 		
 		toTestSpy = Mockito.spy(toTest);
@@ -100,11 +96,14 @@ public class PlayerActionCommandControllerTest {
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.ATTACK, new Coord(0, 0)));
 		toTest.world = world;
-		toTest.actionHistory = actionHistory;
+		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
 		toTest.hit(null);
 		
 		verify(world).registerHit(eq(actionHistory.get(0).getCoord()));
+		List<Coord> hitCoords = (List<Coord>) Utils.getPrivate("hitHistory", toTest);
+		assertEquals(1, hitCoords.size());
+		assertEquals(new Coord(0, 0), hitCoords.get(0));
 	}
 	
 	@Test
@@ -112,7 +111,7 @@ public class PlayerActionCommandControllerTest {
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_NORD, new Coord(0, 10)));
 		toTest.world = world;
-		toTest.actionHistory = actionHistory;
+		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
 		toTest.hit(new Coord(0, 0));
 		
@@ -127,7 +126,7 @@ public class PlayerActionCommandControllerTest {
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_SUED, new Coord(0, 0)));
 		toTest.world = world;
-		toTest.actionHistory = actionHistory;
+		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
 		toTest.hit(new Coord(0, 10));
 		
@@ -142,7 +141,7 @@ public class PlayerActionCommandControllerTest {
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_WEST, new Coord(10, 0)));
 		toTest.world = world;
-		toTest.actionHistory = actionHistory;
+		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
 		toTest.hit(new Coord(0, 0));
 		
@@ -157,7 +156,7 @@ public class PlayerActionCommandControllerTest {
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_OST, new Coord(0, 0)));
 		toTest.world = world;
-		toTest.actionHistory = actionHistory;
+		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
 		toTest.hit(new Coord(10, 0));
 		
@@ -172,7 +171,7 @@ public class PlayerActionCommandControllerTest {
 		World world = mock(World.class);
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.ATTACK, new Coord(0, 0)));
 		toTest.world = world;
-		toTest.actionHistory = actionHistory;
+		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
 		toTest.missed();
 		
@@ -185,7 +184,7 @@ public class PlayerActionCommandControllerTest {
 		doReturn(new Dimension(10, 10)).when(world).getWorldDimension();
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_NORD, new Coord(0, 10)));
 		toTest.world = world;
-		toTest.actionHistory = actionHistory;
+		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
 		toTest.missed();
 		
@@ -200,7 +199,7 @@ public class PlayerActionCommandControllerTest {
 		doReturn(new Dimension(10, 10)).when(world).getWorldDimension();
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_SUED, new Coord(0, 0)));
 		toTest.world = world;
-		toTest.actionHistory = actionHistory;
+		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
 		toTest.missed();
 		
@@ -215,7 +214,7 @@ public class PlayerActionCommandControllerTest {
 		doReturn(new Dimension(10, 10)).when(world).getWorldDimension();
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_WEST, new Coord(10, 0)));
 		toTest.world = world;
-		toTest.actionHistory = actionHistory;
+		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
 		toTest.missed();
 		
@@ -230,7 +229,7 @@ public class PlayerActionCommandControllerTest {
 		doReturn(new Dimension(10, 10)).when(world).getWorldDimension();
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.TORPEDO_OST, new Coord(0, 0)));
 		toTest.world = world;
-		toTest.actionHistory = actionHistory;
+		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
 		toTest.missed();
 		
