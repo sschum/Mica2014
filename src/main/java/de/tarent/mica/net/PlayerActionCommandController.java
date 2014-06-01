@@ -14,8 +14,12 @@ import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
+import de.tarent.mica.model.element.Carrier;
+import de.tarent.mica.model.element.Cruiser;
+import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.SpyArea;
+import de.tarent.mica.model.element.Submarine;
 
 /**
  * Diese ist ein Teil des {@link WebSocketController}s. Diese Klasse beinhaltet
@@ -64,28 +68,33 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	private void torpedo(Type type, Coord coord) {
 		switch(type){
 		case TORPEDO_NORD:
-			send("N" + coord); return;
+			send("N" + coord); break;
 		case TORPEDO_OST:
-			send("O" + coord); return;
+			send("O" + coord); break;
 		case TORPEDO_SUED:
-			send("S" + coord); return;
+			send("S" + coord); break;
 		case TORPEDO_WEST:
-			send("W" + coord); return;
+			send("W" + coord); break;
 		default:
-			throw new IllegalStateException("This code schould be never reached!");	
+			throw new IllegalStateException("This code should be never reached!");	
 		}
+		
+		world.registerSpecialAttack(Submarine.class);
 	}
 
 	private void wildfire(Coord coord) {
 		send("*" + coord);
+		world.registerSpecialAttack(Cruiser.class);
 	}
 
 	private void spyDrone(Coord coord) {
 		send("#" + coord);
+		world.registerSpecialAttack(Destroyer.class);
 	}
 
 	private void clusterbomb(Coord coord) {
 		send("+" + coord);
+		world.registerSpecialAttack(Carrier.class);
 	}
 
 	private void attack(Coord coord) {
@@ -315,8 +324,6 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 				}
 			}
 		}
-		
-		System.out.println(world);
 	}
 	
 	/**

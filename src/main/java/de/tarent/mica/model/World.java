@@ -4,9 +4,11 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import de.tarent.mica.model.Field.Element;
@@ -32,6 +34,9 @@ public class World {
 	private Set<SpyArea> ownSpies = new HashSet<SpyArea>();
 	
 	private Set<Ship> enemyShips = new HashSet<Ship>();
+	
+	private Map<Class<? extends Ship>, Integer> specialAttackCounts = new HashMap<Class<? extends Ship>, Integer>();
+	private Map<Class<? extends Ship>, Integer> enemySpecialAttackCounts = new HashMap<Class<? extends Ship>, Integer>();
 	
 	public World(int height, int width) {
 		ownField = new Field(height, width, Element.WASSER);
@@ -279,6 +284,35 @@ public class World {
 	}
 	
 	/**
+	 * Registriert eine Benutzung einer Spzialattake. Jedes Schiff hat eine solche!
+	 * 
+	 * @param shipType Um welche Attacke handelt es sich?
+	 * @return
+	 */
+	public World registerSpecialAttack(Class<? extends Ship> shipType){
+		if(!specialAttackCounts.containsKey(shipType)){
+			specialAttackCounts.put(shipType, 0);
+		}
+		
+		specialAttackCounts.put(shipType, specialAttackCounts.get(shipType) + 1);
+		return this;
+	}
+	
+	/**
+	 * Liefert die Anzahl der Spezialattacken, die der Spieler bereits genutzt hat.
+	 * 
+	 * @param shipType Welche Spezailattacke?
+	 * @return
+	 */
+	public int getSpecialAttackCount(Class<? extends Ship> shipType){
+		if(!specialAttackCounts.containsKey(shipType)){
+			return 0;
+		}
+		
+		return specialAttackCounts.get(shipType);
+	}
+	
+	/**
 	 * Liefert Alle bekannten Positionen der Gegnerischen Schiffe.
 	 * Ist keine Position bekannt, wird dennoch ein Set geliefert.
 	 * Dieses ist dann jedoch leer!
@@ -388,6 +422,36 @@ public class World {
 		enemyView.set(spyArea.getCoord(), Element.SPIONAGE);
 		
 		return this;
+	}
+	
+	/**
+	 * Registriert eine Benutzung einer Spzialattake des Feindes. 
+	 * Jedes Schiff hat eine solche!
+	 * 
+	 * @param shipType Um welche Attacke handelt es sich?
+	 * @return
+	 */
+	public World registerEnemySpecialAttack(Class<? extends Ship> shipType){
+		if(!enemySpecialAttackCounts.containsKey(shipType)){
+			enemySpecialAttackCounts.put(shipType, 0);
+		}
+		
+		enemySpecialAttackCounts.put(shipType, enemySpecialAttackCounts.get(shipType) + 1);
+		return this;
+	}
+	
+	/**
+	 * Liefert die Anzahl der Spezialattacken, die der Gegner bereits genutzt hat.
+	 * 
+	 * @param shipType Welche Spezailattacke?
+	 * @return
+	 */
+	public int getEnemySpecialAttackCount(Class<? extends Ship> shipType){
+		if(!enemySpecialAttackCounts.containsKey(shipType)){
+			return 0;
+		}
+		
+		return enemySpecialAttackCounts.get(shipType);
 	}
 	
 	/**

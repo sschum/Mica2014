@@ -44,8 +44,6 @@ class MessageDispatcher {
 			MessageCode mc = MessageCode.fromCode(msgCode);
 			if(mc != null){
 				switch(mc){
-				case TORPEDOEE: //TODO: wenn man von einem Torpedo getroffen wurde, weis man zum. dass in den Himelsrichtungen irgendow ein U-Bot sein muss!
-				case WILDFIREEE: //wird durch den YOUR_SHIP_HIT abgebildet (wenn es brennt war es eine Wildfire-Attacke!)
 				case WAIT_FOR_SECOND_PLAYER_CONNECT:
 				case WAIT_FOR_OTHER_PLAYERS_MOVE:
 				case NEXT_SHIP:
@@ -122,6 +120,12 @@ class MessageDispatcher {
 					matcher = enemyClusterMessagePattern.matcher(message);
 					matcher.matches();
 					controller.enemyClusterbombed(new Coord(matcher.group(1)));
+					return;
+				case TORPEDOEE: //TODO: wenn man von einem Torpedo getroffen wurde, weis man zum. dass in den Himelsrichtungen irgendow ein U-Bot sein muss!
+					controller.enemyUsedTorpedo();
+					return;
+				case WILDFIREEE: //wird durch den YOUR_SHIP_HIT abgebildet (wenn es brennt war es eine Wildfire-Attacke!)
+					controller.enemyUsedWildfire();
 					return;
 				case ENEMY_SHIP_SUNK:
 					matcher = sunkMessagePattern.matcher(message);

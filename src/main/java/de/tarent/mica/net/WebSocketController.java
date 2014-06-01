@@ -157,7 +157,7 @@ public class WebSocketController extends EnemyActionCommandController implements
 			
 			@Override
 			public Action getNextAction(World world) {
-				return new Action(Type.CLUSTERBOMB, new Coord("E2"));
+				return new Action(Type.TORPEDO_WEST, new Coord("F7"));
 			}
 			
 			@Override
@@ -177,4 +177,5 @@ public class WebSocketController extends EnemyActionCommandController implements
 			}
 		});
 	}
+
 }
