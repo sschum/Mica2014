@@ -88,28 +88,28 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 			world.registerEnemyMiss(coord);
 		}
 		//nord
-		Coord nord = new Coord(coord.getX(), coord.getY() - 1);
+		Coord nord = coord.getNorthNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyView().get(nord))){
 				world.registerEnemyMiss(nord);
 			}
 		}catch(IllegalArgumentException e){}
 		//ost
-		Coord ost = new Coord(coord.getX() + 1, coord.getY());
+		Coord ost = coord.getEastNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyView().get(ost))){
 				world.registerEnemyMiss(ost);
 			}
 		}catch(IllegalArgumentException e){}
 		//sued
-		Coord sued = new Coord(coord.getX(), coord.getY() + 1);
+		Coord sued = coord.getSouthNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyView().get(sued))){
 				world.registerEnemyMiss(sued);
 			}
 		}catch(IllegalArgumentException e){}
 		//west
-		Coord west = new Coord(coord.getX() - 1, coord.getY());
+		Coord west = coord.getWestNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyView().get(west))){
 				world.registerEnemyMiss(west);

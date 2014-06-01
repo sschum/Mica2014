@@ -52,6 +52,20 @@ public class World {
 	}
 	
 	/**
+	 * Prüft ob die angegebene {@link Coord}inate inerhalb der Welt ist.
+	 * 
+	 * @param c Zu prüfende {@link Coord}inate
+	 * @return Liefert true wenn die Koordinate inherhalb der Welt ist. Andernfals false!
+	 */
+	public boolean isInWorld(Coord c){
+		final Dimension dim = getWorldDimension();
+		
+		return !(c.getX() < 0 || c.getY() < 0 ||
+			 	 c.getX() >= dim.width ||
+				 c.getY() >= dim.height);
+	}
+	
+	/**
 	 * Platziert ein Schiff auf das eigene Feld.
 	 * @param ship
 	 * @return
@@ -183,10 +197,10 @@ public class World {
 			 * C   +
 			 */
 			
-			if(	new Coord(coord.getX() + 1, coord.getY()).equals(toTest) ||
-				new Coord(coord.getX(), coord.getY() + 1).equals(toTest) ||
-				new Coord(coord.getX() - 1, coord.getY()).equals(toTest) ||
-				new Coord(coord.getX(), coord.getY() - 1).equals(toTest) ){
+			if(	coord.getNorthNeighbor().equals(toTest) ||
+				coord.getEastNeighbor().equals(toTest) ||
+				coord.getSouthNeighbor().equals(toTest) ||
+				coord.getWestNeighbor().equals(toTest) ){
 
 				return true;
 			}
@@ -239,13 +253,13 @@ public class World {
 		Coord c1 = coords.get(0);
 		Coord c2 = coords.get(1);
 		
-		if(new Coord(c1.getX() + 1, c1.getY()).equals(c2)){
+		if(c1.getEastNeighbor().equals(c2)){
 			return Orientation.OST;
-		}else if(new Coord(c1.getX(), c1.getY() + 1).equals(c2)){
+		}else if(c1.getSouthNeighbor().equals(c2)){
 			return Orientation.SUED;
-		}else if(new Coord(c1.getX() - 1, c1.getY()).equals(c2)){
+		}else if(c1.getWestNeighbor().equals(c2)){
 			return Orientation.WEST;
-		}else if(new Coord(c1.getX(), c1.getY() - 1).equals(c2)){
+		}else if(c1.getNorthNeighbor().equals(c2)){
 			return Orientation.NORD;
 		}else {
 			return Orientation.UNBEKANNT;
@@ -408,6 +422,22 @@ public class World {
 	 */
 	public AbstractShip getShip(Coord coord){
 		for(AbstractShip ship : ownShips){
+			if(ship.getSpace().contains(coord)){
+				return ship;
+			}
+		}
+		
+		return null;
+	}
+	
+	/**
+	 * Liefert das gegnerische Schiff, was an der gegebenen Position stationiert ist.
+	 * 
+	 * @param coord
+	 * @return Das eigene Schiff an der gegebenen Koordinate. Null wenn kein Schiff an dieser Koordinate vorhanden ist.
+	 */
+	public AbstractShip getEnemyShip(Coord coord){
+		for(AbstractShip ship : enemyShips){
 			if(ship.getSpace().contains(coord)){
 				return ship;
 			}

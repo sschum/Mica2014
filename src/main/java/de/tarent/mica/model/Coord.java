@@ -58,7 +58,23 @@ public class Coord{
 	public char getYChar() {
 		return (char)(y + 65);
 	}
-
+	
+	public Coord getNorthNeighbor(){
+		return new Coord(getX(), getY() - 1);
+	}
+	
+	public Coord getEastNeighbor(){
+		return new Coord(getX() + 1, getY());
+	}
+	
+	public Coord getSouthNeighbor(){
+		return new Coord(getX(), getY() + 1);
+	}
+	
+	public Coord getWestNeighbor(){
+		return new Coord(getX() - 1, getY());
+	}
+	
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -10,6 +10,7 @@ import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
+import de.tarent.mica.model.element.AbstractShip;
 import de.tarent.mica.model.element.SpyArea;
 
 /**
@@ -146,28 +147,28 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 			world.registerMiss(lastCoord);
 		}
 		//nord
-		Coord nord = new Coord(lastCoord.getX(), lastCoord.getY() - 1);
+		Coord nord = lastCoord.getNorthNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyField().get(nord))){
 				world.registerMiss(nord);
 			}
 		}catch(IllegalArgumentException e){}
 		//ost
-		Coord ost = new Coord(lastCoord.getX() + 1, lastCoord.getY());
+		Coord ost = lastCoord.getEastNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyField().get(ost))){
 				world.registerMiss(ost);
 			}
 		}catch(IllegalArgumentException e){}
 		//sued
-		Coord sued = new Coord(lastCoord.getX(), lastCoord.getY() + 1);
+		Coord sued = lastCoord.getSouthNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyField().get(sued))){
 				world.registerMiss(sued);
 			}
 		}catch(IllegalArgumentException e){}
 		//west
-		Coord west = new Coord(lastCoord.getX() - 1, lastCoord.getY());
+		Coord west = lastCoord.getWestNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyField().get(west))){
 				world.registerMiss(west);
@@ -273,8 +274,15 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		Coord lastHit = hitHistory.get(hitHistory.size() - 1);
 		world.registerSunk(lastHit);
 		
-		System.out.println(world.getEnemyShips());
-		System.out.println(world);
+		//wenn ein schiff versunken wird, weis ich, das um ihn herum nichts sein kann
+		//da man keine Schiffe nebeneinander platzieren kann/darf
+		for(AbstractShip ship : world.getEnemyShips()){
+			if(!ship.isSunken()) continue;
+			
+			for(Coord c : ship.getSpace()){
+				//TODO:...
+			}
+		}
 	}
 	
 	/**

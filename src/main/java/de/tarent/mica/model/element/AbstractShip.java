@@ -72,16 +72,16 @@ public abstract class AbstractShip {
 			Coord c = null;
 			switch (orientation) {
 			case NORD:
-				c = new Coord(lastCoord.getX(), lastCoord.getY() - 1);
+				c = lastCoord.getNorthNeighbor();
 				break;
 			case OST:
-				c = new Coord(lastCoord.getX() + 1, lastCoord.getY());
+				c = lastCoord.getEastNeighbor();
 				break;
 			case SUED:
-				c = new Coord(lastCoord.getX(), lastCoord.getY() + 1);
+				c = lastCoord.getSouthNeighbor();
 				break;
 			case WEST:
-				c = new Coord(lastCoord.getX() - 1, lastCoord.getY());
+				c = lastCoord.getWestNeighbor();
 				break;
 			default:
 				break;
@@ -166,6 +166,6 @@ public abstract class AbstractShip {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " @ " + position + "(" + orientation + ") " + (isSunken() ? "\u03EE" : "") + (isBurning() ? "\u03DF" : "") + "- [" + getSpace() + "]";
+		return getClass().getSimpleName() + " @ " + position + "(" + orientation + ") " + (isSunken() ? "\u03EE" : "") + (isBurning() ? "\u03DF" : "") + " - [" + getSpace() + "]";
 	}
 }
