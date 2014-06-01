@@ -2,6 +2,7 @@ package de.tarent.mica.model;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import javax.lang.model.SourceVersion;
@@ -11,6 +12,7 @@ import org.junit.Test;
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.element.AbstractShip;
 import de.tarent.mica.model.element.Carrier;
+import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.Submarine;
 import de.tarent.mica.model.element.AbstractShip.Orientation;
@@ -311,10 +313,15 @@ public class WorldTest {
 	@Test
 	public void registerSunk(){
 		World world = new World(5, 5);
-		world.registerHit(new Coord("A1")); world.registerHit(new Coord("A2"));
+		world.registerHit(new Coord("A2")); world.registerHit(new Coord("A3")); world.registerHit(new Coord("A1"));
 		world.registerSunk(new Coord("A1"));
 		
 		assertEquals(1, world.getEnemyShips().size());
-		assertTrue(world.getEnemyShips().iterator().next() instanceof Submarine);
+		
+		AbstractShip ship = world.getEnemyShips().iterator().next();
+		assertTrue(ship instanceof Destroyer);
+		assertEquals(new Coord("A1"), ship.getPosition());
+		assertEquals(Orientation.OST, ship.getOrientation());
+		assertEquals(Arrays.asList(new Coord("A1"), new Coord("A2"),new Coord("A3")), ship.getSpace());
 	}
 }

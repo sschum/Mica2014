@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 
 import de.tarent.mica.model.Coord;
+import de.tarent.mica.model.element.AbstractShip.Orientation;
 
 /**
  * Ein Unkbekanntes Schiff... Seine größe ist unbekannt.
@@ -37,6 +38,30 @@ public class UnknownShip extends AbstractShip {
 		Collections.sort(space, Coord.COMPARATOR);
 		
 		return space;
+	}
+	
+	@Override
+	public Coord getPosition() {
+		return getSpace().get(0);
+	}
+	
+	@Override
+	public Orientation getOrientation() {
+		List<Coord> coords = getSpace();
+		Coord c1 = coords.get(0);
+		Coord c2 = coords.get(1);
+		
+		if(c1.getEastNeighbor().equals(c2)){
+			return Orientation.OST;
+		}else if(c1.getSouthNeighbor().equals(c2)){
+			return Orientation.SUED;
+		}else if(c1.getWestNeighbor().equals(c2)){
+			return Orientation.WEST;
+		}else if(c1.getNorthNeighbor().equals(c2)){
+			return Orientation.NORD;
+		}else {
+			return Orientation.UNBEKANNT;
+		}
 	}
 	
 }

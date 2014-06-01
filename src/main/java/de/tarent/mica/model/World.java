@@ -146,7 +146,7 @@ public class World {
 	 * @return
 	 */
 	public World registerMiss(Coord c){
-		checkOutOfBounce(enemyView, c);
+		checkOutOfBounce(enemyField, c);
 		enemyField.set(c, Element.WASSER);
 		
 		return this;
@@ -242,28 +242,10 @@ public class World {
 	}
 
 	AbstractShip transformShip(UnknownShip ship) {
-		Orientation orientation = getOrientation(ship);
+		Orientation orientation = ship.getOrientation();
 		int finalSize = ship.getSpace().size();
 		
 		return ShipFactory.build(ship.getPosition(), orientation, finalSize);
-	}
-
-	Orientation getOrientation(UnknownShip ship) {
-		List<Coord> coords = ship.getSpace();
-		Coord c1 = coords.get(0);
-		Coord c2 = coords.get(1);
-		
-		if(c1.getEastNeighbor().equals(c2)){
-			return Orientation.OST;
-		}else if(c1.getSouthNeighbor().equals(c2)){
-			return Orientation.SUED;
-		}else if(c1.getWestNeighbor().equals(c2)){
-			return Orientation.WEST;
-		}else if(c1.getNorthNeighbor().equals(c2)){
-			return Orientation.NORD;
-		}else {
-			return Orientation.UNBEKANNT;
-		}
 	}
 
 	/**
@@ -277,6 +259,21 @@ public class World {
 		enemyField.set(spy.getCoord(), Element.SPIONAGE);
 		
 		ownSpies.add(spy);
+		
+		return this;
+	}
+	
+	/**
+	 * Trägt "Nichts" in das Gegnerische Feld ein. "Nichts" bedeutet,
+	 * dass man sich sicher ist, dass an dieser Stelle kein Schiff o.ä.
+	 * existiert!
+	 * 
+	 * @param c
+	 * @return
+	 */
+	public World registerNothing(Coord c) {
+		checkOutOfBounce(enemyField, c);
+		enemyField.set(c, Element.WASSER);
 		
 		return this;
 	}
