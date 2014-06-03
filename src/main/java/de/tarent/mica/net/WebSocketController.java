@@ -22,7 +22,7 @@ import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.GameStats;
 import de.tarent.mica.model.World;
-import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.Ship.Orientation;
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
@@ -33,7 +33,7 @@ import de.tarent.mica.util.Logger;
  * Diese Klasse ist dafür zuständig, mit dem SpielServer zu komunizieren.
  * 
  * @author rainu
- *
+ * TODO: Erweiterte Logit nicht in diese Controllerhirarchie! (Hier nur Treffer auswerten alles andere jmd anderen überlassen)
  */
 public class WebSocketController extends EnemyActionCommandController implements Controller {
 	protected MessageDispatcher dispatcher = new MessageDispatcher(this);
@@ -157,7 +157,7 @@ public class WebSocketController extends EnemyActionCommandController implements
 			
 			@Override
 			public Action getNextAction(World world) {
-				return new Action(Type.CLUSTERBOMB, new Coord("E2"));
+				return new Action(Type.TORPEDO_WEST, new Coord("F7"));
 			}
 			
 			@Override
@@ -177,4 +177,5 @@ public class WebSocketController extends EnemyActionCommandController implements
 			}
 		});
 	}
+
 }

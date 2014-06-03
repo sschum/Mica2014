@@ -1,6 +1,7 @@
 package de.tarent.mica.model.element;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -13,22 +14,51 @@ import de.tarent.mica.model.Coord;
  * @author rainu
  *
  */
-public abstract class AbstractShip {
+public abstract class Ship {
 	public static enum Orientation{
 		NORD, OST, SUED, WEST, UNBEKANNT
+	}
+	
+	private static Set<Class<? extends Ship>> knownShips = new HashSet<Class<? extends Ship>>();
+	
+	public static Set<Class<? extends Ship>> getKnownShipTypes(){
+		return Collections.unmodifiableSet(knownShips);
+	}
+	
+	public static void registerShipClass(Class<? extends Ship> clazz){
+		knownShips.add(clazz);
+	}
+	
+	//registriere bekannte Unterklassen...
+	static {
+		registerShipClass(Carrier.class);
+		registerShipClass(Cruiser.class);
+		registerShipClass(Destroyer.class);
+		registerShipClass(Submarine.class);
+	}
+	
+	public static int getSizeOf(Class<? extends Ship> shipType){
+		return shipType.getAnnotation(ShipStats.class).size();
 	}
 	
 	protected final int size;
 	protected Orientation orientation;
 	protected Coord position;
-	protected boolean isSunken;
 	protected boolean isBurning;
 	protected Set<Coord> attackCoords = new HashSet<Coord>();
 	
-	protected AbstractShip(int size, Orientation orientation, Coord position){
+	protected Ship(int size, Orientation orientation, Coord position){
 		this.size = size;
 		this.orientation = orientation;
 		this.position = position;
+		
+		if(!getClass().isAnnotationPresent(ShipStats.class)){
+			throw new IllegalStateException("The class " + getClass().getName() + " has no " + ShipStats.class + " annotation!");
+		}
+		
+		if(!knownShips.contains(getClass())){
+			registerShipClass(getClass());
+		}
 	}
 	
 	public List<Coord> getSpace(){
@@ -42,16 +72,16 @@ public abstract class AbstractShip {
 			Coord c = null;
 			switch (orientation) {
 			case NORD:
-				c = new Coord(lastCoord.getX(), lastCoord.getY() - 1);
+				c = lastCoord.getNorthNeighbor();
 				break;
 			case OST:
-				c = new Coord(lastCoord.getX() + 1, lastCoord.getY());
+				c = lastCoord.getEastNeighbor();
 				break;
 			case SUED:
-				c = new Coord(lastCoord.getX(), lastCoord.getY() + 1);
+				c = lastCoord.getSouthNeighbor();
 				break;
 			case WEST:
-				c = new Coord(lastCoord.getX() - 1, lastCoord.getY());
+				c = lastCoord.getWestNeighbor();
 				break;
 			default:
 				break;
@@ -98,7 +128,6 @@ public abstract class AbstractShip {
 		result = prime * result
 				+ ((attackCoords == null) ? 0 : attackCoords.hashCode());
 		result = prime * result + (isBurning ? 1231 : 1237);
-		result = prime * result + (isSunken ? 1231 : 1237);
 		result = prime * result
 				+ ((orientation == null) ? 0 : orientation.hashCode());
 		result = prime * result
@@ -115,15 +144,13 @@ public abstract class AbstractShip {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		AbstractShip other = (AbstractShip) obj;
+		Ship other = (Ship) obj;
 		if (attackCoords == null) {
 			if (other.attackCoords != null)
 				return false;
 		} else if (!attackCoords.equals(other.attackCoords))
 			return false;
 		if (isBurning != other.isBurning)
-			return false;
-		if (isSunken != other.isSunken)
 			return false;
 		if (orientation != other.orientation)
 			return false;
@@ -139,6 +166,6 @@ public abstract class AbstractShip {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " @ " + position + "(" + orientation + ") - [" + getSpace() + "]";
+		return getClass().getSimpleName() + " @ " + position + "(" + orientation + ") " + (isSunken() ? "\u03EE" : "") + (isBurning() ? "\u03DF" : "") + " - [" + getSpace() + "]";
 	}
 }

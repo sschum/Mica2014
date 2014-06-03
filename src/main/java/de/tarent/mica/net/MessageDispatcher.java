@@ -21,6 +21,7 @@ class MessageDispatcher {
 	private Pattern helloMessagePattern = Pattern.compile("^[0-9]*:.*Hello, player #([0-9]*).$");
 	private Pattern renameMessagePattern = Pattern.compile("^[0-9]*:.*Player '#([0-9]*)' is now known as '(.*)'.$");
 	private Pattern hitMessagePattern = Pattern.compile("^[0-9]*:.*Enemy ship hit at ([A-Za-z]*[0-9]*)\\.$");
+	private Pattern sunkMessagePattern = Pattern.compile("^[0-9]*:.*Enemy (.*) sunk!$");
 	private Pattern enemyHitMessagePattern = Pattern.compile("^[0-9]*:.*The enemy hits .*at ([A-Za-z]*[0-9]*)\\.$");
 	private Pattern enemyHitBurnedMessagePattern = Pattern.compile("^[0-9]*:.*Your .*burned at ([A-Za-z]*[0-9]*)!$");
 	private Pattern enemyMissMessagePattern = Pattern.compile("^[0-9]*:.*Enemy shoots at ([A-Za-z]*[0-9]*) and misses\\.$");
@@ -43,8 +44,6 @@ class MessageDispatcher {
 			MessageCode mc = MessageCode.fromCode(msgCode);
 			if(mc != null){
 				switch(mc){
-				case TORPEDOEE: //TODO: wenn man von einem Torpedo getroffen wurde, weis man zum. dass in den Himelsrichtungen irgendow ein U-Bot sein muss!
-				case WILDFIREEE: //wird durch den YOUR_SHIP_HIT abgebildet (wenn es brennt war es eine Wildfire-Attacke!)
 				case WAIT_FOR_SECOND_PLAYER_CONNECT:
 				case WAIT_FOR_OTHER_PLAYERS_MOVE:
 				case NEXT_SHIP:
@@ -122,8 +121,16 @@ class MessageDispatcher {
 					matcher.matches();
 					controller.enemyClusterbombed(new Coord(matcher.group(1)));
 					return;
+				case TORPEDOEE: //TODO: wenn man von einem Torpedo getroffen wurde, weis man zum. dass in den Himelsrichtungen irgendow ein U-Bot sein muss!
+					controller.enemyUsedTorpedo();
+					return;
+				case WILDFIREEE: //wird durch den YOUR_SHIP_HIT abgebildet (wenn es brennt war es eine Wildfire-Attacke!)
+					controller.enemyUsedWildfire();
+					return;
 				case ENEMY_SHIP_SUNK:
-					//TODO: Warte auf klärung bzgl. letzter Koordinate
+					matcher = sunkMessagePattern.matcher(message);
+					matcher.matches();
+					controller.sunk(matcher.group(1));
 					return;
 				case GAME_OVER:
 					controller.gameOver(true);

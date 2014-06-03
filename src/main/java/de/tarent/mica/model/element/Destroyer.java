@@ -8,10 +8,16 @@ import de.tarent.mica.model.Coord;
  * @author rainu
  *
  */
-public class Destroyer extends AbstractShip {
-
+@ShipStats(size = Destroyer.SIZE)
+public class Destroyer extends Ship {
+	static {
+		Ship.registerShipClass(Destroyer.class);
+	}
+	
+	public static final int SIZE = 3;
+	
 	public Destroyer(Orientation orientation, Coord position) {
-		super(3, orientation, position);
+		super(SIZE, orientation, position);
 	}
 
 }

@@ -1,6 +1,12 @@
 package de.tarent.mica.net;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 import org.java_websocket.drafts.Draft;
 
@@ -8,7 +14,12 @@ import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
+import de.tarent.mica.model.element.Carrier;
+import de.tarent.mica.model.element.Cruiser;
+import de.tarent.mica.model.element.Destroyer;
+import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.SpyArea;
+import de.tarent.mica.model.element.Submarine;
 
 /**
  * Diese ist ein Teil des {@link WebSocketController}s. Diese Klasse beinhaltet
@@ -18,11 +29,21 @@ import de.tarent.mica.model.element.SpyArea;
  *
  */
 abstract class PlayerActionCommandController extends GeneralCommandController {
-
+	private List<Action> actionHistory;
+	private List<Coord> hitHistory;
+	
 	PlayerActionCommandController(URI serverUri, Draft draft) {
 		super(serverUri, draft);
 	}
 
+	@Override
+	void started(int playerNumber) {
+		super.started(playerNumber);
+
+		actionHistory = new ArrayList<Action>();
+		hitHistory = new ArrayList<Coord>();
+	}
+	
 	void myTurn(){
 		Action action = actionHandler.getNextAction(world);
 		switch(action.getType()){
@@ -47,28 +68,33 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	private void torpedo(Type type, Coord coord) {
 		switch(type){
 		case TORPEDO_NORD:
-			send("N" + coord); return;
+			send("N" + coord); break;
 		case TORPEDO_OST:
-			send("O" + coord); return;
+			send("O" + coord); break;
 		case TORPEDO_SUED:
-			send("S" + coord); return;
+			send("S" + coord); break;
 		case TORPEDO_WEST:
-			send("W" + coord); return;
+			send("W" + coord); break;
 		default:
-			throw new IllegalStateException("This code schould be never reached!");	
+			throw new IllegalStateException("This code should be never reached!");	
 		}
+		
+		world.registerSpecialAttack(Submarine.class);
 	}
 
 	private void wildfire(Coord coord) {
 		send("*" + coord);
+		world.registerSpecialAttack(Cruiser.class);
 	}
 
 	private void spyDrone(Coord coord) {
 		send("#" + coord);
+		world.registerSpecialAttack(Destroyer.class);
 	}
 
 	private void clusterbomb(Coord coord) {
 		send("+" + coord);
+		world.registerSpecialAttack(Carrier.class);
 	}
 
 	private void attack(Coord coord) {
@@ -81,6 +107,9 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	 */
 	void hit(Coord coord) {
 		Action lastAction = actionHistory.get(actionHistory.size() - 1);
+		
+		if(coord != null) hitHistory.add(coord);
+		else hitHistory.add(lastAction.getCoord());
 		
 		switch(lastAction.getType()){
 		case ATTACK:
@@ -131,28 +160,28 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 			world.registerMiss(lastCoord);
 		}
 		//nord
-		Coord nord = new Coord(lastCoord.getX(), lastCoord.getY() - 1);
+		Coord nord = lastCoord.getNorthNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyField().get(nord))){
 				world.registerMiss(nord);
 			}
 		}catch(IllegalArgumentException e){}
 		//ost
-		Coord ost = new Coord(lastCoord.getX() + 1, lastCoord.getY());
+		Coord ost = lastCoord.getEastNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyField().get(ost))){
 				world.registerMiss(ost);
 			}
 		}catch(IllegalArgumentException e){}
 		//sued
-		Coord sued = new Coord(lastCoord.getX(), lastCoord.getY() + 1);
+		Coord sued = lastCoord.getSouthNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyField().get(sued))){
 				world.registerMiss(sued);
 			}
 		}catch(IllegalArgumentException e){}
 		//west
-		Coord west = new Coord(lastCoord.getX() - 1, lastCoord.getY());
+		Coord west = lastCoord.getWestNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyField().get(west))){
 				world.registerMiss(west);
@@ -245,6 +274,55 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	private void missedTorpedoWest(Action lastAction) {
 		for(int x=lastAction.getCoord().getX() - 1; x >= 0; x--){
 			world.registerMiss(new Coord(x, lastAction.getCoord().getY()));
+		}
+	}
+	
+	/**
+	 * Der Spieler hat ein Schiff versenkt.
+	 * 
+	 * @param shipType Welches Schiff wurde versenkt?
+	 */
+	private static final Set<Element> bl = Collections.unmodifiableSet(new HashSet<Element>(Arrays.asList(Element.SCHIFF, Element.TREFFER)));
+	void sunk(String shipType) {
+		//TODO: versuchen ein schiff brennen zu lassen und dann ein schiff zu versinken: In einer Runde zwei schiffe versenkt?!
+		Coord lastHit = hitHistory.get(hitHistory.size() - 1);
+		world.registerSunk(lastHit);
+		
+		//wenn ein schiff versunken wird, weis ich, das um ihn herum nichts sein kann
+		//da man keine Schiffe nebeneinander platzieren kann/darf
+		for(Ship ship : world.getEnemyShips()){
+			if(!ship.isSunken()) continue;
+			
+			for(Coord c : ship.getSpace()){
+				//NORD
+				Coord neighbor = c.getNorthNeighbor();
+				if(	world.isInWorld(neighbor) && 
+					!bl.contains(world.getEnemyField().get(neighbor))){
+					
+					world.registerNothing(neighbor);
+				}
+				//OST
+				neighbor = c.getEastNeighbor();
+				if(	world.isInWorld(neighbor) && 
+					!bl.contains(world.getEnemyField().get(neighbor))){
+					
+					world.registerNothing(neighbor);
+				}
+				//SUED
+				neighbor = c.getSouthNeighbor();
+				if(	world.isInWorld(neighbor) && 
+					!bl.contains(world.getEnemyField().get(neighbor))){
+					
+					world.registerNothing(neighbor);
+				}
+				//WEST
+				neighbor = c.getWestNeighbor();
+				if(	world.isInWorld(neighbor) && 
+					!bl.contains(world.getEnemyField().get(neighbor))){
+					
+					world.registerNothing(neighbor);
+				}
+			}
 		}
 	}
 	

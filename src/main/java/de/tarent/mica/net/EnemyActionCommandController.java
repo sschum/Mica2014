@@ -6,7 +6,11 @@ import org.java_websocket.drafts.Draft;
 
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
+import de.tarent.mica.model.element.Carrier;
+import de.tarent.mica.model.element.Cruiser;
+import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.SpyArea;
+import de.tarent.mica.model.element.Submarine;
 
 /**
  * Diese ist ein Teil des {@link WebSocketController}s. Diese Klasse beinhaltet
@@ -28,6 +32,13 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	 */
 	void enemyHit(Coord coord) {
 		world.registerEnemyHit(coord);
+	}
+	
+	/**
+	 * Der Gegner hat Wildfire eingesetzt!
+	 */
+	public void enemyUsedWildfire() {
+		world.registerEnemySpecialAttack(Cruiser.class);
 	}
 	
 	/**
@@ -64,6 +75,7 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	 */
 	void enemySpy(SpyArea spyArea) {
 		world.registerEnemySpy(spyArea);
+		world.registerEnemySpecialAttack(Destroyer.class);
 	}
 	
 	/**
@@ -72,6 +84,8 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	 * @param coord Wo war der einschlag?
 	 */
 	void enemyClusterbombed(Coord coord) {
+		world.registerEnemySpecialAttack(Carrier.class);
+		
 		/*
 		 * Eine Clusterbomb fügt ein "Kreuzschaden" zu.
 		 * 
@@ -88,32 +102,39 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 			world.registerEnemyMiss(coord);
 		}
 		//nord
-		Coord nord = new Coord(coord.getX(), coord.getY() - 1);
+		Coord nord = coord.getNorthNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyView().get(nord))){
 				world.registerEnemyMiss(nord);
 			}
 		}catch(IllegalArgumentException e){}
 		//ost
-		Coord ost = new Coord(coord.getX() + 1, coord.getY());
+		Coord ost = coord.getEastNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyView().get(ost))){
 				world.registerEnemyMiss(ost);
 			}
 		}catch(IllegalArgumentException e){}
 		//sued
-		Coord sued = new Coord(coord.getX(), coord.getY() + 1);
+		Coord sued = coord.getSouthNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyView().get(sued))){
 				world.registerEnemyMiss(sued);
 			}
 		}catch(IllegalArgumentException e){}
 		//west
-		Coord west = new Coord(coord.getX() - 1, coord.getY());
+		Coord west = coord.getWestNeighbor();
 		try{
 			if(!Element.TREFFER.equals(world.getEnemyView().get(west))){
 				world.registerEnemyMiss(west);
 			}
 		}catch(IllegalArgumentException e){}
+	}
+	
+	/**
+	 * Der Gegner hat einen Torpedo benutzt!
+	 */
+	void enemyUsedTorpedo() {
+		world.registerEnemySpecialAttack(Submarine.class);		
 	}
 }

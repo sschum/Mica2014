@@ -2,6 +2,7 @@ package de.tarent.mica.model;
 
 import static org.junit.Assert.*;
 
+import java.util.Arrays;
 import java.util.Set;
 
 import javax.lang.model.SourceVersion;
@@ -9,11 +10,13 @@ import javax.lang.model.SourceVersion;
 import org.junit.Test;
 
 import de.tarent.mica.model.Field.Element;
-import de.tarent.mica.model.element.AbstractShip;
+import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.Carrier;
+import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.Submarine;
-import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.Ship.Orientation;
+import de.tarent.mica.model.element.UnknownShip;
 
 public class WorldTest {
 
@@ -44,7 +47,7 @@ public class WorldTest {
 	public void validateShipPosition_outOfBounce(){
 		World world = new World(1, 1);
 		
-		AbstractShip ship = new Carrier(Orientation.NORD, new Coord(0, 0));
+		Ship ship = new Carrier(Orientation.NORD, new Coord(0, 0));
 		try{
 			world.validateShipPosition(ship);
 			fail("It should be thrown an IllegalArgumentException.");
@@ -55,7 +58,7 @@ public class WorldTest {
 	public void validateShipPosition_crossAnotherShip(){
 		World world = new World(5, 5);
 		
-		AbstractShip ship = new Carrier(Orientation.SUED, new Coord(2, 0));
+		Ship ship = new Carrier(Orientation.SUED, new Coord(2, 0));
 		world.placeOwnShip(ship);
 		try{
 			world.validateShipPosition(ship);
@@ -67,7 +70,7 @@ public class WorldTest {
 	public void placeOwnShip(){
 		World world = new World(5, 5);
 		
-		AbstractShip ship = new Carrier(Orientation.SUED, new Coord(2, 0));
+		Ship ship = new Carrier(Orientation.SUED, new Coord(2, 0));
 		world.placeOwnShip(ship);
 		
 		assertEquals(
@@ -265,7 +268,7 @@ public class WorldTest {
 	@Test
 	public void getShip(){
 		World world = new World(5, 5);
-		AbstractShip ship = new Submarine(Orientation.SUED, new Coord("A0"));
+		Ship ship = new Submarine(Orientation.SUED, new Coord("A0"));
 		world.placeOwnShip(ship);
 		
 		assertSame(ship, world.getShip(new Coord("A0")));
@@ -288,5 +291,37 @@ public class WorldTest {
 		Set<SpyArea> result = world.getSpyAreas();
 		assertEquals(1, result.size());
 		assertTrue(result.contains(new SpyArea(new Coord(0,0))));
+	}
+	
+	@Test
+	public void getPotentialShips(){
+		World world = new World(10, 10);
+		world.registerHit(new Coord("A1")); world.registerHit(new Coord("A2")); world.registerHit(new Coord("A3")); world.registerHit(new Coord("A4")); world.registerHit(new Coord("A5"));
+		world.registerHit(new Coord("G1")); world.registerHit(new Coord("G2")); world.registerHit(new Coord("G3")); world.registerHit(new Coord("G4")); world.registerHit(new Coord("G5"));
+		world.registerHit(new Coord("C1")); world.registerHit(new Coord("C2")); world.registerHit(new Coord("C3")); world.registerHit(new Coord("C4")); 
+		world.registerHit(new Coord("C6")); world.registerHit(new Coord("C7")); world.registerHit(new Coord("C8")); world.registerHit(new Coord("C9")); 
+		world.registerHit(new Coord("I1")); world.registerHit(new Coord("I2")); world.registerHit(new Coord("I3")); 
+		world.registerHit(new Coord("E1")); world.registerHit(new Coord("E2")); world.registerHit(new Coord("E3")); 
+		world.registerHit(new Coord("F7")); world.registerHit(new Coord("F8"));
+		world.registerHit(new Coord("I8")); world.registerHit(new Coord("I9"));
+		
+		Set<Set<Coord>> result = world.getPotentialShips();
+		
+		assertEquals(8, result.size());
+	}
+		
+	@Test
+	public void registerSunk(){
+		World world = new World(5, 5);
+		world.registerHit(new Coord("A2")); world.registerHit(new Coord("A3")); world.registerHit(new Coord("A1"));
+		world.registerSunk(new Coord("A1"));
+		
+		assertEquals(1, world.getEnemyShips().size());
+		
+		Ship ship = world.getEnemyShips().iterator().next();
+		assertTrue(ship instanceof Destroyer);
+		assertEquals(new Coord("A1"), ship.getPosition());
+		assertEquals(Orientation.OST, ship.getOrientation());
+		assertEquals(Arrays.asList(new Coord("A1"), new Coord("A2"),new Coord("A3")), ship.getSpace());
 	}
 }

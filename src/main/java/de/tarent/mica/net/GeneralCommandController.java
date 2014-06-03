@@ -26,7 +26,6 @@ abstract class GeneralCommandController extends WebSocketClient {
 	protected String enemyName;
 	protected GameActionHandler actionHandler;
 	protected World world;
-	protected List<Action> actionHistory;
 	
 	GeneralCommandController(URI serverUri, Draft draft) {
 		super(serverUri, draft);
@@ -40,7 +39,6 @@ abstract class GeneralCommandController extends WebSocketClient {
 		//spiel wurde gestartet...
 		//welt kann initialisiert werden
 		world = new World(10, 10);
-		actionHistory = new ArrayList<Action>();
 		ownNumber = playerNumber;
 	}
 	

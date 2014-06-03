@@ -8,7 +8,7 @@ import org.junit.Test;
 
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.element.Destroyer;
-import de.tarent.mica.model.element.AbstractShip.Orientation;
+import de.tarent.mica.model.element.Ship.Orientation;
 
 public class DestroyerTest {
 
