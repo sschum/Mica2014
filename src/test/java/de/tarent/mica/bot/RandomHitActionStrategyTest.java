@@ -19,7 +19,6 @@ public class RandomHitActionStrategyTest {
 			if(action == null) break;
 			
 			world.registerMiss(action.getCoord());
-			System.out.println(world.getEnemyField());
 		}
 		
 		try{
