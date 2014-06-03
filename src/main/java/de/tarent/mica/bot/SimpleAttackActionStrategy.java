@@ -25,7 +25,7 @@ import de.tarent.mica.model.World;
  * @author rainu
  *
  */
-public class SimpleHitActionStrategy implements ActionStrategy {
+public class SimpleAttackActionStrategy implements ActionStrategy {
 	protected List<Coord> todo = null;
 	protected Dimension todoDimension;
 	

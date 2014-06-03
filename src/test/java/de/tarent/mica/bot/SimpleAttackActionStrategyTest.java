@@ -7,8 +7,8 @@ import org.junit.Test;
 import de.tarent.mica.Action;
 import de.tarent.mica.model.World;
 
-public class SimpleHitActionStrategyTest {
-	SimpleHitActionStrategy toTest = new SimpleHitActionStrategy();
+public class SimpleAttackActionStrategyTest {
+	SimpleAttackActionStrategy toTest = new SimpleAttackActionStrategy();
 	
 	@Test
 	public void getActionDecision(){

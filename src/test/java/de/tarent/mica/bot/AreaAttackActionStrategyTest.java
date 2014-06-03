@@ -10,8 +10,8 @@ import de.tarent.mica.Action;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
 
-public class AreaRandomHitActionStrategyTest {
-	AreaRandomHitActionStrategy toTest = new AreaRandomHitActionStrategy(new Coord("D3"), new Dimension(4, 4));
+public class AreaAttackActionStrategyTest {
+	AreaAttackActionStrategy toTest = new AreaAttackActionStrategy(new Coord("D3"), new Dimension(4, 4));
 	
 	@Test
 	public void getActionDecision(){

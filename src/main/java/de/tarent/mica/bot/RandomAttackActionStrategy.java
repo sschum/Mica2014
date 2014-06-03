@@ -21,7 +21,7 @@ import de.tarent.mica.model.Coord;
  * @author rainu
  *
  */
-public class RandomHitActionStrategy extends SimpleHitActionStrategy {
+public class RandomAttackActionStrategy extends SimpleAttackActionStrategy {
 
 	@Override
 	protected List<Coord> initialiseCoords(Dimension dim) {

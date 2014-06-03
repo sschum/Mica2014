@@ -8,17 +8,17 @@ import java.util.List;
 import de.tarent.mica.model.Coord;
 
 /**
- * Diese Strategie orientiert sich an der {@link RandomHitActionStrategy}.
+ * Diese Strategie orientiert sich an der {@link RandomAttackActionStrategy}.
  * Nur wird hier nur der angegebene Bereich betrachtet.
  * 
  * @author rainu
  * TODO: Dekorator-Pattern wäre denke ich angebracht...
  */
-public class AreaRandomHitActionStrategy extends RandomHitActionStrategy {
+public class AreaAttackActionStrategy extends RandomAttackActionStrategy {
 	protected final Coord startCoord;
 	protected final Dimension area;
 	
-	public AreaRandomHitActionStrategy(Coord startCoord, Dimension area) {
+	public AreaAttackActionStrategy(Coord startCoord, Dimension area) {
 		this.startCoord = startCoord;
 		this.area = area;
 	}

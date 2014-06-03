@@ -7,8 +7,8 @@ import org.junit.Test;
 import de.tarent.mica.Action;
 import de.tarent.mica.model.World;
 
-public class RandomHitActionStrategyTest {
-	RandomHitActionStrategy toTest = new RandomHitActionStrategy();
+public class RandomAttackActionStrategyTest {
+	RandomAttackActionStrategy toTest = new RandomAttackActionStrategy();
 	
 	@Test
 	public void getActionDecision(){
