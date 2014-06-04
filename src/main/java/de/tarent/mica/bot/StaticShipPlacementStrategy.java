@@ -51,7 +51,7 @@ public class StaticShipPlacementStrategy implements ShipPlacementStrategy {
 		int max = rnd.nextInt() % 13;
 		for(int i=0; i < max; i++) rnd.nextInt();
 
-		String finalDestination = availableResourceURL.get(rnd.nextInt() % availableResourceURL.size());
+		String finalDestination = availableResourceURL.get(Math.abs(rnd.nextInt() % availableResourceURL.size()));
 		
 		try {
 			return FleetSerializer.deserialize(new File(new URL(finalDestination).toURI()));
