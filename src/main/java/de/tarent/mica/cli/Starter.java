@@ -13,9 +13,11 @@ import asg.cliche.ShellFactory;
 public class Starter {
 
 	public static void main(String[] args) throws IOException {
+		Commands cmd = new Commands();
 		Shell shell = ShellFactory.createConsoleShell("mica", "=== RayShip ===\n", 
-				new Commands());
+				cmd);
 		
+		cmd.setShell(shell);
 		shell.commandLoop();
 	}
 }

@@ -145,4 +145,9 @@ public class HitTraceActionStrategy implements ActionStrategy {
 	public String getShortDescription() {
 		return "Diese Strategie versucht getroffene - aber noch nicht versunkene - Schiffe weiter zu treffen.";
 	}
+	
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 }

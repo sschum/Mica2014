@@ -1,5 +1,8 @@
 package de.tarent.mica.bot;
 
+import java.util.Arrays;
+import java.util.List;
+
 import de.tarent.mica.Action;
 import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.model.Fleet;
@@ -15,10 +18,17 @@ import de.tarent.mica.model.World;
  */
 public class GameMaster implements GameActionHandler {
 
+	private ShipPlacementStrategy shipPlacementStrategy;
+	private List<ActionStrategy> actionStrategies;
+	
+	public GameMaster(ShipPlacementStrategy shipPlacementStrategy, List<ActionStrategy> actionStrategies) {
+		this.shipPlacementStrategy = shipPlacementStrategy;
+		this.actionStrategies = actionStrategies;
+	}
+	
 	@Override
 	public Fleet getFleet() {
-		// TODO Auto-generated method stub
-		return null;
+		return shipPlacementStrategy.getFleet();
 	}
 
 	@Override
@@ -29,7 +39,12 @@ public class GameMaster implements GameActionHandler {
 
 	@Override
 	public Action getNextAction(World world) {
-		// TODO Auto-generated method stub
+		for(ActionStrategy s : actionStrategies){
+			Action action = s.getActionDecision(world);
+			if(action != null){
+				return action;
+			}
+		}
 		return null;
 	}
 
@@ -38,5 +53,4 @@ public class GameMaster implements GameActionHandler {
 		// TODO Auto-generated method stub
 
 	}
-
 }

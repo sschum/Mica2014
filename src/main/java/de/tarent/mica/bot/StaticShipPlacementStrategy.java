@@ -37,8 +37,6 @@ public class StaticShipPlacementStrategy implements ShipPlacementStrategy {
 			throw new IllegalStateException(
 					"This code should be never reached!", e);
 		}
-		
-		System.out.println(availableResourceURL);
 	}
 
 	@Override
