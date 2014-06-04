@@ -34,4 +34,11 @@ public class RandomAttackActionStrategy extends SimpleAttackActionStrategy {
 		
 		return result;
 	}
+	
+	@Override
+	public String getShortDescription() {
+		return 	"Diese Strategie beschie\u00dft zuf\u00e4llig eine Coordinate. " +
+				"Dieser Zufall ist allerdings noch so \"schlau\", dass er " +
+				"die Attacken so koordiniert, dass am Ende nur ein Karofeld abgedeckt wird.";
+	}
 }

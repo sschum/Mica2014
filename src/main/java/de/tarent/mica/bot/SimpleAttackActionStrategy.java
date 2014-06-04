@@ -86,5 +86,14 @@ public class SimpleAttackActionStrategy implements ActionStrategy {
 			 	 c.getX() >= dim.width ||
 				 c.getY() >= dim.height);
 	}
+	
+	@Override
+	public String getShortDescription() {
+		return "Diese Strategie sorgt daf\u00fcr, dass normale Attacken im Karoformat ausgef\u00fchrt werden.";
+	}
 
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 }

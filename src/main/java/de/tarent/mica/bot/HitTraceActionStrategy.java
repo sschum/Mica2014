@@ -140,4 +140,9 @@ public class HitTraceActionStrategy implements ActionStrategy {
 		
 		return !ship.isSunken();
 	}
+	
+	@Override
+	public String getShortDescription() {
+		return "Diese Strategie versucht getroffene - aber noch nicht versunkene - Schiffe weiter zu treffen.";
+	}
 }

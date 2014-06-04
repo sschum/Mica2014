@@ -53,4 +53,9 @@ public class AreaAttackActionStrategy extends RandomAttackActionStrategy {
 				area.width, 
 				area.height).contains(coord.getX(), coord.getY());
 	}
+	
+	@Override
+	public String getShortDescription() {
+		return "Diese Strategie orientiert sich an der " + RandomAttackActionStrategy.class.getSimpleName() + ". Nur wird hier nur der angegebene Bereich betrachtet.";
+	}
 }

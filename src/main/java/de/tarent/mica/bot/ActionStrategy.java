@@ -18,4 +18,11 @@ public interface ActionStrategy {
 	 * @return
 	 */
 	public Action getActionDecision(World world);
+	
+	/**
+	 * Liefert eine kurze Beschreibung der Strategie
+	 * 
+	 * @return
+	 */
+	public String getShortDescription();
 }
