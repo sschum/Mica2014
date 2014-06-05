@@ -287,13 +287,16 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		//TODO: versuchen ein schiff brennen zu lassen und dann ein schiff zu versinken: In einer Runde zwei schiffe versenkt?!
 		Coord lastHit = hitHistory.get(hitHistory.size() - 1);
 		world.registerSunk(lastHit);
-		
+
 		//wenn ein schiff versunken wird, weis ich, das um ihn herum nichts sein kann
 		//da man keine Schiffe nebeneinander platzieren kann/darf
 		for(Ship ship : world.getEnemyShips()){
 			if(!ship.isSunken()) continue;
 			
-			for(Coord c : ship.getSpace()){
+			List<Coord> space = ship.getSpace();
+			Collections.sort(space, Coord.COMPARATOR);
+			
+			for(Coord c : space){
 				//NORD
 				Coord neighbor = c.getNorthNeighbor();
 				if(	world.isInWorld(neighbor) && 
@@ -323,6 +326,39 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 					world.registerNothing(neighbor);
 				}
 			}
+			
+			//Auch noch die ecken, die nicht direkt am Schiff liegen
+			Coord first = space.get(0);
+			Coord last = space.get(space.size() - 1);
+			
+			Coord northWest;
+			Coord northEast;
+			Coord southWest;
+			Coord southEast;
+			
+			switch(ship.getOrientation()){
+			case NORD:
+			case SUED:
+				northWest = first.getNorthNeighbor().getWestNeighbor();
+				northEast = first.getNorthNeighbor().getEastNeighbor();
+				southWest = last.getSouthNeighbor().getWestNeighbor();
+				southEast = last.getSouthNeighbor().getEastNeighbor();
+				break;
+			case OST:
+			case WEST:
+				northWest = first.getNorthNeighbor().getWestNeighbor();
+				northEast = last.getNorthNeighbor().getEastNeighbor();
+				southWest = first.getSouthNeighbor().getWestNeighbor();
+				southEast = last.getSouthNeighbor().getEastNeighbor();
+				break;
+			default:
+				throw new IllegalStateException("Each sunken ship should have a orientation!");
+			}
+			
+			if(world.isInWorld(northWest)) world.registerMiss(northWest);
+			if(world.isInWorld(northEast)) world.registerMiss(northEast);
+			if(world.isInWorld(southWest)) world.registerMiss(southWest);
+			if(world.isInWorld(southEast)) world.registerMiss(southEast);
 		}
 	}
 	
