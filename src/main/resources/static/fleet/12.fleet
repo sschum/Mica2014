@@ -8,7 +8,7 @@
 # G ~ * ~ ~ * * * ~ * ~
 # H ~ * ~ ~ ~ ~ ~ ~ * ~
 # I ~ * ~ ~ ~ ~ ~ ~ * ~
-# J ~ ~ * * ~ ~ ~ ~ ~ ~
+# J ~ ~ ~ * * ~ ~ ~ ~ ~
 #<Koordinate>_<Ausrichtung>_<Groesse>
 A4_SUED_5
 A6_OST_4
@@ -17,4 +17,4 @@ C6_OST_3
 E1_SUED_5
 F8_SUED_4
 G4_OST_3
-J2_OST_2
+J3_OST_2

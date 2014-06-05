@@ -7,7 +7,7 @@
 # F ~ * ~ ~ ~ ~ * ~ * ~
 # G ~ * ~ ~ ~ ~ ~ ~ * ~
 # H ~ * ~ ~ ~ ~ ~ ~ * ~
-# I ~ ~ ~ ~ * * ~ ~ * ~
+# I ~ ~ ~ ~ ~ * * ~ * ~
 # J * * * * ~ ~ ~ ~ ~ ~
 #<Koordinate>_<Ausrichtung>_<Groesse>
 B2_OST_3
@@ -15,6 +15,6 @@ B6_SUED_5
 B8_SUED_3
 D1_SUED_5
 F8_SUED_4
-I4_OST_2
+I5_OST_2
 J0_OST_4
 D3_OST_2
