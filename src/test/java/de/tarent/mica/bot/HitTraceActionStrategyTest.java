@@ -103,6 +103,82 @@ public class HitTraceActionStrategyTest {
 		result = toTest.getActionForMultipleCoords(world, list(new Coord("B0"), new Coord("C0")));
 		assertTrue(	new Coord("A0").equals(result.getCoord()) ||
 					new Coord("D0").equals(result.getCoord()));
+		
+		//schiffe mit der größer >= 3
+		/*
+		 *   0 1 2 3 4
+		 * A 
+		 * B   * * * 
+		 * C 
+		 * D 
+		 * E 
+		 * 
+		 */
+		
+		world.registerHit(new Coord("A1")); world.registerHit(new Coord("A2")); world.registerHit(new Coord("A3"));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("A1"), new Coord("A2"), new Coord("A3")));
+		assertTrue(result.toString(),
+					new Coord("A0").equals(result.getCoord()) ||
+					new Coord("A4").equals(result.getCoord()));
+		
+		
+		/*
+		 *   0 1 2 3 4
+		 * A 
+		 * B   * 
+		 * C   *
+		 * D   *
+		 * E 
+		 * 
+		 */
+		world = new World(5, 5);
+		world.registerHit(new Coord("B1")); world.registerHit(new Coord("C1")); world.registerHit(new Coord("D1"));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("B1"), new Coord("C1"), new Coord("D1")));
+		assertTrue(result.toString(),
+					new Coord("A1").equals(result.getCoord()) ||
+					new Coord("E1").equals(result.getCoord()));
+		
+		/*
+		 *   0 1 2 3 4
+		 * A   *
+		 * B   * 
+		 * C   *
+		 * D   
+		 * E 
+		 * 
+		 */
+		world = new World(5, 5);
+		world.registerHit(new Coord("A1")); world.registerHit(new Coord("B1")); world.registerHit(new Coord("C1"));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("A1"), new Coord("B1"), new Coord("C1")));
+		assertEquals(new Coord("D1"), result.getCoord());
+		
+		/*
+		 *   0 1 2 3 4
+		 * A   
+		 * B    
+		 * C   *
+		 * D   *
+		 * E   *
+		 * 
+		 */
+		world = new World(5, 5);
+		world.registerHit(new Coord("C1")); world.registerHit(new Coord("D1")); world.registerHit(new Coord("E1"));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("C1"), new Coord("D1"), new Coord("E1")));
+		assertEquals(new Coord("B1"), result.getCoord());
+		
+		/*
+		 *   0 1 2 3 4
+		 * A   ~
+		 * B   * 
+		 * C   *
+		 * D   
+		 * E 
+		 * 
+		 */
+		world = new World(5, 5);
+		world.registerMiss(new Coord("A1")); world.registerHit(new Coord("B1")); world.registerHit(new Coord("C1"));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("B1"), new Coord("C1")));
+		assertEquals(new Coord("D1"), result.getCoord());
 	}
 
 	@Test

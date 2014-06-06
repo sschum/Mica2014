@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 
 import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
 import de.tarent.mica.model.Coord;
-import de.tarent.mica.model.World;
 import de.tarent.mica.model.Field.Element;
+import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Ship;
 
 /**
@@ -56,7 +55,7 @@ public class HitTraceActionStrategy implements ActionStrategy {
 			return getActionForSingleCoord(world, coords.get(0));
 		}
 	}
-
+	
 	Action getActionForMultipleCoords(World world, List<Coord> coords) {
 		List<Coord> clone = new ArrayList<Coord>(coords);
 		Collections.sort(clone, Coord.COMPARATOR);
@@ -64,49 +63,74 @@ public class HitTraceActionStrategy implements ActionStrategy {
 		Coord first = clone.get(0);
 		Coord last = clone.get(clone.size() - 1);
 		
-		if(first.getY() == last.getY()){
-			//auf horizontaler Ebene gleich!
-			if(	first.getWestNeighbor().equals(last) ||
-				first.getEastNeighbor().equals(last)){
-				
-				//nachbarn
-				Coord left = first.getWestNeighbor();
-				Coord right = last.getEastNeighbor();
-				
-				if(!world.isInWorld(left)) return buildAction(right);
-				if(!world.isInWorld(right)) return buildAction(left);
-				
-				//links wie auch rechts sind möglich...
-				boolean rand = new Random().nextBoolean();
-				
-				return buildAction(rand ? left : right);
-			}else{
-				//zwischenraum nutzen!
-				return buildAction(first.getEastNeighbor());
+		boolean isHorizontal = first.getY() == last.getY();
+		
+		Coord gab = getGap(isHorizontal, clone);
+		if(gab != null) return buildAction(gab);
+		
+		Coord edge = getEdge(isHorizontal, world, clone);
+		if(edge != null) return buildAction(edge);
+		
+		return null;
+	}
+	
+	private Coord getGap(boolean isHorizontal, List<Coord> coords) {
+		Coord first = coords.get(0);
+		Coord last = coords.get(coords.size() - 1);
+		
+		if(isHorizontal){
+			Coord coord = first;
+			
+			//solange nach osten gehen, bis ich eine lücke gefunden habe
+			while(!coord.equals(last) && coords.contains(coord)){
+				coord = coord.getEastNeighbor();
 			}
-		}else if(first.getX() == last.getX()){
-			//auf vertikaler Ebene gleich
-			if(	first.getNorthNeighbor().equals(last) ||
-				first.getSouthNeighbor().equals(last)){
-				
-				//nachbarn
-				Coord up = first.getNorthNeighbor();
-				Coord down = last.getSouthNeighbor();
-				
-				if(!world.isInWorld(up)) return buildAction(down);
-				if(!world.isInWorld(down)) return buildAction(up);
-				
-				//oben wie auch unten sind möglich...
-				boolean rand = new Random().nextBoolean();
-				
-				return buildAction(rand ? up : down);
-			}else{
-				//zwischenraum nutzen!
-				return buildAction(first.getSouthNeighbor());
+			
+			if(!coord.equals(last)){
+				return coord;
 			}
 		}else{
-			return null;
+			Coord coord = first;
+			
+			//solange nach süden gehen, bis ich eine lücke gefunden habe
+			while(!coord.equals(last) && coords.contains(coord)){
+				coord = coord.getSouthNeighbor();
+			}
+			
+			if(!coord.equals(last)){
+				return coord;
+			}
 		}
+		
+		//keine lücke gefunden
+		return null;
+	}
+	
+	private Coord getEdge(boolean isHorizontal, World world, List<Coord> coords) {
+		Coord first = coords.get(0);
+		Coord last = coords.get(coords.size() - 1);
+		
+		if(isHorizontal){
+			Coord west = first.getWestNeighbor();
+			Coord east = last.getEastNeighbor();
+			
+			if(world.isInWorld(west) && world.getEnemyField().get(west) == Element.UNBEKANNT){
+				return west;
+			}else if(world.isInWorld(east) && world.getEnemyField().get(east) == Element.UNBEKANNT){
+				return east;
+			}
+		}else{
+			Coord north = first.getNorthNeighbor();
+			Coord south = last.getSouthNeighbor();
+			
+			if(world.isInWorld(north) && world.getEnemyField().get(north) == Element.UNBEKANNT){
+				return north;
+			}else if(world.isInWorld(south) && world.getEnemyField().get(south) == Element.UNBEKANNT){
+				return south;
+			}
+		}
+		
+		return null;
 	}
 
 	Action getActionForSingleCoord(World world, Coord coord) {
