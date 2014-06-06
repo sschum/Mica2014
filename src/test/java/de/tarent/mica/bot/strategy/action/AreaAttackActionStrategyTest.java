@@ -1,4 +1,4 @@
-package de.tarent.mica.bot;
+package de.tarent.mica.bot.strategy.action;
 
 import static org.junit.Assert.*;
 
@@ -7,6 +7,7 @@ import java.awt.Dimension;
 import org.junit.Test;
 
 import de.tarent.mica.Action;
+import de.tarent.mica.bot.strategy.action.AreaAttackActionStrategy;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
 

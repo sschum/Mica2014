@@ -1,4 +1,4 @@
-package de.tarent.mica.bot;
+package de.tarent.mica.bot.strategy.action;
 
 import java.awt.Dimension;
 import java.util.Collections;

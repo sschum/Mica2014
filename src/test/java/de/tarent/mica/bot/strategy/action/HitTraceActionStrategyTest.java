@@ -1,4 +1,4 @@
-package de.tarent.mica.bot;
+package de.tarent.mica.bot.strategy.action;
 
 import static org.mockito.Mockito.*;
 import static org.junit.Assert.*;
@@ -14,6 +14,7 @@ import org.mockito.Mockito;
 
 import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
+import de.tarent.mica.bot.strategy.action.HitTraceActionStrategy;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Ship;

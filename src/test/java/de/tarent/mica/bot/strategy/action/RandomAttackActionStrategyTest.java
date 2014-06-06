@@ -1,14 +1,15 @@
-package de.tarent.mica.bot;
+package de.tarent.mica.bot.strategy.action;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
 import de.tarent.mica.Action;
+import de.tarent.mica.bot.strategy.action.RandomAttackActionStrategy;
 import de.tarent.mica.model.World;
 
-public class SimpleAttackActionStrategyTest {
-	SimpleAttackActionStrategy toTest = new SimpleAttackActionStrategy();
+public class RandomAttackActionStrategyTest {
+	RandomAttackActionStrategy toTest = new RandomAttackActionStrategy();
 	
 	@Test
 	public void getActionDecision(){

@@ -1,4 +1,4 @@
-package de.tarent.mica.bot;
+package de.tarent.mica.bot.strategy.shipplacement;
 
 import java.io.File;
 import java.io.IOException;

@@ -4,12 +4,12 @@ import java.util.ArrayList;
 import java.util.List;
 
 import de.tarent.mica.GameActionHandler;
-import de.tarent.mica.bot.ActionStrategy;
 import de.tarent.mica.bot.GameMaster;
-import de.tarent.mica.bot.HitTraceActionStrategy;
-import de.tarent.mica.bot.RandomAttackActionStrategy;
-import de.tarent.mica.bot.ShipPlacementStrategy;
-import de.tarent.mica.bot.StaticShipPlacementStrategy;
+import de.tarent.mica.bot.strategy.action.ActionStrategy;
+import de.tarent.mica.bot.strategy.action.HitTraceActionStrategy;
+import de.tarent.mica.bot.strategy.action.RandomAttackActionStrategy;
+import de.tarent.mica.bot.strategy.shipplacement.ShipPlacementStrategy;
+import de.tarent.mica.bot.strategy.shipplacement.StaticShipPlacementStrategy;
 
 public class GameActionHandlerFactoryCommand{
 	private List<ActionStrategy> actionStrategies = new ArrayList<ActionStrategy>();

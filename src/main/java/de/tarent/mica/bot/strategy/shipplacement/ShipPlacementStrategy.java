@@ -1,4 +1,4 @@
-package de.tarent.mica.bot;
+package de.tarent.mica.bot.strategy.shipplacement;
 
 import de.tarent.mica.model.Fleet;
 

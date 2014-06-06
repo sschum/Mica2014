@@ -1,4 +1,4 @@
-package de.tarent.mica.bot;
+package de.tarent.mica.bot.strategy.action;
 
 import java.util.ArrayList;
 import java.util.Collections;

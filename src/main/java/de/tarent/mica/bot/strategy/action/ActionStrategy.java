@@ -1,4 +1,4 @@
-package de.tarent.mica.bot;
+package de.tarent.mica.bot.strategy.action;
 
 import de.tarent.mica.Action;
 import de.tarent.mica.model.World;

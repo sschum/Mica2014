@@ -1,9 +1,10 @@
-package de.tarent.mica.bot;
+package de.tarent.mica.bot.strategy.shipplacement;
 
 import static org.junit.Assert.*;
 
 import org.junit.Test;
 
+import de.tarent.mica.bot.strategy.shipplacement.StaticShipPlacementStrategy;
 import de.tarent.mica.model.Fleet;
 
 public class StaticShipPlacementStrategyTest {
