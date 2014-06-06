@@ -25,7 +25,8 @@ import de.tarent.mica.model.World;
  * @author rainu
  *
  */
-public class SimpleAttackActionStrategy implements ActionStrategy {
+@ActionStats(description = "Diese Strategie sorgt daf\u00fcr, dass normale Attacken im Karoformat ausgef\u00fchrt werden.")
+public class SimpleAttackActionStrategy extends ActionStrategy {
 	protected List<Coord> todo = null;
 	protected Dimension todoDimension;
 	
@@ -87,11 +88,6 @@ public class SimpleAttackActionStrategy implements ActionStrategy {
 				 c.getY() >= dim.height);
 	}
 	
-	@Override
-	public String getShortDescription() {
-		return "Diese Strategie sorgt daf\u00fcr, dass normale Attacken im Karoformat ausgef\u00fchrt werden.";
-	}
-
 	@Override
 	public String toString() {
 		return getClass().getSimpleName();

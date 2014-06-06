@@ -52,6 +52,6 @@ public class GameMaster implements GameActionHandler {
 	@Override
 	public void handleGameOver(GameStats stats) {
 		// TODO Auto-generated method stub
-
+		
 	}
 }

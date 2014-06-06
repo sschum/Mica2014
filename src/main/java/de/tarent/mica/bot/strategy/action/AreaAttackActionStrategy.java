@@ -14,6 +14,7 @@ import de.tarent.mica.model.Coord;
  * @author rainu
  * TODO: Dekorator-Pattern wäre denke ich angebracht...
  */
+@ActionStats(description = "Diese Strategie orientiert sich an der RandomAttackActionStrategy. Nur wird hier nur der angegebene Bereich betrachtet.")
 public class AreaAttackActionStrategy extends RandomAttackActionStrategy {
 	protected final Coord startCoord;
 	protected final Dimension area;
@@ -54,8 +55,4 @@ public class AreaAttackActionStrategy extends RandomAttackActionStrategy {
 				area.height).contains(coord.getX(), coord.getY());
 	}
 	
-	@Override
-	public String getShortDescription() {
-		return "Diese Strategie orientiert sich an der " + RandomAttackActionStrategy.class.getSimpleName() + ". Nur wird hier nur der angegebene Bereich betrachtet.";
-	}
 }
