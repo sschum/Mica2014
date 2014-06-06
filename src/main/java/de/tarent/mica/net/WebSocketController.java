@@ -85,6 +85,7 @@ public class WebSocketController extends EnemyActionCommandController implements
 	
 	@Override
 	public void send(String text) throws NotYetConnectedException {
+		Logger.debug("Outgoing Message: " + text);
 		logSend(text);
 		super.send(text);
 	}
