@@ -81,6 +81,7 @@ class MessageDispatcher {
 					}else{
 						controller.hit(null);
 					}
+					controller.myTurn();
 					return;
 				case TORPEDO:
 				case ENEMY_SHIP_MISSED:
@@ -130,7 +131,9 @@ class MessageDispatcher {
 				case ENEMY_SHIP_SUNK:
 					matcher = sunkMessagePattern.matcher(message);
 					matcher.matches();
+					controller.hit(null); 	//wir bekommen beim "finalen Schuss" keine seperate Nachricht...
 					controller.sunk(matcher.group(1));
+					controller.myTurn();	//auch nachdem ein schiff gesunken ist, sind wir am zug
 					return;
 				case GAME_OVER:
 					controller.gameOver(true);
