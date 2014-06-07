@@ -54,7 +54,17 @@ public class WebSocketControllerTest {
 	public void play() throws InterruptedException{
 		doReturn(true).when(toTestSpy).connectBlocking();
 		
-		toTestSpy.play(null, mock(GameActionHandler.class));
+		Thread t = new Thread(new Runnable() {
+			@Override
+			public void run() {
+				toTestSpy.play(null, mock(GameActionHandler.class));
+			}
+		});
+		
+		t.start();
+		Thread.sleep(50);
+		toTestSpy.stopPlay();
+		t.join();
 		
 		verify(toTestSpy).connectBlocking();
 	}
