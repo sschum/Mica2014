@@ -5,6 +5,35 @@
 	<artifactId>battleship</artifactId>
 	<version>1.0-SNAPSHOT</version>
 
+	<!-- 
+		ANLEITUNG:
+		
+		Sollte das Projekt zum ersten mal gebaut werden, muss zuvor folgender Befehl ausgeführt werden:
+		
+			mvn validate
+		
+		Dieser sorgt dafür, dass die externen (kryonet) Bibliotheken (siehe lib-Verzeichnis) in das lokale
+		Maven-Repository kopiert werden. Dies ist nötig, damit anschließend ein Runable-Jar-File generiert
+		werden kann. Wenn man die externen Biliotheken via "system"-Scope verwendet, werden diese nicht in
+		das JAR eingebunden. Somit wäre dieses JAR nicht benutzbar!
+
+		Um das Projekt zu bauen, genügt folgender Befehl:
+		
+			mvn clean install
+			
+		Um die Tests zu überspringen muss folgender Befehl ausgeführt werden:
+		
+			mvn clean install -DskipTests
+			
+		Um ein Release zu bauen:
+		
+			mvn release:clean release:prepare release:perform \
+				-DskipTests -Darguments="-DskipTests" \
+				-Dtag=ClipSync-$RELEASE_VERSION \
+				-DreleaseVersion=$RELEASE_VERSION \
+				-DdevelopmentVersion=$DEV_VERSION-SNAPSHOT
+	-->
+
 	<build>
 		<plugins>
 			<plugin>
@@ -15,6 +44,52 @@
 					<source>1.7</source>
 					<target>1.7</target>
 				</configuration>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-install-plugin</artifactId>
+				<executions>
+					<execution>
+						<id>dependency.cliche</id>
+						<phase>validate</phase>
+						<configuration>
+							<file>${basedir}/lib/asg.cliche-110413.jar</file>
+							<repositoryLayout>default</repositoryLayout>
+							<groupId>asg.cliche</groupId>
+							<artifactId>cliche-shell</artifactId>
+							<version>110413</version>
+							<packaging>jar</packaging>
+							<generatePom>true</generatePom>
+						</configuration>
+						<goals>
+							<goal>install-file</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-assembly-plugin</artifactId>
+				<executions>
+					<execution>
+						<goals>
+							<goal>attached</goal>
+						</goals>
+						<phase>package</phase>
+						<configuration>
+							<descriptorRefs>
+								<descriptorRef>jar-with-dependencies</descriptorRef>
+							</descriptorRefs>
+							<archive>
+								<manifest>
+									<mainClass>de.tarent.mica.cli.Starter</mainClass>
+								</manifest>
+							</archive>
+							<finalName>RayShip</finalName>
+							<appendAssemblyId>false</appendAssemblyId>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 		</plugins>
 	</build>
@@ -44,8 +119,6 @@
 			<groupId>asg.cliche</groupId>
 			<artifactId>cliche-shell</artifactId>
 			<version>110413</version>
-			<systemPath>${basedir}/lib/asg.cliche-110413.jar</systemPath>
-			<scope>system</scope>
 		</dependency>
 	</dependencies>
 </project>
