@@ -16,6 +16,7 @@ import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
 
+import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.util.FleetSerializer;
 
@@ -26,7 +27,8 @@ import de.tarent.mica.util.FleetSerializer;
  * @author rainu
  * 
  */
-public class StaticShipPlacementStrategy implements ShipPlacementStrategy {
+@StrategyStats(description = "Diese Strategie lie\u00dft die Flottenpositionen aus Dateien aus. Wenn es mehrere Dateien gibt, wird eine zuf\u00e4llig auserw\u00e4hlt.")
+public class StaticShipPlacementStrategy extends ShipPlacementStrategy {
 	private List<String> availableResourceURL = new ArrayList<String>();
 
 	public StaticShipPlacementStrategy() {
@@ -101,31 +103,35 @@ public class StaticShipPlacementStrategy implements ShipPlacementStrategy {
 					dirURL.getPath().indexOf("!")); // strip out only the JAR
 													// file
 			JarFile jar = new JarFile(URLDecoder.decode(jarPath, "UTF-8"));
-			Enumeration<JarEntry> entries = jar.entries(); // gives ALL entries
-															// in jar
-			Set<String> result = new HashSet<String>(); // avoid duplicates in
-														// case it is a
-														// subdirectory
-			
-			if(path.startsWith("/")){
-				path = path.substring(1);
-			}
-			
-			while (entries.hasMoreElements()) {
-				String name = entries.nextElement().getName();
-				if (name.startsWith(path)) { // filter according to the path
-					String entry = name.substring(path.length());
-					int checkSubdir = entry.indexOf("/");
-					if (checkSubdir >= 0) {
-						// if it is a subdirectory, we just return the directory
-						// name
-						entry = entry.substring(0, checkSubdir);
-					}
-					
-					if(!entry.isEmpty()) result.add("/" + path + entry);
+			try{
+				Enumeration<JarEntry> entries = jar.entries(); // gives ALL entries
+																// in jar
+				Set<String> result = new HashSet<String>(); // avoid duplicates in
+															// case it is a
+															// subdirectory
+				
+				if(path.startsWith("/")){
+					path = path.substring(1);
 				}
+				
+				while (entries.hasMoreElements()) {
+					String name = entries.nextElement().getName();
+					if (name.startsWith(path)) { // filter according to the path
+						String entry = name.substring(path.length());
+						int checkSubdir = entry.indexOf("/");
+						if (checkSubdir >= 0) {
+							// if it is a subdirectory, we just return the directory
+							// name
+							entry = entry.substring(0, checkSubdir);
+						}
+						
+						if(!entry.isEmpty()) result.add("/" + path + entry);
+					}
+				}
+				return result.toArray(new String[result.size()]);
+			}finally{
+				try{ jar.close(); }catch(IOException e){}
 			}
-			return result.toArray(new String[result.size()]);
 		}
 
 		// [start].... mein Teil ...
@@ -151,4 +157,5 @@ public class StaticShipPlacementStrategy implements ShipPlacementStrategy {
 		// [end] .... mein Teil ....
 		throw new UnsupportedOperationException("Cannot list files for URL "+ dirURL);
 	}
+	
 }
