@@ -14,19 +14,9 @@ import java.util.List;
 import org.java_websocket.drafts.Draft_17;
 import org.java_websocket.handshake.ServerHandshake;
 
-import de.tarent.mica.Action;
-import de.tarent.mica.Action.Type;
 import de.tarent.mica.Controller;
 import de.tarent.mica.GameActionHandler;
-import de.tarent.mica.model.Coord;
-import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.GameStats;
-import de.tarent.mica.model.World;
-import de.tarent.mica.model.element.Ship.Orientation;
-import de.tarent.mica.model.element.Carrier;
-import de.tarent.mica.model.element.Cruiser;
-import de.tarent.mica.model.element.Destroyer;
-import de.tarent.mica.model.element.Submarine;
 import de.tarent.mica.util.Logger;
 
 /**
@@ -38,6 +28,8 @@ import de.tarent.mica.util.Logger;
 public class WebSocketController extends EnemyActionCommandController implements Controller {
 	protected MessageDispatcher dispatcher = new MessageDispatcher(this);
 	protected List<String> messageLog;
+	protected GameStats gameStats = null;
+	protected boolean isPlaying = false;
 	
 	public WebSocketController(String host, int port) throws URISyntaxException {
 		super(new URI("ws://" + host + ":" + port + "/battle"), new Draft_17());
@@ -105,6 +97,12 @@ public class WebSocketController extends EnemyActionCommandController implements
 	@Override
 	public void onClose(int code, String reason, boolean remote) {
 		Logger.debug("Server closed connection. Reason: " + reason);
+		stopPlay();
+	}
+	
+	protected synchronized void stopPlay(){
+		this.isPlaying = false;
+		this.notifyAll();
 	}
 	
 	/* **************
@@ -113,16 +111,26 @@ public class WebSocketController extends EnemyActionCommandController implements
 	 */
 	
 	@Override
-	public void play(String name, GameActionHandler actionHandler) {
+	public synchronized GameStats play(String name, GameActionHandler actionHandler) {
 		if(name != null)this.ownName = name;
 		
+		this.gameStats = null;
 		this.actionHandler = actionHandler;
+		this.isPlaying = true;
 		
 		try {
 			connectBlocking();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
+		
+		while(isPlaying){
+			try {
+				wait();
+			} catch (InterruptedException e) {}
+		}
+		
+		return this.gameStats;
 	}
 	
 	void gameOver(boolean won) {
@@ -133,50 +141,9 @@ public class WebSocketController extends EnemyActionCommandController implements
 		stats.setEnemyName(enemyName);
 		stats.setWon(won);
 		
-		actionHandler.handleGameOver(stats);
-	}
-
-	public static void main(String[] args) throws URISyntaxException, IOException {
-		final WebSocketController controller = new WebSocketController("localhost", 40000);
-		controller.play("Rainu", new GameActionHandler() {
-			
-			@Override
-			public void handleGameOver(GameStats stats) {
-				try {
-					controller.writeMessageLog(new File("/tmp/RayShip_" + stats.getPlayerName() + "_vs_" + stats.getEnemyName() + ".log"));
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			}
-			
-			@Override
-			public void handleEnemyAction(Action action) {
-				// TODO Auto-generated method stub
-				
-			}
-			
-			@Override
-			public Action getNextAction(World world) {
-				return new Action(Type.TORPEDO_WEST, new Coord("F7"));
-			}
-			
-			@Override
-			public Fleet getFleet() {
-				Fleet fleet = new Fleet();
-				
-				fleet.setCarrier1(new Carrier(Orientation.OST, new Coord("A1")));
-				fleet.setCarrier2(new Carrier(Orientation.OST, new Coord("G1")));
-				fleet.setCruiser1(new Cruiser(Orientation.OST, new Coord("C1")));
-				fleet.setCruiser2(new Cruiser(Orientation.OST, new Coord("C6")));
-				fleet.setDestroyer1(new Destroyer(Orientation.OST, new Coord("I1")));
-				fleet.setDestroyer2(new Destroyer(Orientation.OST, new Coord("E1")));
-				fleet.setSubmarine1(new Submarine(Orientation.OST, new Coord("F7")));
-				fleet.setSubmarine2(new Submarine(Orientation.OST, new Coord("I8")));
-				
-				return fleet;
-			}
-		});
+		this.gameStats = stats;
+		
+		stopPlay();
 	}
 
 }

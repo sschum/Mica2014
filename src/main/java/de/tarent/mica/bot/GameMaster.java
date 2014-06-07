@@ -48,10 +48,4 @@ public class GameMaster implements GameActionHandler {
 		}
 		return null;
 	}
-
-	@Override
-	public void handleGameOver(GameStats stats) {
-		// TODO Auto-generated method stub
-		
-	}
 }

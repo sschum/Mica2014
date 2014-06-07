@@ -8,10 +8,8 @@ import java.util.ArrayList;
 
 import org.junit.Before;
 import org.junit.Test;
-import org.mockito.ArgumentCaptor;
 
 import de.tarent.mica.GameActionHandler;
-import de.tarent.mica.model.GameStats;
 
 public class WebSocketControllerTest {
 
@@ -69,9 +67,5 @@ public class WebSocketControllerTest {
 		toTestSpy.gameOver(false);
 		
 		verify(toTestSpy).close();
-		
-		ArgumentCaptor<GameStats> cap = ArgumentCaptor.forClass(GameStats.class);
-		verify(toTestSpy.actionHandler).handleGameOver(cap.capture());
-		assertFalse(cap.getValue().isWon());
 	}
 }

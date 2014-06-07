@@ -33,11 +33,4 @@ public interface GameActionHandler {
 	 * @return Die nächste Aktion, die ausgeführt werden soll.
 	 */
 	public Action getNextAction(World world);
-	
-	/**
-	 * Diese Methode wird aufgerufen, wenn das Spiel zuende ist.
-	 * 
-	 * @param stats Das Spielergebnis.
-	 */
-	public void handleGameOver(GameStats stats);
 }

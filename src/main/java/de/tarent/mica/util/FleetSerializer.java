@@ -11,11 +11,11 @@ import java.util.regex.Pattern;
 
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Fleet;
-import de.tarent.mica.model.element.Ship;
-import de.tarent.mica.model.element.Ship.Orientation;
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
+import de.tarent.mica.model.element.Ship;
+import de.tarent.mica.model.element.Ship.Orientation;
 import de.tarent.mica.model.element.Submarine;
 
 /**

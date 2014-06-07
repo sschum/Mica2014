@@ -75,7 +75,7 @@ public class World {
 	 * @param ship
 	 * @return
 	 */
-	public synchronized World placeOwnShip(Ship ship){
+	public World placeOwnShip(Ship ship){
 		validateShipPosition(ship);
 		
 		for(Coord c : ship.getSpace()) ownField.set(c, Element.SCHIFF);

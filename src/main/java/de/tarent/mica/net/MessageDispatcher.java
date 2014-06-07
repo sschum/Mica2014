@@ -135,8 +135,12 @@ class MessageDispatcher {
 					controller.sunk(matcher.group(1));
 					controller.myTurn();	//auch nachdem ein schiff gesunken ist, sind wir am zug
 					return;
+				case YOU_WIN:
 				case GAME_OVER:
 					controller.gameOver(true);
+					return;
+				case YOU_LOSE:
+					controller.gameOver(false);
 					return;
 				default:
 					break;

@@ -1,5 +1,7 @@
 package de.tarent.mica;
 
+import de.tarent.mica.model.GameStats;
+
 
 /**
  * Dieses Interface definiert alle Aktionen, die ein 
@@ -16,6 +18,7 @@ public interface Controller {
 	 * 
 	 * @param name Gewünschter Spielername.
 	 * @param actionHandler Der Aktionhandler für dieses Spiel
+	 * @return Das Spielergebnis
 	 */
-	void play(String name, GameActionHandler actionHandler);
+	GameStats play(String name, GameActionHandler actionHandler);
 }
