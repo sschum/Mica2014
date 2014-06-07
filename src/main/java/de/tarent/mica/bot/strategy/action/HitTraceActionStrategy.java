@@ -8,6 +8,7 @@ import java.util.Set;
 
 import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
+import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.World;
@@ -20,7 +21,7 @@ import de.tarent.mica.model.element.Ship;
  * @author rainu
  *
  */
-@ActionStats(description = "Diese Strategie versucht getroffene - aber noch nicht versunkene - Schiffe weiter zu treffen.")
+@StrategyStats(description = "Diese Strategie versucht getroffene - aber noch nicht versunkene - Schiffe weiter zu treffen.")
 public class HitTraceActionStrategy extends ActionStrategy {
 	private boolean ignoreBurningShips = true;
 		

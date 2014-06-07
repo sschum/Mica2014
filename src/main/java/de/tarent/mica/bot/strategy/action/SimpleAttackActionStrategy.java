@@ -8,6 +8,7 @@ import java.util.Random;
 
 import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
+import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.World;
@@ -25,7 +26,7 @@ import de.tarent.mica.model.World;
  * @author rainu
  *
  */
-@ActionStats(description = "Diese Strategie sorgt daf\u00fcr, dass normale Attacken im Karoformat ausgef\u00fchrt werden.")
+@StrategyStats(description = "Diese Strategie sorgt daf\u00fcr, dass normale Attacken im Karoformat ausgef\u00fchrt werden.")
 public class SimpleAttackActionStrategy extends ActionStrategy {
 	protected List<Coord> todo = null;
 	protected Dimension todoDimension;

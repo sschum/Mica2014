@@ -5,6 +5,7 @@ import java.awt.Rectangle;
 import java.util.Iterator;
 import java.util.List;
 
+import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Coord;
 
 /**
@@ -14,7 +15,7 @@ import de.tarent.mica.model.Coord;
  * @author rainu
  * TODO: Dekorator-Pattern wäre denke ich angebracht...
  */
-@ActionStats(description = "Diese Strategie orientiert sich an der RandomAttackActionStrategy. Nur wird hier nur der angegebene Bereich betrachtet.")
+@StrategyStats(description = "Diese Strategie orientiert sich an der RandomAttackActionStrategy. Nur wird hier nur der angegebene Bereich betrachtet.")
 public class AreaAttackActionStrategy extends RandomAttackActionStrategy {
 	protected final Coord startCoord;
 	protected final Dimension area;

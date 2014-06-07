@@ -1,6 +1,7 @@
 package de.tarent.mica.bot.strategy.action;
 
 import de.tarent.mica.Action;
+import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.World;
 
 /**
@@ -12,8 +13,8 @@ import de.tarent.mica.model.World;
 public abstract class ActionStrategy {
 
 	public ActionStrategy() {
-		if(!getClass().isAnnotationPresent(ActionStats.class)){
-			throw new IllegalStateException("The class " + getClass().getName() + " has no " + ActionStats.class + " annotation!");
+		if(!getClass().isAnnotationPresent(StrategyStats.class)){
+			throw new IllegalStateException("The class " + getClass().getName() + " has no " + StrategyStats.class + " annotation!");
 		}
 	}
 	
@@ -40,6 +41,6 @@ public abstract class ActionStrategy {
 	 * @return
 	 */
 	public static String getShortDescription(Class<? extends ActionStrategy> strategy){
-		return strategy.getAnnotation(ActionStats.class).description();
+		return strategy.getAnnotation(StrategyStats.class).description();
 	}
 }

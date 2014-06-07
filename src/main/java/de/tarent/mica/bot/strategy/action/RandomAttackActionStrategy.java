@@ -5,6 +5,7 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Random;
 
+import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Coord;
 
 /**
@@ -21,7 +22,7 @@ import de.tarent.mica.model.Coord;
  * @author rainu
  *
  */
-@ActionStats(description = 
+@StrategyStats(description = 
 		"Diese Strategie beschie\u00dft zuf\u00e4llig eine Coordinate. " +
 		"Dieser Zufall ist allerdings noch so \"schlau\", dass er " +
 		"die Attacken so koordiniert, dass am Ende nur ein Karofeld abgedeckt wird.")
