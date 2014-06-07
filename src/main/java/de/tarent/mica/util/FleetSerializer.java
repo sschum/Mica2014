@@ -3,9 +3,13 @@ package de.tarent.mica.util;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -79,7 +83,11 @@ public class FleetSerializer {
 	}
 	
 	public static Fleet deserialize(File source) throws IOException{
-		BufferedReader br = new BufferedReader(new FileReader(source));
+		return deserialize(new FileInputStream(source));
+	}
+	
+	public static Fleet deserialize(InputStream is) throws IOException{
+		BufferedReader br = new BufferedReader(new InputStreamReader(is));
 		Fleet fleet = new Fleet();
 		
 		try{

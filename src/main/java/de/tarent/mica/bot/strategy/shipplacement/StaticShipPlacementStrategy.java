@@ -52,7 +52,11 @@ public class StaticShipPlacementStrategy implements ShipPlacementStrategy {
 		String finalDestination = availableResourceURL.get(Math.abs(rnd.nextInt() % availableResourceURL.size()));
 		
 		try {
-			return FleetSerializer.deserialize(new File(new URL(finalDestination).toURI()));
+			if(finalDestination.startsWith("file:")){
+				return FleetSerializer.deserialize(new File(new URL(finalDestination).toURI()));
+			}else{
+				return FleetSerializer.deserialize(getClass().getResourceAsStream(finalDestination));
+			}
 		} catch (Exception e) {
 			throw new IllegalStateException("This code should be never reached because the fleet-files sould not be currupted!", e);
 		}
@@ -102,6 +106,11 @@ public class StaticShipPlacementStrategy implements ShipPlacementStrategy {
 			Set<String> result = new HashSet<String>(); // avoid duplicates in
 														// case it is a
 														// subdirectory
+			
+			if(path.startsWith("/")){
+				path = path.substring(1);
+			}
+			
 			while (entries.hasMoreElements()) {
 				String name = entries.nextElement().getName();
 				if (name.startsWith(path)) { // filter according to the path
@@ -112,7 +121,8 @@ public class StaticShipPlacementStrategy implements ShipPlacementStrategy {
 						// name
 						entry = entry.substring(0, checkSubdir);
 					}
-					result.add(entry);
+					
+					if(!entry.isEmpty()) result.add("/" + path + entry);
 				}
 			}
 			return result.toArray(new String[result.size()]);
