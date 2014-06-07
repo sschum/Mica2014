@@ -88,9 +88,4 @@ public class SimpleAttackActionStrategy extends ActionStrategy {
 			 	 c.getX() >= dim.width ||
 				 c.getY() >= dim.height);
 	}
-	
-	@Override
-	public String toString() {
-		return getClass().getSimpleName();
-	}
 }

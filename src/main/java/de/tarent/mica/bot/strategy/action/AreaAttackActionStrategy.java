@@ -56,4 +56,8 @@ public class AreaAttackActionStrategy extends RandomAttackActionStrategy {
 				area.height).contains(coord.getX(), coord.getY());
 	}
 	
+	@Override
+	public String toString() {
+		return super.toString() + "\n\tstart coordinate: " + startCoord + "\n\tarea: " + area.width + "x" + area.height;
+	}
 }

@@ -157,5 +157,4 @@ public class StaticShipPlacementStrategy extends ShipPlacementStrategy {
 		// [end] .... mein Teil ....
 		throw new UnsupportedOperationException("Cannot list files for URL "+ dirURL);
 	}
-	
 }

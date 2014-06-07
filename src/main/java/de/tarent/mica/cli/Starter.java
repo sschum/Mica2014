@@ -16,6 +16,7 @@ public class Starter {
 		Commands cmd = new Commands();
 		Shell shell = ShellFactory.createConsoleShell("mica", "=== RayShip ===\n", 
 				cmd);
+		shell.addAuxHandler(new InputConverterContainer(), null);
 		
 		cmd.setShell(shell);
 		shell.commandLoop();

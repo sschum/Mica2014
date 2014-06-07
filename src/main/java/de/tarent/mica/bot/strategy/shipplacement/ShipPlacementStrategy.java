@@ -40,4 +40,9 @@ public abstract class ShipPlacementStrategy {
 	public static String getShortDescription(Class<? extends ShipPlacementStrategy> strategy){
 		return strategy.getAnnotation(StrategyStats.class).description();
 	}
+	
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 }

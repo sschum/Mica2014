@@ -43,4 +43,9 @@ public abstract class ActionStrategy {
 	public static String getShortDescription(Class<? extends ActionStrategy> strategy){
 		return strategy.getAnnotation(StrategyStats.class).description();
 	}
+	
+	@Override
+	public String toString() {
+		return getClass().getSimpleName();
+	}
 }

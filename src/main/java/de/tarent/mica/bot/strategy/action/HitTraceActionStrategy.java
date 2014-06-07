@@ -169,6 +169,6 @@ public class HitTraceActionStrategy extends ActionStrategy {
 	
 	@Override
 	public String toString() {
-		return getClass().getSimpleName();
+		return super.toString() + "\n\tignore burning ships: " + ignoreBurningShips;
 	}
 }
