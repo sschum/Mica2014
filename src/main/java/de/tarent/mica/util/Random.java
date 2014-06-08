@@ -1,6 +1,5 @@
 package de.tarent.mica.util;
 
-
 /**
  * Eigene Random-Klasse, die zusätzliche funktionalitäten als {@link java.util.Random} bietet.
  * 
@@ -36,5 +35,16 @@ public class Random extends java.util.Random {
 	@Override
 	public boolean nextBoolean() {
 		return nextInt() % 2 == 0;
+	}
+
+	/**
+	 * Liefert ein Zufälliges Element aus dem gegebenen Array.
+	 * 
+	 * @param values
+	 * @return
+	 */
+	public <T> T choose(T[] values) {
+		int index = Math.abs(nextInt() % values.length);
+		return values[index];
 	}
 }
