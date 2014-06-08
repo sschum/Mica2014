@@ -34,5 +34,5 @@ if [ -z "$INPUT_FILE" ]; then
 else
 	echo "Skript wird ausgeführt: "$INPUT_FILE
 	
-	cat $INPUT_FILE | sed 's/#.*//g' | grep -v '^$' | java -jar $UNIX_STYLE_HOME/$JAR_NAME
+	cat $INPUT_FILE | sed 's/#.*//g' | grep -v '^\s*$' | sed 's/^\s*//g' | java -jar $UNIX_STYLE_HOME/$JAR_NAME
 fi
