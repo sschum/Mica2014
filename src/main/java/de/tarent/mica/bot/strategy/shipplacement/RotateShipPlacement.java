@@ -42,6 +42,12 @@ public class RotateShipPlacement extends ShipPlacementStrategy {
 		return fleet;
 	}
 
+	/**
+	 * Dreht die gegebene Flottenposition in die gegebene Richtung.
+	 * 
+	 * @param fleet
+	 * @param direction
+	 */
 	public void rotate(Fleet fleet, RotateDirection direction) {
 		if(fleet.getCarrier1() != null) fleet.setCarrier1(rotate(fleet.getCarrier1(), direction));
 		if(fleet.getCarrier2() != null) fleet.setCarrier2(rotate(fleet.getCarrier2(), direction));

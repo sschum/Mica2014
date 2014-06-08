@@ -41,6 +41,12 @@ public class ReflectShipPlacement extends ShipPlacementStrategy {
 		return fleet;
 	}
 
+	/**
+	 * Spiegelt die Flottenposition an der angegebenen Spiegelachse.
+	 * 
+	 * @param fleet
+	 * @param axis
+	 */
 	public void reflect(Fleet fleet, MirrorAxis axis) {
 		if(fleet.getCarrier1() != null) fleet.setCarrier1(reflect(fleet.getCarrier1(), axis));
 		if(fleet.getCarrier2() != null) fleet.setCarrier2(reflect(fleet.getCarrier2(), axis));
