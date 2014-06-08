@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.List;
 
 import de.tarent.mica.model.Coord;
-import de.tarent.mica.model.element.Ship.Orientation;
 
 /**
  * Ein Unkbekanntes Schiff... Seine größe ist unbekannt.
@@ -70,13 +69,13 @@ public class UnknownShip extends Ship {
 		}
 	}
 	
-	public static Ship transformShip(UnknownShip ship){
+	public static Ship transformShip(UnknownShip ship, boolean isSunken){
 		Orientation orientation = ship.getOrientation();
 		int finalSize = ship.getSpace().size();
 		
 		Ship newShip = ShipFactory.build(ship.getPosition(), orientation, finalSize);
 		
-		for(Coord shipCoord : ship.getSpace())
+		if(isSunken) for(Coord shipCoord : ship.getSpace())
 			newShip.addAttackCoord(shipCoord);
 		
 		return newShip;

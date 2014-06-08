@@ -226,7 +226,7 @@ public class World {
 		while(iter.hasNext()){
 			Ship ship = iter.next();
 			if(ship instanceof UnknownShip && ship.getSpace().contains(c)){
-				Ship transformed = UnknownShip.transformShip((UnknownShip)ship);
+				Ship transformed = UnknownShip.transformShip((UnknownShip)ship, true);
 				
 				if(transformed == null){
 					throw new IllegalStateException("This code should be never reached!");

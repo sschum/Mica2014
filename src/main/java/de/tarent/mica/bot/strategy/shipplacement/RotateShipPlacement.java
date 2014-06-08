@@ -77,7 +77,7 @@ public class RotateShipPlacement extends ShipPlacementStrategy {
 		}
 
 		UnknownShip newShip = new UnknownShip(reflectedCoords);
-		return (T)UnknownShip.transformShip(newShip);
+		return (T)UnknownShip.transformShip(newShip, false);
 	}
 	
 	private Coord rotateRight(Coord c){

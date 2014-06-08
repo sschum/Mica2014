@@ -76,7 +76,7 @@ public class ReflectShipPlacement extends ShipPlacementStrategy {
 		}
 
 		UnknownShip newShip = new UnknownShip(reflectedCoords);
-		return (T)UnknownShip.transformShip(newShip);
+		return (T)UnknownShip.transformShip(newShip, false);
 	}
 	
 	private Coord reflectVertical(Coord c){
