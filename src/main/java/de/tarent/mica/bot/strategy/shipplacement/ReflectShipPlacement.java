@@ -10,7 +10,7 @@ import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.UnknownShip;
 import de.tarent.mica.util.Random;
 
-@StrategyStats(description = "Diese Schiffstrategie verwendet eine beliebige andere Schiffstrategie und verwendet diese." +
+@StrategyStats(description = "Diese Schiffstrategie verwendet eine beliebige andere Schiffstrategie um eine Flotte zu generieren." +
 		 					 "Anschlie\u00dfend spiegelt diese Schiffstrategy zuf\u00e4llig die gelieferten Schiffpositionen!")
 public class ReflectShipPlacement extends ShipPlacementStrategy {
 	public static enum MirrorAxis {
