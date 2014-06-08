@@ -13,7 +13,6 @@ import de.tarent.mica.model.Coord;
  * Nur wird hier nur der angegebene Bereich betrachtet.
  * 
  * @author rainu
- * TODO: Dekorator-Pattern wäre denke ich angebracht...
  */
 @StrategyStats(description = "Diese Strategie orientiert sich an der RandomAttackActionStrategy. Nur wird hier nur der angegebene Bereich betrachtet.")
 public class AreaAttackActionStrategy extends RandomAttackActionStrategy {

@@ -9,6 +9,7 @@ import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.UnknownShip;
+import de.tarent.mica.util.Logger;
 import de.tarent.mica.util.Random;
 
 @StrategyStats(description = "Diese Schiffstrategie verwendet eine beliebige andere Schiffstrategie um eine Flotte zu generieren." +
@@ -49,6 +50,8 @@ public class RotateShipPlacement extends ShipPlacementStrategy {
 	 * @param direction
 	 */
 	public void rotate(Fleet fleet, RotateDirection direction) {
+		Logger.debug("Rotate fleet to " + direction.name() + " ...");
+		
 		if(fleet.getCarrier1() != null) fleet.setCarrier1(rotate(fleet.getCarrier1(), direction));
 		if(fleet.getCarrier2() != null) fleet.setCarrier2(rotate(fleet.getCarrier2(), direction));
 		if(fleet.getCruiser1() != null) fleet.setCruiser1(rotate(fleet.getCruiser1(), direction));

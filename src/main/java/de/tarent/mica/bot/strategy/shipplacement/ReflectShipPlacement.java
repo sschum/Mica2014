@@ -8,6 +8,7 @@ import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.UnknownShip;
+import de.tarent.mica.util.Logger;
 import de.tarent.mica.util.Random;
 
 @StrategyStats(description = "Diese Schiffstrategie verwendet eine beliebige andere Schiffstrategie um eine Flotte zu generieren." +
@@ -48,6 +49,8 @@ public class ReflectShipPlacement extends ShipPlacementStrategy {
 	 * @param axis
 	 */
 	public void reflect(Fleet fleet, MirrorAxis axis) {
+		Logger.debug("Reflect fleet at the " + axis.name() + "-Axis...");
+		
 		if(fleet.getCarrier1() != null) fleet.setCarrier1(reflect(fleet.getCarrier1(), axis));
 		if(fleet.getCarrier2() != null) fleet.setCarrier2(reflect(fleet.getCarrier2(), axis));
 		if(fleet.getCruiser1() != null) fleet.setCruiser1(reflect(fleet.getCruiser1(), axis));

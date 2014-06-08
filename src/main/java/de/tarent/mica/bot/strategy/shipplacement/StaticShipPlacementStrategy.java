@@ -19,6 +19,7 @@ import java.util.jar.JarFile;
 import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.util.FleetSerializer;
+import de.tarent.mica.util.Logger;
 import de.tarent.mica.util.Random;
 
 /**
@@ -54,6 +55,7 @@ public class StaticShipPlacementStrategy extends ShipPlacementStrategy {
 		});
 
 		String finalDestination = availableResourceURL.get(Math.abs(rnd.nextInt() % availableResourceURL.size()));
+		Logger.debug("Use fleetdefinition from " + finalDestination);
 		
 		try {
 			if(finalDestination.startsWith("file:")){
