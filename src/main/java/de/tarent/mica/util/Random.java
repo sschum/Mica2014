@@ -16,10 +16,25 @@ public class Random extends java.util.Random {
 	 * @param toRun
 	 */
 	public void runXTimes(Runnable toRun){
-		setSeed(13121989 * System.currentTimeMillis());
-		
-		for(int i = nextInt() % 13; i >= 0; i--){
+		final int max = Math.abs(nextInt() % 13);
+		for(int i = max; i >= 0; i--){
 			toRun.run();
 		}
+	}
+	
+	@Override
+	public int nextInt() {
+		setSeed(13121989 * System.nanoTime());
+		
+		for(int i = super.nextInt() % 13; i >= 0; i--){
+			super.nextInt();
+		}
+		
+		return super.nextInt();
+	}
+	
+	@Override
+	public boolean nextBoolean() {
+		return nextInt() % 2 == 0;
 	}
 }

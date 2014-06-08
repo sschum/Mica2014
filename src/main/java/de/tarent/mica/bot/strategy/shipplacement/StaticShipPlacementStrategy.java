@@ -45,13 +45,11 @@ public class StaticShipPlacementStrategy extends ShipPlacementStrategy {
 
 	@Override
 	public Fleet getFleet() {
-		for(int i=0; i < 13; i++) Collections.shuffle(availableResourceURL);
-		
 		final Random rnd = new Random();
 		rnd.runXTimes(new Runnable() {
 			@Override
 			public void run() {
-				rnd.nextInt();
+				Collections.shuffle(availableResourceURL, rnd);
 			}
 		});
 
