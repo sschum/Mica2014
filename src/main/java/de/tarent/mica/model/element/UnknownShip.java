@@ -1,6 +1,8 @@
 package de.tarent.mica.model.element;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 
@@ -22,13 +24,17 @@ public class UnknownShip extends Ship {
 	public static final int SIZE = -1;
 	
 	public UnknownShip(Coord...coords) {
+		this(Arrays.asList(coords));
+	}
+	
+	public UnknownShip(Collection<Coord> coords) {
 		super(SIZE, Orientation.UNBEKANNT, null);
 		
 		for(Coord c : coords){
 			addAttackCoord(c);
 		}
 		if(attackCoords.size() > 0){
-			position = coords[0];
+			position = coords.iterator().next();
 		}
 	}
 
@@ -64,4 +70,15 @@ public class UnknownShip extends Ship {
 		}
 	}
 	
+	public static Ship transformShip(UnknownShip ship){
+		Orientation orientation = ship.getOrientation();
+		int finalSize = ship.getSpace().size();
+		
+		Ship newShip = ShipFactory.build(ship.getPosition(), orientation, finalSize);
+		
+		for(Coord shipCoord : ship.getSpace())
+			newShip.addAttackCoord(shipCoord);
+		
+		return newShip;
+	}
 }

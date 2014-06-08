@@ -13,8 +13,6 @@ import java.util.Set;
 
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.element.Ship;
-import de.tarent.mica.model.element.Ship.Orientation;
-import de.tarent.mica.model.element.ShipFactory;
 import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.UnknownShip;
 
@@ -228,15 +226,11 @@ public class World {
 		while(iter.hasNext()){
 			Ship ship = iter.next();
 			if(ship instanceof UnknownShip && ship.getSpace().contains(c)){
-				Ship transformed = transformShip((UnknownShip)ship);
+				Ship transformed = UnknownShip.transformShip((UnknownShip)ship);
 				
 				if(transformed == null){
 					throw new IllegalStateException("This code should be never reached!");
 				}
-				
-				//neues durch altes ersetzen...
-				for(Coord shipCoord : ship.getSpace())
-					transformed.addAttackCoord(shipCoord);
 
 				iter.remove();
 				enemyShips = new HashSet<Ship>(copyOfEnemyShips);
@@ -244,13 +238,6 @@ public class World {
 				break;
 			}
 		}
-	}
-
-	Ship transformShip(UnknownShip ship) {
-		Orientation orientation = ship.getOrientation();
-		int finalSize = ship.getSpace().size();
-		
-		return ShipFactory.build(ship.getPosition(), orientation, finalSize);
 	}
 
 	/**
