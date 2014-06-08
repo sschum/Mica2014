@@ -12,7 +12,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
 import java.util.jar.JarEntry;
 import java.util.jar.JarFile;
@@ -20,6 +19,7 @@ import java.util.jar.JarFile;
 import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.util.FleetSerializer;
+import de.tarent.mica.util.Random;
 
 /**
  * Diese Strategie ließt die Flottenpositionen aus Dateien aus. Wenn es mehrere
@@ -47,11 +47,13 @@ public class StaticShipPlacementStrategy extends ShipPlacementStrategy {
 	public Fleet getFleet() {
 		for(int i=0; i < 13; i++) Collections.shuffle(availableResourceURL);
 		
-		Random rnd = new Random();
-		rnd.setSeed(System.currentTimeMillis());
-		
-		int max = rnd.nextInt() % 13;
-		for(int i=0; i < max; i++) rnd.nextInt();
+		final Random rnd = new Random();
+		rnd.runXTimes(new Runnable() {
+			@Override
+			public void run() {
+				rnd.nextInt();
+			}
+		});
 
 		String finalDestination = availableResourceURL.get(Math.abs(rnd.nextInt() % availableResourceURL.size()));
 		

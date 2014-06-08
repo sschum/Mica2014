@@ -3,10 +3,10 @@ package de.tarent.mica.bot.strategy.action;
 import java.awt.Dimension;
 import java.util.Collections;
 import java.util.List;
-import java.util.Random;
 
 import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Coord;
+import de.tarent.mica.util.Random;
 
 /**
  * Diese Strategie beschießt zufällig eine Coordinate. 
@@ -30,12 +30,15 @@ public class RandomAttackActionStrategy extends SimpleAttackActionStrategy {
 
 	@Override
 	protected List<Coord> initialiseCoords(Dimension dim) {
-		List<Coord> result = super.initialiseCoords(dim);
+		final List<Coord> result = super.initialiseCoords(dim);
 		
-		Random rand = new Random(13121989 * System.currentTimeMillis());
-		for(int i = rand.nextInt() % 13; i >= 0; i--){
-			Collections.shuffle(result, rand);
-		}
+		final Random rand = new Random();
+		rand.runXTimes(new Runnable() {
+			@Override
+			public void run() {
+				Collections.shuffle(result, rand);
+			}
+		});
 		
 		return result;
 	}

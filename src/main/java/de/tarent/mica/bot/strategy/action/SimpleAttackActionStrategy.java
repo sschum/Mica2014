@@ -4,7 +4,6 @@ import java.awt.Dimension;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
-import java.util.Random;
 
 import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
@@ -12,6 +11,7 @@ import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.World;
+import de.tarent.mica.util.Random;
 
 /**
  * Diese Strategy sorgt dafür, dass normale Attacken im Karoformat ausgeführt werden:
