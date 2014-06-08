@@ -2,6 +2,8 @@ package de.tarent.mica.bot.strategy.shipplacement;
 
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
+
 import org.junit.Test;
 
 import de.tarent.mica.bot.strategy.shipplacement.StaticShipPlacementStrategy;
@@ -11,7 +13,7 @@ public class StaticShipPlacementStrategyTest {
 
 	@Test
 	public void getFleet(){
-		Fleet fleet = new StaticShipPlacementStrategy().getFleet();
+		Fleet fleet = new StaticShipPlacementStrategy(new Dimension(10, 10)).getFleet();
 		
 		assertNotNull(fleet.getCarrier1());
 		assertNotNull(fleet.getCarrier2());

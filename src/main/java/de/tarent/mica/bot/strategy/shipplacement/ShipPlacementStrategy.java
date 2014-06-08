@@ -1,5 +1,7 @@
 package de.tarent.mica.bot.strategy.shipplacement;
 
+import java.awt.Dimension;
+
 import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Fleet;
 
@@ -10,8 +12,11 @@ import de.tarent.mica.model.Fleet;
  *
  */
 public abstract class ShipPlacementStrategy {
-
-	public ShipPlacementStrategy() {
+	protected final Dimension worldDimension;
+	
+	public ShipPlacementStrategy(Dimension worldDimension) {
+		this.worldDimension = worldDimension;
+		
 		if(!getClass().isAnnotationPresent(StrategyStats.class)){
 			throw new IllegalStateException("The class " + getClass().getName() + " has no " + StrategyStats.class + " annotation!");
 		}

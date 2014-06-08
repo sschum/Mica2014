@@ -22,7 +22,7 @@ public class GameActionHandlerFactoryCommand{
 	
 	public GameActionHandlerFactoryCommand() {
 		//default-einstellungen hier...
-		shipPlacementStrategy = new StaticShipPlacementStrategy();
+		shipPlacementStrategy = new StaticShipPlacementStrategy(new Dimension(10, 10));	//TODO: die WeltDimension auslagern...
 		
 		//das "unwarscheinlichste" muss als erstes
 		actionStrategies.add(new HitTraceActionStrategy(true));

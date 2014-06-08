@@ -1,5 +1,6 @@
 package de.tarent.mica.bot.strategy.shipplacement;
 
+import java.awt.Dimension;
 import java.io.File;
 import java.io.IOException;
 import java.net.URISyntaxException;
@@ -31,7 +32,8 @@ import de.tarent.mica.util.FleetSerializer;
 public class StaticShipPlacementStrategy extends ShipPlacementStrategy {
 	private List<String> availableResourceURL = new ArrayList<String>();
 
-	public StaticShipPlacementStrategy() {
+	public StaticShipPlacementStrategy(Dimension worldDimension) {
+		super(worldDimension);
 		try {
 			availableResourceURL.addAll(Arrays.asList(getResourceListing(
 					StaticShipPlacementStrategy.class, "/static/fleet/")));
