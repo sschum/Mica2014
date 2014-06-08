@@ -1,0 +1,36 @@
+# Dies ist das Standardskript für RayShip.
+#
+
+#Spiel starten
+start-game localhost 40000
+
+	#Factory-Subshells...
+	clear-action-strategies
+	
+	#Die unwarscheinlichsten Strategien nach oben!
+	add-hit-trace-action-strategy true #Brennende Schiffe werden ignoriert
+	
+	############################
+	#   0 1 2 3 4 5 6 7 8 9
+	# A          |          |
+	# B    1     |          |
+	# C _________|    2     |
+	# D     6    |          |
+	# E _________|__________|
+	# F        |     |      |
+	# G    4   |     |      |
+	# H        | 3   |   5  |
+	# I        |     |      |
+	# J _______|_____|______|
+	  
+	add-area-attack-action-strategy A0 5 3
+	add-area-attack-action-strategy A5 5 5
+	add-area-attack-action-strategy F4 3 5
+	add-area-attack-action-strategy F0 4 5
+	add-area-attack-action-strategy F7 3 5
+	add-area-attack-action-strategy D0 5 2
+	
+	exit
+
+#Spiel beendet -> ende
+exit 

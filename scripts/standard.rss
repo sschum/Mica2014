@@ -1,0 +1,11 @@
+# Dies ist das Standardskript für RayShip.
+#
+
+#Spiel starten
+start-game localhost 40000
+
+#Factory-Subshells...
+exit #wir benutzen die vordefinierten Strategien..
+
+#Spiel beendet -> ende
+exit 
