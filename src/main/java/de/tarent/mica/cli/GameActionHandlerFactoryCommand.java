@@ -130,14 +130,29 @@ public class GameActionHandlerFactoryCommand{
 		List<Coord> sortedCoords = new ArrayList<Coord>(cover.keySet());
 		Collections.sort(sortedCoords, Coord.COMPARATOR);
 		
-		StringBuffer sb = new StringBuffer("\n");
+		StringBuffer sb = new StringBuffer("\n  ");
 		Coord last = null;
-		for(Coord c : sortedCoords){
+		for(int i=0; i < sortedCoords.size(); i++){
+			Coord c = sortedCoords.get(i);
+			
 			if(last != null && last.getY() != c.getY()){
-				sb.append("\n");
+				break;
 			}
 			
-			sb.append(cover.get(c));
+			sb.append(i + " ");
+			last = c;
+		}
+		
+		char row = 'A';
+		sb.append("\n" + (row++) + " ");
+		last = null;
+
+		for(Coord c : sortedCoords){
+			if(last != null && last.getY() != c.getY()){
+				sb.append("\n" + (row++) + " ");
+			}
+			
+			sb.append(cover.get(c) + " ");
 			last = c;
 		}
 		
