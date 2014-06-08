@@ -13,6 +13,7 @@ import de.tarent.mica.bot.strategy.action.AreaAttackActionStrategy;
 import de.tarent.mica.bot.strategy.action.HitTraceActionStrategy;
 import de.tarent.mica.bot.strategy.action.RandomAttackActionStrategy;
 import de.tarent.mica.bot.strategy.shipplacement.ShipPlacementStrategy;
+import de.tarent.mica.bot.strategy.shipplacement.ShuffleShipPlacement;
 import de.tarent.mica.bot.strategy.shipplacement.StaticShipPlacementStrategy;
 import de.tarent.mica.model.Coord;
 
@@ -22,7 +23,7 @@ public class GameActionHandlerFactoryCommand{
 	
 	public GameActionHandlerFactoryCommand() {
 		//default-einstellungen hier...
-		shipPlacementStrategy = new StaticShipPlacementStrategy(new Dimension(10, 10));	//TODO: die WeltDimension auslagern...
+		shipPlacementStrategy = new ShuffleShipPlacement(new StaticShipPlacementStrategy(new Dimension(10, 10)));	//TODO: die WeltDimension auslagern...
 		
 		//das "unwarscheinlichste" muss als erstes
 		actionStrategies.add(new HitTraceActionStrategy(true));
