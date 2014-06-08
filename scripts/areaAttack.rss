@@ -1,8 +1,8 @@
-# Dies ist das Standardskript für RayShip.
-#
+# Dieses Skript initialisiert eine AreaAttack anstatt 
+# die Standard-Strategie zu verwenden
 
 #Spiel starten
-start-game localhost 40000
+start-game $host $port
 
 	#Factory-Subshells...
 	clear-action-strategies

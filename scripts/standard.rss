@@ -2,7 +2,7 @@
 #
 
 #Spiel starten
-start-game localhost 40000
+start-game $host $port
 
 #Factory-Subshells...
 exit #wir benutzen die vordefinierten Strategien..
