@@ -2,7 +2,10 @@ package de.tarent.mica.cli;
 
 import java.awt.Dimension;
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import asg.cliche.Command;
 import asg.cliche.Param;
@@ -98,5 +101,46 @@ public class GameActionHandlerFactoryCommand{
 		actionStrategies.add(new AreaAttackActionStrategy(startCoord, new Dimension(width, height)));
 		
 		return "Strategie hinzugef\u00fcgt.";
+	}
+	
+	@Command(abbrev = "sac", description = "Zeigt die Abdeckung der AreaAttackActionStrategy an.")
+	public String showAreaCover(){
+		List<AreaAttackActionStrategy> areaStrategies = new ArrayList<AreaAttackActionStrategy>(actionStrategies.size());
+		for(ActionStrategy s : actionStrategies){
+			if(s instanceof AreaAttackActionStrategy) areaStrategies.add((AreaAttackActionStrategy)s);
+		}
+		
+		//dimension ermitteln
+		Map<Coord, Character> cover = new HashMap<Coord, Character>();
+		
+		char representation = 'A';
+		for(AreaAttackActionStrategy as : areaStrategies){
+			Coord start = as.getStartCoord();
+			Dimension area = as.getArea();
+			
+			for(int x=0; x < area.width; x++){
+				for(int y=0; y < area.height; y++){
+					cover.put(new Coord(start.getX() + x, start.getY() + y), representation);
+				}
+			}
+			
+			representation++;
+		}
+		
+		List<Coord> sortedCoords = new ArrayList<Coord>(cover.keySet());
+		Collections.sort(sortedCoords, Coord.COMPARATOR);
+		
+		StringBuffer sb = new StringBuffer("\n");
+		Coord last = null;
+		for(Coord c : sortedCoords){
+			if(last != null && last.getY() != c.getY()){
+				sb.append("\n");
+			}
+			
+			sb.append(cover.get(c));
+			last = c;
+		}
+		
+		return sb.toString();
 	}
 }

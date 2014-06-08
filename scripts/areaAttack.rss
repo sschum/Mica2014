@@ -30,6 +30,7 @@ start-game localhost 40000
 	add-area-attack-action-strategy F7 3 5
 	add-area-attack-action-strategy D0 5 2
 	
+	show-area-cover
 	exit
 
 #Spiel beendet -> ende
