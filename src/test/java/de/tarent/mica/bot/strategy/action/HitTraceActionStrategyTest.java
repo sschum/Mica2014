@@ -14,14 +14,14 @@ import org.mockito.Mockito;
 
 import de.tarent.mica.Action;
 import de.tarent.mica.Action.Type;
-import de.tarent.mica.bot.strategy.action.HitTraceActionStrategy;
+import de.tarent.mica.bot.strategy.action.HitTraceStrategy;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.UnknownShip;
 
 public class HitTraceActionStrategyTest {
-	HitTraceActionStrategy toTest = new HitTraceActionStrategy();
+	HitTraceStrategy toTest = new HitTraceStrategy();
 	
 	@Test
 	public void getActionForSingleCoord(){
@@ -188,20 +188,20 @@ public class HitTraceActionStrategyTest {
 		doReturn(false).when(aShip).isSunken();
 		doReturn(false).when(aShip).isBurning();
 		
-		assertTrue(new HitTraceActionStrategy(true).shouldAttack(aShip));
+		assertTrue(new HitTraceStrategy(true).shouldAttack(aShip));
 		
 		doReturn(true).when(aShip).isBurning();
-		assertFalse(new HitTraceActionStrategy(true).shouldAttack(aShip));
+		assertFalse(new HitTraceStrategy(true).shouldAttack(aShip));
 		
 		doReturn(false).when(aShip).isBurning();
 		doReturn(true).when(aShip).isSunken();
-		assertFalse(new HitTraceActionStrategy(true).shouldAttack(aShip));
-		assertFalse(new HitTraceActionStrategy(false).shouldAttack(aShip));
+		assertFalse(new HitTraceStrategy(true).shouldAttack(aShip));
+		assertFalse(new HitTraceStrategy(false).shouldAttack(aShip));
 	}
 	
 	@Test
 	public void getActionDecision(){
-		HitTraceActionStrategy spy = Mockito.spy(toTest);
+		HitTraceStrategy spy = Mockito.spy(toTest);
 		doReturn(new Action(Type.ATTACK, new Coord(0, 0))).when(spy).getActionForMultipleCoords(any(World.class), anyList());
 		doReturn(new Action(Type.ATTACK, new Coord(0, 0))).when(spy).getActionForSingleCoord(any(World.class), any(Coord.class));
 		

@@ -27,7 +27,7 @@ import de.tarent.mica.util.Random;
  *
  */
 @StrategyStats(description = "Diese Strategie sorgt daf\u00fcr, dass normale Attacken im Karoformat ausgef\u00fchrt werden.")
-public class SimpleAttackActionStrategy extends ActionStrategy {
+public class SimpleAttackStrategy extends ActionStrategy {
 	protected List<Coord> todo = null;
 	protected Dimension todoDimension;
 	

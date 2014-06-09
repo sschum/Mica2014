@@ -15,10 +15,10 @@ import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.Ship.Orientation;
 
 @StrategyStats(description = "Diese Strategie spioniert (wenn m\u00f6glich) den Gegner aus.")
-public class SpyActionStrategy extends ActionStrategy {
+public class SpyStrategy extends ActionStrategy {
 	protected final List<Coord> spyPoints;
 	
-	public SpyActionStrategy(Coord...spyPoints) {
+	public SpyStrategy(Coord...spyPoints) {
 		this.spyPoints = new ArrayList<Coord>(Arrays.asList(spyPoints));
 	}
 

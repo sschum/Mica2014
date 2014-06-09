@@ -12,9 +12,9 @@ import asg.cliche.Param;
 import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.bot.GameMaster;
 import de.tarent.mica.bot.strategy.action.ActionStrategy;
-import de.tarent.mica.bot.strategy.action.AreaAttackActionStrategy;
-import de.tarent.mica.bot.strategy.action.HitTraceActionStrategy;
-import de.tarent.mica.bot.strategy.action.RandomAttackActionStrategy;
+import de.tarent.mica.bot.strategy.action.AreaAttackStrategy;
+import de.tarent.mica.bot.strategy.action.HitTraceStrategy;
+import de.tarent.mica.bot.strategy.action.RandomAttackStrategy;
 import de.tarent.mica.bot.strategy.shipplacement.ShipPlacementStrategy;
 import de.tarent.mica.bot.strategy.shipplacement.ShuffleShipPlacement;
 import de.tarent.mica.bot.strategy.shipplacement.StaticShipPlacementStrategy;
@@ -29,8 +29,8 @@ public class GameActionHandlerFactoryCommand{
 		shipPlacementStrategy = new ShuffleShipPlacement(new StaticShipPlacementStrategy(new Dimension(10, 10)));	//TODO: die WeltDimension auslagern...
 		
 		//das "unwarscheinlichste" muss als erstes
-		actionStrategies.add(new HitTraceActionStrategy(true));
-		actionStrategies.add(new RandomAttackActionStrategy());
+		actionStrategies.add(new HitTraceStrategy(true));
+		actionStrategies.add(new RandomAttackStrategy());
 	}
 	
 	public GameActionHandler buildGameActionHandler() {
@@ -77,14 +77,14 @@ public class GameActionHandlerFactoryCommand{
 			@Param(name = "ignoreBurningShips", description = "Sollen brennende Schiffe ignoriert werden?") 
 			boolean ignoreBurningShips){
 		
-		actionStrategies.add(new HitTraceActionStrategy(ignoreBurningShips));
+		actionStrategies.add(new HitTraceStrategy(ignoreBurningShips));
 		
 		return "Strategie hinzugef\u00fcgt.";
 	}
 	
 	@Command(abbrev = "aras", description = "F\u00fcgt eine RandomAttackActionStrategy hinzu.")
 	public String addRandomAttackStrategy(){
-		actionStrategies.add(new RandomAttackActionStrategy());
+		actionStrategies.add(new RandomAttackStrategy());
 		
 		return "Strategie hinzugef\u00fcgt.";
 	}
@@ -98,23 +98,23 @@ public class GameActionHandlerFactoryCommand{
 			@Param(name = "height", description = "H\u00f6he des Zielbereiches.") 
 			int height){
 		
-		actionStrategies.add(new AreaAttackActionStrategy(startCoord, new Dimension(width, height)));
+		actionStrategies.add(new AreaAttackStrategy(startCoord, new Dimension(width, height)));
 		
 		return "Strategie hinzugef\u00fcgt.";
 	}
 	
 	@Command(abbrev = "sac", description = "Zeigt die Abdeckung der AreaAttackActionStrategy an.")
 	public String showAreaCover(){
-		List<AreaAttackActionStrategy> areaStrategies = new ArrayList<AreaAttackActionStrategy>(actionStrategies.size());
+		List<AreaAttackStrategy> areaStrategies = new ArrayList<AreaAttackStrategy>(actionStrategies.size());
 		for(ActionStrategy s : actionStrategies){
-			if(s instanceof AreaAttackActionStrategy) areaStrategies.add((AreaAttackActionStrategy)s);
+			if(s instanceof AreaAttackStrategy) areaStrategies.add((AreaAttackStrategy)s);
 		}
 		
 		//dimension ermitteln
 		Map<Coord, Character> cover = new HashMap<Coord, Character>();
 		
 		char representation = 'A';
-		for(AreaAttackActionStrategy as : areaStrategies){
+		for(AreaAttackStrategy as : areaStrategies){
 			Coord start = as.getStartCoord();
 			Dimension area = as.getArea();
 			

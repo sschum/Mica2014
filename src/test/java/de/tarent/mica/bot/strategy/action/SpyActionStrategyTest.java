@@ -13,7 +13,7 @@ import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.Ship.Orientation;
 
 public class SpyActionStrategyTest {
-	SpyActionStrategy toTest = new SpyActionStrategy();
+	SpyStrategy toTest = new SpyStrategy();
 	
 	@Test
 	public void canSpy(){
@@ -105,11 +105,11 @@ public class SpyActionStrategyTest {
 	
 	@Test
 	public void nextSpyAction(){
-		toTest = new SpyActionStrategy();	//keine spionagepunkte definiert
+		toTest = new SpyStrategy();	//keine spionagepunkte definiert
 		
 		assertNull(toTest.nextSpyAction(null));
 		
-		toTest = new SpyActionStrategy(new Coord("A1"), new Coord("A2"));
+		toTest = new SpyStrategy(new Coord("A1"), new Coord("A2"));
 		Action result = toTest.nextSpyAction(null);
 		
 		assertEquals(Type.SPY_DRONE, result.getType());
@@ -123,7 +123,7 @@ public class SpyActionStrategyTest {
 	
 	@Test
 	public void getActionDecision(){
-		SpyActionStrategy spy = spy(toTest);
+		SpyStrategy spy = spy(toTest);
 		doReturn(false).when(spy).canSpy(any(World.class));
 		
 		assertNull(spy.getActionDecision(null));

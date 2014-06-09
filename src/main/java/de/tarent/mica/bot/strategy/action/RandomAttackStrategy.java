@@ -26,7 +26,7 @@ import de.tarent.mica.util.Random;
 		"Diese Strategie beschie\u00dft zuf\u00e4llig eine Coordinate. " +
 		"Dieser Zufall ist allerdings noch so \"schlau\", dass er " +
 		"die Attacken so koordiniert, dass am Ende nur ein Karofeld abgedeckt wird.")
-public class RandomAttackActionStrategy extends SimpleAttackActionStrategy {
+public class RandomAttackStrategy extends SimpleAttackStrategy {
 
 	@Override
 	protected List<Coord> initialiseCoords(Dimension dim) {

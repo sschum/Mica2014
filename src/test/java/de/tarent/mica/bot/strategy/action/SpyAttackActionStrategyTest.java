@@ -16,7 +16,7 @@ import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.SpyArea;
 
 public class SpyAttackActionStrategyTest {
-	SpyAttackActionStrategy toTest = new SpyAttackActionStrategy();
+	SpyAttackStrategy toTest = new SpyAttackStrategy();
 	
 	@Test
 	public void collectPossipleCoords(){
@@ -83,7 +83,7 @@ public class SpyAttackActionStrategyTest {
 	
 	@Test
 	public void nextAction(){
-		SpyAttackActionStrategy spy = spy(toTest);
+		SpyAttackStrategy spy = spy(toTest);
 		doReturn(Collections.singletonList(new Coord("A1"))).when(spy).collectPossipleCoords(any(World.class), any(SpyArea.class));
 
 		World world = new World(10, 10);
@@ -95,7 +95,7 @@ public class SpyAttackActionStrategyTest {
 	
 	@Test
 	public void getActionDecision(){
-		SpyAttackActionStrategy spy = spy(toTest);
+		SpyAttackStrategy spy = spy(toTest);
 		doReturn(null).when(spy).nextSpyArea(any(World.class));
 		
 		assertNull(spy.getActionDecision(null));

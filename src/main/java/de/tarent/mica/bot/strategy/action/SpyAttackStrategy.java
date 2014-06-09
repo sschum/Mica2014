@@ -13,7 +13,7 @@ import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.SpyArea;
 
 @StrategyStats(description = "Diese Strategie attackiert spionierte Bereiche, bei denen noch etwas \"zu hohlen\" ist.")
-public class SpyAttackActionStrategy extends ActionStrategy {
+public class SpyAttackStrategy extends ActionStrategy {
 
 	@Override
 	public Action getActionDecision(World world) {

@@ -7,12 +7,12 @@ import java.awt.Dimension;
 import org.junit.Test;
 
 import de.tarent.mica.Action;
-import de.tarent.mica.bot.strategy.action.AreaAttackActionStrategy;
+import de.tarent.mica.bot.strategy.action.AreaAttackStrategy;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
 
 public class AreaAttackActionStrategyTest {
-	AreaAttackActionStrategy toTest = new AreaAttackActionStrategy(new Coord("D3"), new Dimension(4, 4));
+	AreaAttackStrategy toTest = new AreaAttackStrategy(new Coord("D3"), new Dimension(4, 4));
 	
 	@Test
 	public void getActionDecision(){

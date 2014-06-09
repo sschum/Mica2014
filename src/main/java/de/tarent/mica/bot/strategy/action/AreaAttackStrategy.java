@@ -9,17 +9,17 @@ import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Coord;
 
 /**
- * Diese Strategie orientiert sich an der {@link RandomAttackActionStrategy}.
+ * Diese Strategie orientiert sich an der {@link RandomAttackStrategy}.
  * Nur wird hier nur der angegebene Bereich betrachtet.
  * 
  * @author rainu
  */
 @StrategyStats(description = "Diese Strategie orientiert sich an der RandomAttackActionStrategy. Nur wird hier nur der angegebene Bereich betrachtet.")
-public class AreaAttackActionStrategy extends RandomAttackActionStrategy {
+public class AreaAttackStrategy extends RandomAttackStrategy {
 	protected final Coord startCoord;
 	protected final Dimension area;
 	
-	public AreaAttackActionStrategy(Coord startCoord, Dimension area) {
+	public AreaAttackStrategy(Coord startCoord, Dimension area) {
 		this.startCoord = startCoord;
 		this.area = area;
 	}
