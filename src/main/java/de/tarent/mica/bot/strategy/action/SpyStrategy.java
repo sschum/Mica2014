@@ -11,11 +11,9 @@ import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Destroyer;
-import de.tarent.mica.model.element.Ship;
-import de.tarent.mica.model.element.Ship.Orientation;
 
 @StrategyStats(description = "Diese Strategie spioniert (wenn m\u00f6glich) den Gegner aus.")
-public class SpyStrategy extends ActionStrategy {
+public class SpyStrategy extends SpecialAttackStrategy {
 	protected final List<Coord> spyPoints;
 	
 	public SpyStrategy(Coord...spyPoints) {
@@ -35,62 +33,7 @@ public class SpyStrategy extends ActionStrategy {
 		//ich kann nur spionieren, wenn Destroyer 
 		//auf einer ebene eine gemeinsame Position besitzen
 		//und auch noch zwei "leben" ;)
-		List<Destroyer> destroyers = new ArrayList<Destroyer>(2);
-		
-		for(Ship s : world.getOwnShips()){
-			if(s instanceof Destroyer) destroyers.add((Destroyer)s);
-		}
-
-		if(destroyers.get(0).isSunken() || destroyers.get(1).isSunken())
-			return false;
-		
-		int theoreticallyPossible = getPossibleSpyCount(destroyers);
-		if(theoreticallyPossible > 0){
-			int usedSpy = world.getSpecialAttackCount(Destroyer.class);
-			int possible = theoreticallyPossible - usedSpy;
-
-			return possible > 0;
-		}
-		
-		return false;
-	}
-
-	private int getPossibleSpyCount(List<Destroyer> destroyers) {
-		int count = 0;
-		
-		for(Coord d1Coord : destroyers.get(0).getSpace()){
-			for(Coord d2Coord : destroyers.get(1).getSpace()){
-				if(isCoordSameLevel(d1Coord, d2Coord)) count++;
-			}
-		}
-		
-		
-		if(	((destroyers.get(0).getOrientation() == Orientation.SUED || destroyers.get(0).getOrientation() == Orientation.NORD) &&
-			(destroyers.get(1).getOrientation() == Orientation.SUED || destroyers.get(1).getOrientation() == Orientation.NORD)) 
-			
-			||
-			
-			((destroyers.get(0).getOrientation() == Orientation.OST || destroyers.get(0).getOrientation() == Orientation.WEST) &&
-			(destroyers.get(1).getOrientation() == Orientation.OST || destroyers.get(1).getOrientation() == Orientation.WEST))	){
-			
-			//beide sind horizontal/vertikal ausgerichtet
-			return count;
-		}
-
-		//einer ist vertikal und der andere horiozontal ausgerichtet
-		//damit können (theoretisch) nur höchstens ein Punkt infrage kommen ;)
-		if(count > 0) return 1;
-		return 0;
-	}
-
-	private boolean isCoordSameLevel(Coord c1, Coord c2) {
-		//horizontal gleich
-		if(c1.getY() == c2.getY()) return true;
-		
-		//vertikal gleich
-		if(c1.getX() == c2.getX()) return true;
-		
-		return false;
+		return getPossibleSpecialAttackCount(Destroyer.class, world) > 0;
 	}
 
 	protected Action nextSpyAction(World world) {
