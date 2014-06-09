@@ -502,13 +502,12 @@ public class World {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 
-		sb.append(enemyField.toString());
-		sb.append("\no)=");
-		for(int i=0; i < getWorldDimension().getWidth(); i++){
-			sb.append("==");
-		}
-		sb.append("=(o\n\n");
-		sb.append(ownField.toString());
+		sb.append("Player-Field:\n");
+		sb.append(ownField);
+		sb.append("\nEnemy-Field:\n");
+		sb.append(enemyField);
+		sb.append("\nEnemy-View:\n");
+		sb.append(enemyView);
 		
 		return sb.toString();
 	}

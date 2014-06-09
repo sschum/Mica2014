@@ -5,7 +5,7 @@ import java.net.URISyntaxException;
 
 import de.tarent.mica.Controller;
 import de.tarent.mica.GameActionHandler;
-import de.tarent.mica.bot.GameMaster;
+import de.tarent.mica.model.GameStats;
 import de.tarent.mica.net.WebSocketController;
 import asg.cliche.Command;
 import asg.cliche.Param;
@@ -41,9 +41,19 @@ public class Commands {
 		GameActionHandler handler = cmd.buildGameActionHandler();
 		
 		Controller gameController = buildController(host, port);
-		gameController.play(playerName, handler);
+		GameStats stats = gameController.play(playerName, handler);
 		
-		return null;
+		StringBuffer sb = new StringBuffer();
+		sb.append("===================\n");
+		sb.append("=   GAME OVER     =\n");
+		sb.append("===================\n");
+		sb.append(stats.getPlayerName());
+		sb.append(" VS ");
+		sb.append(stats.getEnemyName());
+		sb.append("\n\n");
+		sb.append(stats.getWorld());
+		
+		return sb.toString();
 	}
 
 	private WebSocketController buildController(String host, int port) {
