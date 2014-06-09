@@ -4,17 +4,24 @@
 # C * ~ ~ ~ ~ ~ ~ ~ ~ ~
 # D * ~ * * * * * ~ ~ ~
 # E * ~ ~ ~ ~ ~ ~ ~ ~ ~
-# F ~ ~ ~ ~ ~ ~ ~ ~ ~ *
+# F * ~ ~ ~ ~ ~ ~ ~ ~ ~
 # G ~ ~ ~ ~ * ~ ~ ~ ~ *
-# H ~ * ~ ~ * ~ * * ~ *
-# I ~ * ~ ~ * ~ ~ ~ ~ *
+# H ~ * ~ ~ * ~ ~ ~ ~ *
+# I ~ * ~ ~ * ~ * * ~ *
 # J ~ * ~ ~ * ~ ~ ~ ~ ~
+# 
+# Fähigkeiten:
+# 2x Clusterbomb
+# 0x Feuer
+# 2x Spionage
+# 0x Torpedo
+#
 #<Koordinate>_<Ausrichtung>_<Groesse>
 B5_OST_5
-C0_SUED_3
+C0_SUED_4
 D2_OST_5
 B2_OST_2
-F9_SUED_4
+G9_SUED_3
 G4_SUED_4
 H1_SUED_3
-H6_OST_2
+I6_OST_2
