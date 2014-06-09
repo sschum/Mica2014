@@ -20,7 +20,7 @@ import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.UnknownShip;
 
-public class HitTraceActionStrategyTest {
+public class HitTraceStrategyTest {
 	HitTraceStrategy toTest = new HitTraceStrategy();
 	
 	@Test

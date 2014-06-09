@@ -15,7 +15,7 @@ import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.SpyArea;
 
-public class SpyAttackActionStrategyTest {
+public class SpyAttackStrategyTest {
 	SpyAttackStrategy toTest = new SpyAttackStrategy();
 	
 	@Test

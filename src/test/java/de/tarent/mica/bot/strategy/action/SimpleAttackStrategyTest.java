@@ -5,11 +5,11 @@ import static org.junit.Assert.*;
 import org.junit.Test;
 
 import de.tarent.mica.Action;
-import de.tarent.mica.bot.strategy.action.RandomAttackStrategy;
+import de.tarent.mica.bot.strategy.action.SimpleAttackStrategy;
 import de.tarent.mica.model.World;
 
-public class RandomAttackActionStrategyTest {
-	RandomAttackStrategy toTest = new RandomAttackStrategy();
+public class SimpleAttackStrategyTest {
+	SimpleAttackStrategy toTest = new SimpleAttackStrategy();
 	
 	@Test
 	public void getActionDecision(){

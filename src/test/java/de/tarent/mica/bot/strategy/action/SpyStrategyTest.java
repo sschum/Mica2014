@@ -12,7 +12,7 @@ import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.Ship.Orientation;
 
-public class SpyActionStrategyTest {
+public class SpyStrategyTest {
 	SpyStrategy toTest = new SpyStrategy();
 	
 	@Test

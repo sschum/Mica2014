@@ -11,7 +11,7 @@ import de.tarent.mica.bot.strategy.action.AreaAttackStrategy;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
 
-public class AreaAttackActionStrategyTest {
+public class AreaAttackStrategyTest {
 	AreaAttackStrategy toTest = new AreaAttackStrategy(new Coord("D3"), new Dimension(4, 4));
 	
 	@Test

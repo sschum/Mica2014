@@ -72,8 +72,8 @@ public class GameActionHandlerFactoryCommand{
 		return "Alle Action-Strategien entfernt!";
 	}
 	
-	@Command(abbrev = "ahtas", description = "F\u00fcgt eine HitTraceActionStrategy hinzu.")
-	public String addHitTraceActionStrategy(
+	@Command(abbrev = "ahts", description = "F\u00fcgt eine HitTraceStrategy hinzu.")
+	public String addHitTraceStrategy(
 			@Param(name = "ignoreBurningShips", description = "Sollen brennende Schiffe ignoriert werden?") 
 			boolean ignoreBurningShips){
 		
@@ -82,14 +82,14 @@ public class GameActionHandlerFactoryCommand{
 		return "Strategie hinzugef\u00fcgt.";
 	}
 	
-	@Command(abbrev = "aras", description = "F\u00fcgt eine RandomAttackActionStrategy hinzu.")
+	@Command(abbrev = "aras", description = "F\u00fcgt eine RandomAttackStrategy hinzu.")
 	public String addRandomAttackStrategy(){
 		actionStrategies.add(new RandomAttackStrategy());
 		
 		return "Strategie hinzugef\u00fcgt.";
 	}
 	
-	@Command(abbrev = "ahtas", description = "F\u00fcgt eine AreaAttackActionStrategy hinzu.")
+	@Command(abbrev = "aaas", description = "F\u00fcgt eine AreaAttackStrategy hinzu.")
 	public String addAreaAttackActionStrategy(
 			@Param(name = "startCoord", description = "Oberer Eckpunkt des Zielbereiches.") 
 			Coord startCoord,
@@ -103,7 +103,7 @@ public class GameActionHandlerFactoryCommand{
 		return "Strategie hinzugef\u00fcgt.";
 	}
 	
-	@Command(abbrev = "sac", description = "Zeigt die Abdeckung der AreaAttackActionStrategy an.")
+	@Command(abbrev = "sac", description = "Zeigt die Abdeckung der AreaAttackStrategy an.")
 	public String showAreaCover(){
 		List<AreaAttackStrategy> areaStrategies = new ArrayList<AreaAttackStrategy>(actionStrategies.size());
 		for(ActionStrategy s : actionStrategies){
