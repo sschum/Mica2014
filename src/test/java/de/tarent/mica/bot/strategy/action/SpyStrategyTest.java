@@ -46,6 +46,20 @@ public class SpyStrategyTest {
 		
 		/*
 		 *   0 1 2 3 4
+		 * A   * * *
+		 * B   
+		 * C     *
+		 * D     *  <= gesunken!
+		 * E     *
+		 */
+		world = new World(10, 10);
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("A1")));
+		world.placeOwnShip(new Destroyer(Orientation.SUED, new Coord("C2")));
+		world.registerEnemySunk(new Coord("C2"));
+		assertFalse(toTest.canSpy(world));
+		
+		/*
+		 *   0 1 2 3 4
 		 * A
 		 * B   * * *
 		 * C 

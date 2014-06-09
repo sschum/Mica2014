@@ -34,11 +34,15 @@ public class SpyStrategy extends ActionStrategy {
 	protected boolean canSpy(World world) {
 		//ich kann nur spionieren, wenn Destroyer 
 		//auf einer ebene eine gemeinsame Position besitzen
+		//und auch noch zwei "leben" ;)
 		List<Destroyer> destroyers = new ArrayList<Destroyer>(2);
 		
 		for(Ship s : world.getOwnShips()){
 			if(s instanceof Destroyer) destroyers.add((Destroyer)s);
 		}
+
+		if(destroyers.get(0).isSunken() || destroyers.get(1).isSunken())
+			return false;
 		
 		int theoreticallyPossible = getPossibleSpyCount(destroyers);
 		if(theoreticallyPossible > 0){
