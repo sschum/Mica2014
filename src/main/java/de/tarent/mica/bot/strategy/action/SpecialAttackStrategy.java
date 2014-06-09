@@ -20,20 +20,16 @@ public abstract class SpecialAttackStrategy extends ActionStrategy {
 	public abstract Action getActionDecision(World world);
 
 	protected int getPossibleSpecialAttackCount(Class<? extends Ship> attackClass, World world){
-		List<Ship> ship = new ArrayList<Ship>(2);
-		
-		for(Ship s : world.getOwnShips()){
-			if(attackClass.isInstance(s)) ship.add(s);
-		}
+		List<? extends Ship> ship = getShips(attackClass, world);
 		
 		if(ship.size() < 2) return 0;
 		if(ship.get(0).isSunken() || ship.get(1).isSunken()) return 0;
 		
 		int theoreticallyPossible = 0;
 		
-		for(Coord d1Coord : ship.get(0).getSpace()){
-			for(Coord d2Coord : ship.get(1).getSpace()){
-				if(isCoordSameLevel(d1Coord, d2Coord)) theoreticallyPossible++;
+		for(Coord s1Coord : ship.get(0).getSpace()){
+			for(Coord s2Coord : ship.get(1).getSpace()){
+				if(isCoordSameLevel(s1Coord, s2Coord)) theoreticallyPossible++;
 			}
 		}
 		
@@ -60,7 +56,7 @@ public abstract class SpecialAttackStrategy extends ActionStrategy {
 		return possible;
 	}
 	
-	private boolean isCoordSameLevel(Coord c1, Coord c2) {
+	protected final boolean isCoordSameLevel(Coord c1, Coord c2) {
 		//horizontal gleich
 		if(c1.getY() == c2.getY()) return true;
 		
@@ -68,5 +64,16 @@ public abstract class SpecialAttackStrategy extends ActionStrategy {
 		if(c1.getX() == c2.getX()) return true;
 		
 		return false;
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected final <T extends Ship> List<T> getShips(Class<T> shipType, World world){
+		List<T> ship = new ArrayList<T>(2);
+		
+		for(Ship s : world.getOwnShips()){
+			if(shipType.isInstance(s)) ship.add((T)s);
+		}
+		
+		return ship;
 	}
 }
