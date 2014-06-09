@@ -57,6 +57,8 @@ public class Random extends java.util.Random {
 	 * @param toShuffle
 	 */
 	public void shuffle(final List<?> toShuffle){
+		if(toShuffle == null || toShuffle.size() <= 1) return;
+		
 		final Random me = this;
 		this.runXTimes(new Runnable() {
 			@Override
