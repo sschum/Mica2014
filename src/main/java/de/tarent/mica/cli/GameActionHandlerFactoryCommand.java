@@ -18,6 +18,7 @@ import de.tarent.mica.bot.strategy.action.RandomAttackStrategy;
 import de.tarent.mica.bot.strategy.action.RandomSpyAttackStrategy;
 import de.tarent.mica.bot.strategy.action.SpyAttackStrategy;
 import de.tarent.mica.bot.strategy.action.SpyStrategy;
+import de.tarent.mica.bot.strategy.action.TorpedoStrategy;
 import de.tarent.mica.bot.strategy.shipplacement.ShipPlacementStrategy;
 import de.tarent.mica.bot.strategy.shipplacement.ShuffleShipPlacement;
 import de.tarent.mica.bot.strategy.shipplacement.StaticShipPlacementStrategy;
@@ -181,6 +182,13 @@ public class GameActionHandlerFactoryCommand{
 	@Command(abbrev = "arsas", description = "F\u00fcgt eine RandomSpyAttackStrategy hinzu.")
 	public String addRandomSpyAttackStrategy(){
 		actionStrategies.add(new RandomSpyAttackStrategy());
+		
+		return "Strategie hinzugef\u00fcgt.";
+	}
+	
+	@Command(abbrev = "ats", description = "F\u00fcgt eine TorpedoStrategy hinzu.")
+	public String addTorpedoStrategy(){
+		actionStrategies.add(new TorpedoStrategy());
 		
 		return "Strategie hinzugef\u00fcgt.";
 	}
