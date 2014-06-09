@@ -71,4 +71,4 @@ else
 	java $JAVA_ARGS -jar $UNIX_STYLE_HOME/$JAR_NAME
 fi
 
-#rm $TMP_SCRIPT_FILE 2> /dev/null
+rm $TMP_SCRIPT_FILE 2> /dev/null
