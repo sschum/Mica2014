@@ -100,4 +100,9 @@ public class SpyStrategy extends ActionStrategy {
 		
 		return null;
 	}
+	
+	@Override
+	public String toString() {
+		return super.toString() + "\n\tspy-points: " + spyPoints.toString().replace("[", "").replace("]", "");
+	}
 }

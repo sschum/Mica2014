@@ -15,6 +15,9 @@ import de.tarent.mica.bot.strategy.action.ActionStrategy;
 import de.tarent.mica.bot.strategy.action.AreaAttackStrategy;
 import de.tarent.mica.bot.strategy.action.HitTraceStrategy;
 import de.tarent.mica.bot.strategy.action.RandomAttackStrategy;
+import de.tarent.mica.bot.strategy.action.RandomSpyAttackStrategy;
+import de.tarent.mica.bot.strategy.action.SpyAttackStrategy;
+import de.tarent.mica.bot.strategy.action.SpyStrategy;
 import de.tarent.mica.bot.strategy.shipplacement.ShipPlacementStrategy;
 import de.tarent.mica.bot.strategy.shipplacement.ShuffleShipPlacement;
 import de.tarent.mica.bot.strategy.shipplacement.StaticShipPlacementStrategy;
@@ -157,5 +160,28 @@ public class GameActionHandlerFactoryCommand{
 		}
 		
 		return sb.toString();
+	}
+	
+	@Command(abbrev = "ass", description = "F\u00fcgt eine SpyStrategy hinzu.")
+	public String addSpyStrategy(
+			@Param(name = "coord", description = "Die zu spionierenden Koordinaten.") 
+			Coord...cords){
+		actionStrategies.add(new SpyStrategy(cords));
+		
+		return "Strategie hinzugef\u00fcgt.";
+	}
+	
+	@Command(abbrev = "asas", description = "F\u00fcgt eine SpyAttackStrategy hinzu.")
+	public String addSpyAttackStrategy(){
+		actionStrategies.add(new SpyAttackStrategy());
+		
+		return "Strategie hinzugef\u00fcgt.";
+	}
+	
+	@Command(abbrev = "arsas", description = "F\u00fcgt eine RandomSpyAttackStrategy hinzu.")
+	public String addRandomSpyAttackStrategy(){
+		actionStrategies.add(new RandomSpyAttackStrategy());
+		
+		return "Strategie hinzugef\u00fcgt.";
 	}
 }
