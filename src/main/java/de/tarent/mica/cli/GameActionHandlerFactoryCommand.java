@@ -93,7 +93,7 @@ public class GameActionHandlerFactoryCommand{
 	}
 	
 	@Command(abbrev = "aaas", description = "F\u00fcgt eine AreaAttackStrategy hinzu.")
-	public String addAreaAttackActionStrategy(
+	public String addAreaAttackStrategy(
 			@Param(name = "startCoord", description = "Oberer Eckpunkt des Zielbereiches.") 
 			Coord startCoord,
 			@Param(name = "width", description = "Breite des Zielbereiches.") 

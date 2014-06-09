@@ -1,5 +1,5 @@
-# Dieses Skript initialisiert eine AreaAttack anstatt 
-# die Standard-Strategie zu verwenden
+# Dieses Skript Spioniert am Anfang den Gegner aus
+#
 
 #Spiel starten
 start-game $host $port
@@ -8,20 +8,24 @@ start-game $host $port
 	clear-action-strategies
 	
 	#Die unwarscheinlichsten Strategien nach oben!
-	add-hit-trace-strategy true #Brennende Schiffe werden ignoriert
 	
-	############################
+		############################
 	#   0 1 2 3 4 5 6 7 8 9
 	# A          |          |
 	# B    1     |          |
 	# C _________|    2     |
-	# D     6    |          |
-	# E _________|__________|
-	# F        |     |      |
-	# G    4   |     |      |
-	# H        | 3   |   5  |
-	# I        |     |      |
-	# J _______|_____|______|
+	# D     6 ? ? ?         |
+	# E ______? * ?_________|
+	# F       ? ? ?  |    5 |
+	# G    4   |     |? ? ? |
+	# H   ? ? ?| 3   |? * ? |
+	# I   ? * ?|     |? ? ? |
+	# J __? ? ?|_____|______|
+	
+	add-hit-trace-strategy true 	#Brennende Schiffe werden ignoriert
+	add-spy-strategy E4	I2 H8		#zuerst wird der Gegner spioniert
+	add-random-spy-attack-strategy	#Wenn Spionage erfolgreich...
+	
 	  
 	add-area-attack-strategy A0 5 3
 	add-area-attack-strategy A5 5 5
