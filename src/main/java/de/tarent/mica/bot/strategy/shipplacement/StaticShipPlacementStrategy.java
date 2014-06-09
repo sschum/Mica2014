@@ -47,12 +47,7 @@ public class StaticShipPlacementStrategy extends ShipPlacementStrategy {
 	@Override
 	public Fleet getFleet() {
 		final Random rnd = new Random();
-		rnd.runXTimes(new Runnable() {
-			@Override
-			public void run() {
-				Collections.shuffle(availableResourceURL, rnd);
-			}
-		});
+		rnd.shuffle(availableResourceURL);
 
 		String finalDestination = availableResourceURL.get(Math.abs(rnd.nextInt() % availableResourceURL.size()));
 		Logger.debug("Use fleetdefinition from " + finalDestination);

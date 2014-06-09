@@ -24,13 +24,22 @@ public class SpyAttackStrategy extends ActionStrategy {
 	}
 
 	protected SpyArea nextSpyArea(World world) {
+		List<SpyArea> possipleAreas = collectUnlootedSpyAreas(world);
+		if(possipleAreas.isEmpty()) return null;
+		
+		return possipleAreas.get(0);
+	}
+	
+	protected List<SpyArea> collectUnlootedSpyAreas(World world) {
+		List<SpyArea> unlooted = new ArrayList<SpyArea>(3);
+		
 		for(SpyArea sa : world.getSpyAreas()){
 			if(!isLooted(world, sa)){
-				return sa;
+				unlooted.add(sa);
 			}
 		}
 		
-		return null;
+		return unlooted;
 	}
 
 	private boolean isLooted(World world, SpyArea spy) {

@@ -13,6 +13,7 @@ import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Ship;
+import de.tarent.mica.util.Random;
 
 /**
  * Diese Strategy versucht getroffene aber noch nicht versunkene
@@ -152,7 +153,7 @@ public class HitTraceStrategy extends ActionStrategy {
 			}
 		}
 		if(possipleCoords.isEmpty()) return null;	//keine möglichkeiten mehr...
-		Collections.shuffle(possipleCoords);
+		new Random().shuffle(possipleCoords);
 		
 		return buildAction(possipleCoords.get(0));
 	}

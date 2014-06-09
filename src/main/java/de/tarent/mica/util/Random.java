@@ -1,5 +1,8 @@
 package de.tarent.mica.util;
 
+import java.util.Collections;
+import java.util.List;
+
 /**
  * Eigene Random-Klasse, die zusätzliche funktionalitäten als {@link java.util.Random} bietet.
  * 
@@ -46,5 +49,20 @@ public class Random extends java.util.Random {
 	public <T> T choose(T[] values) {
 		int index = Math.abs(nextInt() % values.length);
 		return values[index];
+	}
+	
+	/**
+	 * Durchwürfelt eine Liste...
+	 * 
+	 * @param toShuffle
+	 */
+	public void shuffle(final List<?> toShuffle){
+		final Random me = this;
+		this.runXTimes(new Runnable() {
+			@Override
+			public void run() {
+				Collections.shuffle(toShuffle, me);
+			}
+		});
 	}
 }

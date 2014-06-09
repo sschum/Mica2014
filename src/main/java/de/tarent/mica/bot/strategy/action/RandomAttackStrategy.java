@@ -1,7 +1,6 @@
 package de.tarent.mica.bot.strategy.action;
 
 import java.awt.Dimension;
-import java.util.Collections;
 import java.util.List;
 
 import de.tarent.mica.bot.strategy.StrategyStats;
@@ -30,15 +29,8 @@ public class RandomAttackStrategy extends SimpleAttackStrategy {
 
 	@Override
 	protected List<Coord> initialiseCoords(Dimension dim) {
-		final List<Coord> result = super.initialiseCoords(dim);
-		
-		final Random rand = new Random();
-		rand.runXTimes(new Runnable() {
-			@Override
-			public void run() {
-				Collections.shuffle(result, rand);
-			}
-		});
+		List<Coord> result = super.initialiseCoords(dim);
+		new Random().shuffle(result);
 		
 		return result;
 	}
