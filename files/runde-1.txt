@@ -1,4 +1,4 @@
-linus41			- 23:1
+linus42			- 23:1
 reduce_possibilities	- 21:3
 Rainu			- 18:6
 ChickenBurrito		- 15:9
