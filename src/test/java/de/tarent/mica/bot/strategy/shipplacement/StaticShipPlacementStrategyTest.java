@@ -13,7 +13,7 @@ public class StaticShipPlacementStrategyTest {
 
 	@Test
 	public void getFleet(){
-		Fleet fleet = new StaticShipPlacementStrategy(new Dimension(10, 10)).getFleet();
+		Fleet fleet = new StaticShipPlacementStrategy(new Dimension(16, 16)).getFleet();
 		
 		assertNotNull(fleet.getCarrier1());
 		assertNotNull(fleet.getCarrier2());

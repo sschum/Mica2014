@@ -64,7 +64,7 @@ public class FleetSerializer {
 		return ship.getPosition() + "_" + ship.getOrientation() + "_" + ship.getSpace().size();
 	}
 	
-	private static Pattern shipPattern = Pattern.compile("^([A-Za-z]*[0-9]*)_([A-Za-z0-9_]*)_([0-9]*)$");
+	private static Pattern shipPattern = Pattern.compile("^([0-9A-Za-z]{2})_([A-Za-z0-9_]*)_([0-9]*)$");
 	private static Ship fromString(String ship){
 		Matcher matcher = shipPattern.matcher(ship);
 		if(!matcher.matches()) return null;
