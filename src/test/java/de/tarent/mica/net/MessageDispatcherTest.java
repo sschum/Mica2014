@@ -43,30 +43,30 @@ public class MessageDispatcherTest {
 		
 		toTest.onMessage(msg(ENEMY_SHIP_HIT));
 		verify(controller).hit(eq((Coord)null));
-		toTest.onMessage(msg(ENEMY_SHIP_HIT, "Enemy ship hit at F1."));
-		verify(controller).hit(eq(new Coord("F1")));
+		toTest.onMessage(msg(ENEMY_SHIP_HIT, "Enemy ship hit at 51."));
+		verify(controller).hit(eq(new Coord("51")));
 		
 		toTest.onMessage(msg(ENEMY_SHIP_MISSED));
 		verify(controller).missed();
 		toTest.onMessage(msg(TORPEDO));
 		verify(controller, times(2)).missed();
 		
-		toTest.onMessage(msg(DRONE, "The drone found 3 ship segments at F1!"));
-		verify(controller).spy(eq(new SpyArea(new Coord("F1"), 3)));
+		toTest.onMessage(msg(DRONE, "The drone found 3 ship segments at 51!"));
+		verify(controller).spy(eq(new SpyArea(new Coord("51"), 3)));
 		
-		toTest.onMessage(msg(YOUR_SHIP_HIT, "The enemy hits at F1."));
-		verify(controller).enemyHit(eq(new Coord("F1")));
-		toTest.onMessage(msg(YOUR_SHIP_HIT, "Your burned at F1!"));
-		verify(controller).enemyBurnHit(eq(new Coord("F1")));
+		toTest.onMessage(msg(YOUR_SHIP_HIT, "The enemy hits at 51."));
+		verify(controller).enemyHit(eq(new Coord("51")));
+		toTest.onMessage(msg(YOUR_SHIP_HIT, "Your burned at 51!"));
+		verify(controller).enemyBurnHit(eq(new Coord("51")));
 		
-		toTest.onMessage(msg(YOUR_SHIP_MISSED, "Enemy shoots at F1 and misses."));
-		verify(controller).enemyMissed(eq(new Coord("F1")));
+		toTest.onMessage(msg(YOUR_SHIP_MISSED, "Enemy shoots at 51 and misses."));
+		verify(controller).enemyMissed(eq(new Coord("51")));
 		
-		toTest.onMessage(msg(YOUR_SHIP_SUNK, "at F1!"));
-		verify(controller).enemySunk(eq(new Coord("F1")));
+		toTest.onMessage(msg(YOUR_SHIP_SUNK, "at 51!"));
+		verify(controller).enemySunk(eq(new Coord("51")));
 		
-		toTest.onMessage(msg(DRONEEE, "at F1!"));
-		verify(controller).enemySpy(eq(new SpyArea(new Coord("F1"))));
+		toTest.onMessage(msg(DRONEEE, "at 51!"));
+		verify(controller).enemySpy(eq(new SpyArea(new Coord("51"))));
 	}
 
 }

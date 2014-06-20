@@ -29,24 +29,24 @@ public class FieldTest {
 		
 		assertEquals(
 				"  0 1 2 3 4 5 6 7 8 9\n" + 
-				"A ? ~ ~ ~ ~ ~ ~ ~ ~ *\n"+ 
-				"B ~ ? ~ ~ ~ ~ ~ ~ * ~\n"+ 
-				"C ~ ~ ? ~ ~ ~ ~ * ~ ~\n"+ 
-				"D ~ ~ ~ ? ~ ~ * ~ ~ ~\n"+ 
-				"E ~ ~ ~ ~ ? * ~ ~ ~ ~\n"+ 
-				"F + + + + * ? + + + +\n"+ 
-				"G ~ ~ ~ * ~ ~ ? ~ ~ ~\n"+ 
-				"H ~ ~ * ~ ~ ~ ~ ? ~ ~\n"+ 
-				"I ~ * ~ ~ ~ ~ ~ ~ ? ~\n"+ 
-				"J * ~ ~ ~ ~ ~ ~ ~ ~ ?\n", 
+				"0 ? ~ ~ ~ ~ ~ ~ ~ ~ *\n"+ 
+				"1 ~ ? ~ ~ ~ ~ ~ ~ * ~\n"+ 
+				"2 ~ ~ ? ~ ~ ~ ~ * ~ ~\n"+ 
+				"3 ~ ~ ~ ? ~ ~ * ~ ~ ~\n"+ 
+				"4 ~ ~ ~ ~ ? * ~ ~ ~ ~\n"+ 
+				"5 + + + + * ? + + + +\n"+ 
+				"6 ~ ~ ~ * ~ ~ ? ~ ~ ~\n"+ 
+				"7 ~ ~ * ~ ~ ~ ~ ? ~ ~\n"+ 
+				"8 ~ * ~ ~ ~ ~ ~ ~ ? ~\n"+ 
+				"9 * ~ ~ ~ ~ ~ ~ ~ ~ ?\n", 
 				field.toString());
 	}
 	
 	@Test
 	public void testEmpty(){
 		assertEquals("  0 1\n" +
-					 "A ? ?\n" +
-					 "B ? ?\n",
+					 "0 ? ?\n" +
+					 "1 ? ?\n",
 					 new Field(2, 2).toString());
 	}
 	
@@ -61,13 +61,13 @@ public class FieldTest {
 	@Test
 	public void set(){
 		Field field = new Field(2, 2);
-		field.set(new Coord("A1"), SCHIFF);
-		field.set(new Coord("B0"), WASSER);
+		field.set(new Coord("01"), SCHIFF);
+		field.set(new Coord("10"), WASSER);
 		
 		assertEquals(
 				"  0 1\n" +
-				"A ? *\n" +
-				"B ~ ?\n", 
+				"0 ? *\n" +
+				"1 ~ ?\n", 
 				field.toString());
 	}
 	
@@ -94,10 +94,10 @@ public class FieldTest {
 				new Element[]{WASSER, SCHIFF},
 		});
 		
-		assertEquals(UNBEKANNT, field.get(new Coord("A0")));
-		assertEquals(WASSER, field.get(new Coord("A1")));
-		assertEquals(WASSER, field.get(new Coord("B0")));
-		assertEquals(SCHIFF, field.get(new Coord("B1")));
+		assertEquals(UNBEKANNT, field.get(new Coord("00")));
+		assertEquals(WASSER, field.get(new Coord("01")));
+		assertEquals(WASSER, field.get(new Coord("10")));
+		assertEquals(SCHIFF, field.get(new Coord("11")));
 	}
 	
 	@Test
@@ -116,14 +116,14 @@ public class FieldTest {
 		});
 		
 		Set<Coord> result = field.getCoordinatesFor(UNBEKANNT);
-		assertTrue(result.contains(new Coord("A0")));
+		assertTrue(result.contains(new Coord("00")));
 		
 		result = field.getCoordinatesFor(WASSER);
-		assertTrue(result.contains(new Coord("A1")));
-		assertTrue(result.contains(new Coord("B0")));
+		assertTrue(result.contains(new Coord("01")));
+		assertTrue(result.contains(new Coord("10")));
 		
 		result = field.getCoordinatesFor(SCHIFF);
-		assertTrue(result.contains(new Coord("B1")));
+		assertTrue(result.contains(new Coord("11")));
 	}
 	
 	@Test

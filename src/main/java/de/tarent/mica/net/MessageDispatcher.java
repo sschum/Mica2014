@@ -20,15 +20,15 @@ class MessageDispatcher {
 	private Pattern messagePattern = Pattern.compile("^([0-9]*):.*$");
 	private Pattern helloMessagePattern = Pattern.compile("^[0-9]*:.*Hello, player #([0-9]*).$");
 	private Pattern renameMessagePattern = Pattern.compile("^[0-9]*:.*Player '#([0-9]*)' is now known as '(.*)'.$");
-	private Pattern hitMessagePattern = Pattern.compile("^[0-9]*:.*Enemy ship hit at ([A-Za-z]*[0-9]*)\\.$");
+	private Pattern hitMessagePattern = Pattern.compile("^[0-9]*:.*Enemy ship hit at ([0-9A-Za-z]{2})\\.$");
 	private Pattern sunkMessagePattern = Pattern.compile("^[0-9]*:.*Enemy (.*) sunk!$");
-	private Pattern enemyHitMessagePattern = Pattern.compile("^[0-9]*:.*The enemy hits .*at ([A-Za-z]*[0-9]*)\\.$");
-	private Pattern enemyHitBurnedMessagePattern = Pattern.compile("^[0-9]*:.*Your .*burned at ([A-Za-z]*[0-9]*)!$");
-	private Pattern enemyMissMessagePattern = Pattern.compile("^[0-9]*:.*Enemy shoots at ([A-Za-z]*[0-9]*) and misses\\.$");
-	private Pattern playerSunkMessagePattern = Pattern.compile("^[0-9]*:.*at ([A-Za-z]*[0-9]*)!.*$");
-	private Pattern spyMesssagePattern = Pattern.compile("^[0-9]*:.*The drone found ([0-9]*) ship segments at ([A-Za-z]*[0-9]*)!$");
-	private Pattern enemySpyMessagePattern = Pattern.compile("^[0-9]*:.*at ([A-Za-z]*[0-9]*)!.*$");
-	private Pattern enemyClusterMessagePattern = Pattern.compile("^[0-9]*:.*clusterbombed at ([A-Za-z]*[0-9]*)!$");
+	private Pattern enemyHitMessagePattern = Pattern.compile("^[0-9]*:.*The enemy hits .*at ([0-9A-Za-z]{2})\\.$");
+	private Pattern enemyHitBurnedMessagePattern = Pattern.compile("^[0-9]*:.*Your .*burned at ([0-9A-Za-z]{2})!$");
+	private Pattern enemyMissMessagePattern = Pattern.compile("^[0-9]*:.*Enemy shoots at ([0-9A-Za-z]{2}) and misses\\.$");
+	private Pattern playerSunkMessagePattern = Pattern.compile("^[0-9]*:.*at ([0-9A-Za-z]{2})!.*$");
+	private Pattern spyMesssagePattern = Pattern.compile("^[0-9]*:.*The drone found ([0-9]*) ship segments at ([0-9A-Za-z]{2})!$");
+	private Pattern enemySpyMessagePattern = Pattern.compile("^[0-9]*:.*at ([0-9A-Za-z]{2})!.*$");
+	private Pattern enemyClusterMessagePattern = Pattern.compile("^[0-9]*:.*clusterbombed at ([0-9A-Za-z]{2})!$");
 
 	private WebSocketController controller;
 	

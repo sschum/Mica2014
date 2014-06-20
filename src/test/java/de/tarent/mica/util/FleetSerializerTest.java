@@ -31,14 +31,14 @@ public class FleetSerializerTest {
 	@Test
 	public void de_serialize() throws IOException{
 		Fleet fleet = new Fleet();
-		fleet.setCarrier1(new Carrier(Orientation.OST, new Coord("A1")));
-		fleet.setCarrier2(new Carrier(Orientation.OST, new Coord("G1")));
-		fleet.setCruiser1(new Cruiser(Orientation.OST, new Coord("C1")));
-		fleet.setCruiser2(new Cruiser(Orientation.OST, new Coord("C6")));
-		fleet.setDestroyer1(new Destroyer(Orientation.OST, new Coord("I1")));
-		fleet.setDestroyer2(new Destroyer(Orientation.OST, new Coord("E1")));
-		fleet.setSubmarine1(new Submarine(Orientation.OST, new Coord("F7")));
-		fleet.setSubmarine2(new Submarine(Orientation.OST, new Coord("I8")));
+		fleet.setCarrier1(new Carrier(Orientation.OST, new Coord("01")));
+		fleet.setCarrier2(new Carrier(Orientation.OST, new Coord("61")));
+		fleet.setCruiser1(new Cruiser(Orientation.OST, new Coord("21")));
+		fleet.setCruiser2(new Cruiser(Orientation.OST, new Coord("26")));
+		fleet.setDestroyer1(new Destroyer(Orientation.OST, new Coord("81")));
+		fleet.setDestroyer2(new Destroyer(Orientation.OST, new Coord("41")));
+		fleet.setSubmarine1(new Submarine(Orientation.OST, new Coord("57")));
+		fleet.setSubmarine2(new Submarine(Orientation.OST, new Coord("88")));
 		
 		File testFile = File.createTempFile("battleship", ".fleet");
 		testFile.deleteOnExit();

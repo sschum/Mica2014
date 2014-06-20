@@ -147,13 +147,13 @@ public class GameActionHandlerFactoryCommand{
 			last = c;
 		}
 		
-		char row = 'A';
-		sb.append("\n" + (row++) + " ");
+		int row = 0;
+		sb.append("\n" + Integer.toHexString(row++).toUpperCase() + " ");
 		last = null;
 
 		for(Coord c : sortedCoords){
 			if(last != null && last.getY() != c.getY()){
-				sb.append("\n" + (row++) + " ");
+				sb.append("\n" + Integer.toHexString(row++).toUpperCase() + " ");
 			}
 			
 			sb.append(cover.get(c) + " ");

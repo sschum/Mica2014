@@ -34,8 +34,8 @@ public class SpecialAttackStrategyTest {
 		 * D * * *
 		 * E
 		 */
-		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("B1")));
-		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("D0")));
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("11")));
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("30")));
 		assertEquals(2, toTest.getPossibleSpecialAttackCount(Destroyer.class, world));
 		
 		/*
@@ -47,8 +47,8 @@ public class SpecialAttackStrategyTest {
 		 * E     *
 		 */
 		world = new World(10, 10);
-		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("A1")));
-		world.placeOwnShip(new Destroyer(Orientation.SUED, new Coord("C2")));
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("01")));
+		world.placeOwnShip(new Destroyer(Orientation.SUED, new Coord("22")));
 		assertEquals(1, toTest.getPossibleSpecialAttackCount(Destroyer.class, world));
 		
 		/*
@@ -60,9 +60,9 @@ public class SpecialAttackStrategyTest {
 		 * E     *
 		 */
 		world = new World(10, 10);
-		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("A1")));
-		world.placeOwnShip(new Destroyer(Orientation.SUED, new Coord("C2")));
-		world.registerEnemySunk(new Coord("C2"));
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("01")));
+		world.placeOwnShip(new Destroyer(Orientation.SUED, new Coord("22")));
+		world.registerEnemySunk(new Coord("22"));
 		assertEquals(0, toTest.getPossibleSpecialAttackCount(Destroyer.class, world));
 		
 		/*
@@ -75,8 +75,8 @@ public class SpecialAttackStrategyTest {
 		 * F *
 		 */
 		world = new World(10, 10);
-		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("B1")));
-		world.placeOwnShip(new Destroyer(Orientation.SUED, new Coord("D0")));
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("11")));
+		world.placeOwnShip(new Destroyer(Orientation.SUED, new Coord("30")));
 		assertEquals(0, toTest.getPossibleSpecialAttackCount(Destroyer.class, world));
 		
 		/*
@@ -90,8 +90,8 @@ public class SpecialAttackStrategyTest {
 		 */
 		world = new World(10, 10);
 		world.registerSpecialAttack(Destroyer.class); //es wurde schon spoiniert
-		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("B1")));
-		world.placeOwnShip(new Destroyer(Orientation.SUED, new Coord("D2")));
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("11")));
+		world.placeOwnShip(new Destroyer(Orientation.SUED, new Coord("32")));
 		assertEquals(0, toTest.getPossibleSpecialAttackCount(Destroyer.class, world));
 		
 		/*
@@ -104,8 +104,8 @@ public class SpecialAttackStrategyTest {
 		 */
 		world = new World(10, 10);
 		world.registerSpecialAttack(Destroyer.class); //es wurde schon spoiniert
-		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("B1")));
-		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("D0")));
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("11")));
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("30")));
 		assertEquals(1, toTest.getPossibleSpecialAttackCount(Destroyer.class, world));
 		
 		/*
@@ -119,8 +119,8 @@ public class SpecialAttackStrategyTest {
 		world = new World(10, 10);
 		world.registerSpecialAttack(Destroyer.class);
 		world.registerSpecialAttack(Destroyer.class); //es wurde schon zweimal spoiniert
-		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("B1")));
-		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("D0")));
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("11")));
+		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("30")));
 		assertEquals(0, toTest.getPossibleSpecialAttackCount(Destroyer.class, world));
 	}
 }

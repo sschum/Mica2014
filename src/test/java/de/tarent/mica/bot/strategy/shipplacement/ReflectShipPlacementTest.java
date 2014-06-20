@@ -31,7 +31,7 @@ public class ReflectShipPlacementTest {
 			 * C
 			 */
 			Fleet fleet = new Fleet();
-			fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("A0")));
+			fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("00")));
 			
 			return fleet;
 		}
@@ -48,7 +48,7 @@ public class ReflectShipPlacementTest {
 		 * C
 		 */
 		Fleet fleet = new Fleet();
-		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("A0")));
+		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("00")));
 		
 		/* Erwartet
 		 *   0 1 2
@@ -56,10 +56,10 @@ public class ReflectShipPlacementTest {
 		 * B     *
 		 * C 
 		 */
-		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("A0")));
+		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("00")));
 		toTest.reflect(fleet, MirrorAxis.VERTICAL);
 		assertEquals(
-				new Submarine(Orientation.SUED, new Coord("A2")).getSpace(),
+				new Submarine(Orientation.SUED, new Coord("02")).getSpace(),
 				fleet.getSubmarine1().getSpace());
 		
 		/* Erwartet
@@ -68,10 +68,10 @@ public class ReflectShipPlacementTest {
 		 * B *
 		 * C *
 		 */
-		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("A0")));
+		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("00")));
 		toTest.reflect(fleet, MirrorAxis.HORIZONTAL);
 		assertEquals(
-				new Submarine(Orientation.SUED, new Coord("B0")).getSpace(),
+				new Submarine(Orientation.SUED, new Coord("10")).getSpace(),
 				fleet.getSubmarine1().getSpace());
 	}
 	
@@ -84,9 +84,9 @@ public class ReflectShipPlacementTest {
 		
 		assertEquals("Zufall nicht ausreichend verteilt! " + positions,
 				4, positions.size());
-		assertTrue(positions.contains(new Coord("A0")));	//ausgang
-		assertTrue(positions.contains(new Coord("B0")));	//ausgang horizontal
-		assertTrue(positions.contains(new Coord("A2")));	//ausgang vertikal
-		assertTrue(positions.contains(new Coord("B2")));	//ausgang vertikal wiederum vertikal gespiegelt
+		assertTrue(positions.contains(new Coord("00")));	//ausgang
+		assertTrue(positions.contains(new Coord("10")));	//ausgang horizontal
+		assertTrue(positions.contains(new Coord("02")));	//ausgang vertikal
+		assertTrue(positions.contains(new Coord("12")));	//ausgang vertikal wiederum vertikal gespiegelt
 	}
 }

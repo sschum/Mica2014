@@ -12,23 +12,23 @@ start-game $host $port
 	
 	############################
 	#   0 1 2 3 4 5 6 7 8 9
-	# A          |          |
-	# B    1     |          |
-	# C _________|    2     |
-	# D     6    |          |
-	# E _________|__________|
-	# F        |     |      |
-	# G    4   |     |      |
-	# H        | 3   |   5  |
-	# I        |     |      |
-	# J _______|_____|______|
+	# 0          |          |
+	# 1    1     |          |
+	# 2 _________|    2     |
+	# 3     6    |          |
+	# 4 _________|__________|
+	# 5        |     |      |
+	# 6    4   |     |      |
+	# 7        | 3   |   5  |
+	# 8        |     |      |
+	# 9 _______|_____|______|
 	  
-	add-area-attack-strategy A0 5 3
-	add-area-attack-strategy A5 5 5
-	add-area-attack-strategy F4 3 5
-	add-area-attack-strategy F0 4 5
-	add-area-attack-strategy F7 3 5
-	add-area-attack-strategy D0 5 2
+	add-area-attack-strategy 00 5 3
+	add-area-attack-strategy 05 5 5
+	add-area-attack-strategy 54 3 5
+	add-area-attack-strategy 50 4 5
+	add-area-attack-strategy 57 3 5
+	add-area-attack-strategy 30 5 2
 	
 	show-area-cover
 	show-action-strategies

@@ -111,13 +111,13 @@ public class Field {
 		sb.append(" ");
 		for(int i=0; i < area[0].length; i++){	//TODO: prüfen, ob eine zeile vorhanden...
 			sb.append(" ");
-			sb.append(i);
+			sb.append(Integer.toHexString(i).toUpperCase());
 		}
 		
 		sb.append("\n");
 		
 		for(int i=0; i < area.length; i++){
-			sb.append((char)(65 + i));	//A -> 65
+			sb.append(Integer.toHexString(i).toUpperCase());
 			for(int j=0; j < area[i].length; j++){
 				sb.append(" ");
 				sb.append(area[i][j].getSign());

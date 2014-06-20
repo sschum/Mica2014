@@ -24,12 +24,12 @@ public class Coord{
 	private final int y;
 	
 	/**
-	 * Beispielkoordinaten: D7, A8, J0
+	 * Beispielkoordinaten: D7(13, 7), A8(10, 8), F0 (15, 0), 0F (0, 15)
 	 * 
 	 * @param coord
 	 */
 	public Coord(String coord){
-		this(coord.toUpperCase().charAt(0), Integer.parseInt(coord.substring(1)));
+		this(coord.toUpperCase().charAt(0), coord.toUpperCase().charAt(1));
 	}
 	
 	/**
@@ -37,9 +37,9 @@ public class Coord{
 	 * @param y
 	 * @param x
 	 */
-	public Coord(char y, int x){
-		this.x = x;
-		this.y = (int)Character.toUpperCase(y) - 65;
+	public Coord(char y, char x){
+		this.x = Integer.parseInt(String.valueOf(x), 16);
+		this.y = Integer.parseInt(String.valueOf(y), 16);
 	}
 	
 	public Coord(int x, int y){
@@ -55,8 +55,12 @@ public class Coord{
 		return y;
 	}
 	
+	public char getXChar() {
+		return Integer.toHexString(x).toUpperCase().charAt(0);
+	}
+	
 	public char getYChar() {
-		return (char)(y + 65);
+		return Integer.toHexString(y).toUpperCase().charAt(0);
 	}
 	
 	public Coord getNorthNeighbor(){
@@ -103,6 +107,6 @@ public class Coord{
 	@Override
 	public String toString() {
 		//D7
-		return "" + ((char)(65 + y)) + x;
+		return "" + getYChar() + "" + getXChar();
 	}
 }

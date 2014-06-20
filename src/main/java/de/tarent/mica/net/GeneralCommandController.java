@@ -38,7 +38,7 @@ abstract class GeneralCommandController extends WebSocketClient {
 	void started(int playerNumber) {
 		//spiel wurde gestartet...
 		//welt kann initialisiert werden
-		world = new World(10, 10);
+		world = new World(16, 16);
 		ownNumber = playerNumber;
 	}
 	

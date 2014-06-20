@@ -36,14 +36,14 @@ public class GeneralCommandControllerTest {
 		
 		Fleet fleet = new Fleet();
 		
-		fleet.setCarrier1(new Carrier(Orientation.OST, new Coord("A1")));
-		fleet.setCarrier2(new Carrier(Orientation.OST, new Coord("G1")));
-		fleet.setCruiser1(new Cruiser(Orientation.OST, new Coord("C1")));
-		fleet.setCruiser2(new Cruiser(Orientation.OST, new Coord("C6")));
-		fleet.setDestroyer1(new Destroyer(Orientation.OST, new Coord("I1")));
-		fleet.setDestroyer2(new Destroyer(Orientation.OST, new Coord("E1")));
-		fleet.setSubmarine1(new Submarine(Orientation.OST, new Coord("F7")));
-		fleet.setSubmarine2(new Submarine(Orientation.OST, new Coord("I8")));
+		fleet.setCarrier1(new Carrier(Orientation.OST, new Coord("01")));
+		fleet.setCarrier2(new Carrier(Orientation.OST, new Coord("61")));
+		fleet.setCruiser1(new Cruiser(Orientation.OST, new Coord("21")));
+		fleet.setCruiser2(new Cruiser(Orientation.OST, new Coord("26")));
+		fleet.setDestroyer1(new Destroyer(Orientation.OST, new Coord("81")));
+		fleet.setDestroyer2(new Destroyer(Orientation.OST, new Coord("41")));
+		fleet.setSubmarine1(new Submarine(Orientation.OST, new Coord("57")));
+		fleet.setSubmarine2(new Submarine(Orientation.OST, new Coord("88")));
 		
 		gameHandler = Mockito.mock(GameActionHandler.class);
 		doReturn(fleet).when(gameHandler).getFleet();
@@ -68,7 +68,7 @@ public class GeneralCommandControllerTest {
 		
 		World world = toTest.world;
 		assertNotNull(world);
-		assertEquals(new Dimension(10, 10), world.getWorldDimension());
+		assertEquals(new Dimension(16, 16), world.getWorldDimension());
 	}
 	
 	@Test
@@ -82,13 +82,13 @@ public class GeneralCommandControllerTest {
 		toTestSpy.started(1);
 		toTestSpy.placeShips();
 		
-	    verify(toTestSpy).send(eq("A1,A2,A3,A4,A5"));
-	    verify(toTestSpy).send(eq("G1,G2,G3,G4,G5"));
-	    verify(toTestSpy).send(eq("C1,C2,C3,C4"));
-	    verify(toTestSpy).send(eq("C6,C7,C8,C9"));
-	    verify(toTestSpy).send(eq("I1,I2,I3"));
-	    verify(toTestSpy).send(eq("E1,E2,E3"));
-	    verify(toTestSpy).send(eq("F7,F8"));
-	    verify(toTestSpy).send(eq("I8,I9"));
+	    verify(toTestSpy).send(eq("01,02,03,04,05"));
+	    verify(toTestSpy).send(eq("61,62,63,64,65"));
+	    verify(toTestSpy).send(eq("21,22,23,24"));
+	    verify(toTestSpy).send(eq("26,27,28,29"));
+	    verify(toTestSpy).send(eq("81,82,83"));
+	    verify(toTestSpy).send(eq("41,42,43"));
+	    verify(toTestSpy).send(eq("57,58"));
+	    verify(toTestSpy).send(eq("88,89"));
 	}
 }

@@ -32,7 +32,7 @@ public class RotateShipPlacementTest {
 			 * C
 			 */
 			Fleet fleet = new Fleet();
-			fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("A0")));
+			fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("00")));
 			
 			return fleet;
 		}
@@ -49,7 +49,7 @@ public class RotateShipPlacementTest {
 		 * C
 		 */
 		Fleet fleet = new Fleet();
-		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("A0")));
+		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("00")));
 		
 		/* Erwartet
 		 *   0 1 2
@@ -57,10 +57,10 @@ public class RotateShipPlacementTest {
 		 * B     
 		 * C 
 		 */
-		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("A0")));
+		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("00")));
 		toTest.rotate(fleet, RotateDirection.RIGHT);
 		assertEquals(
-				new Submarine(Orientation.OST, new Coord("A1")).getSpace(),
+				new Submarine(Orientation.OST, new Coord("01")).getSpace(),
 				fleet.getSubmarine1().getSpace());
 		
 		/* Erwartet
@@ -69,10 +69,10 @@ public class RotateShipPlacementTest {
 		 * B 
 		 * C * *
 		 */
-		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("A0")));
+		fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("00")));
 		toTest.rotate(fleet, RotateDirection.LEFT);
 		assertEquals(
-				new Submarine(Orientation.OST, new Coord("C0")).getSpace(),
+				new Submarine(Orientation.OST, new Coord("20")).getSpace(),
 				fleet.getSubmarine1().getSpace());
 	}
 	
@@ -85,9 +85,9 @@ public class RotateShipPlacementTest {
 
 		assertEquals("Zufall nicht ausreichend verteilt! " + positions,
 				4, positions.size());
-		assertTrue(positions.contains(new Coord("A0")));	//ausgang
-		assertTrue(positions.contains(new Coord("C0")));	//ausgang links
-		assertTrue(positions.contains(new Coord("A1")));	//ausgang rechts
-		assertTrue(positions.contains(new Coord("B2")));	//ausgang 2x rechts/links
+		assertTrue(positions.contains(new Coord("00")));	//ausgang
+		assertTrue(positions.contains(new Coord("20")));	//ausgang links
+		assertTrue(positions.contains(new Coord("01")));	//ausgang rechts
+		assertTrue(positions.contains(new Coord("12")));	//ausgang 2x rechts/links
 	}
 }

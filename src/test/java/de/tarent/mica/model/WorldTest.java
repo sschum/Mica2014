@@ -52,11 +52,11 @@ public class WorldTest {
 		
 		assertEquals(
 				"  0 1 2 3 4\n" +
-				"A ~ ~ * ~ ~\n" +
-				"B ~ ~ * ~ ~\n" +
-				"C ~ ~ * ~ ~\n" +
-				"D ~ ~ * ~ ~\n" +
-				"E ~ ~ * ~ ~\n", 
+				"0 ~ ~ * ~ ~\n" +
+				"1 ~ ~ * ~ ~\n" +
+				"2 ~ ~ * ~ ~\n" +
+				"3 ~ ~ * ~ ~\n" +
+				"4 ~ ~ * ~ ~\n", 
 			world.getOwnField().toString());
 	}
 	
@@ -245,11 +245,11 @@ public class WorldTest {
 	@Test
 	public void getShip(){
 		World world = new World(5, 5);
-		Ship ship = new Submarine(Orientation.SUED, new Coord("A0"));
+		Ship ship = new Submarine(Orientation.SUED, new Coord("00"));
 		world.placeOwnShip(ship);
 		
-		assertSame(ship, world.getShip(new Coord("A0")));
-		assertSame(ship, world.getShip(new Coord("B0")));
+		assertSame(ship, world.getShip(new Coord("00")));
+		assertSame(ship, world.getShip(new Coord("10")));
 	}
 	
 	@Test
@@ -273,14 +273,14 @@ public class WorldTest {
 	@Test
 	public void getPotentialShips(){
 		World world = new World(10, 10);
-		world.registerHit(new Coord("A1")); world.registerHit(new Coord("A2")); world.registerHit(new Coord("A3")); world.registerHit(new Coord("A4")); world.registerHit(new Coord("A5"));
-		world.registerHit(new Coord("G1")); world.registerHit(new Coord("G2")); world.registerHit(new Coord("G3")); world.registerHit(new Coord("G4")); world.registerHit(new Coord("G5"));
-		world.registerHit(new Coord("C1")); world.registerHit(new Coord("C2")); world.registerHit(new Coord("C3")); world.registerHit(new Coord("C4")); 
-		world.registerHit(new Coord("C6")); world.registerHit(new Coord("C7")); world.registerHit(new Coord("C8")); world.registerHit(new Coord("C9")); 
-		world.registerHit(new Coord("I1")); world.registerHit(new Coord("I2")); world.registerHit(new Coord("I3")); 
-		world.registerHit(new Coord("E1")); world.registerHit(new Coord("E2")); world.registerHit(new Coord("E3")); 
-		world.registerHit(new Coord("F7")); world.registerHit(new Coord("F8"));
-		world.registerHit(new Coord("I8")); world.registerHit(new Coord("I9"));
+		world.registerHit(new Coord("01")); world.registerHit(new Coord("02")); world.registerHit(new Coord("03")); world.registerHit(new Coord("04")); world.registerHit(new Coord("05"));
+		world.registerHit(new Coord("61")); world.registerHit(new Coord("62")); world.registerHit(new Coord("63")); world.registerHit(new Coord("64")); world.registerHit(new Coord("65"));
+		world.registerHit(new Coord("21")); world.registerHit(new Coord("22")); world.registerHit(new Coord("23")); world.registerHit(new Coord("24")); 
+		world.registerHit(new Coord("26")); world.registerHit(new Coord("27")); world.registerHit(new Coord("28")); world.registerHit(new Coord("29")); 
+		world.registerHit(new Coord("81")); world.registerHit(new Coord("82")); world.registerHit(new Coord("83")); 
+		world.registerHit(new Coord("41")); world.registerHit(new Coord("42")); world.registerHit(new Coord("43"));
+		world.registerHit(new Coord("57")); world.registerHit(new Coord("58"));
+		world.registerHit(new Coord("88")); world.registerHit(new Coord("89"));
 		
 		Set<Set<Coord>> result = world.getPotentialShips();
 		
@@ -290,15 +290,15 @@ public class WorldTest {
 	@Test
 	public void registerSunk(){
 		World world = new World(5, 5);
-		world.registerHit(new Coord("A2")); world.registerHit(new Coord("A3")); world.registerHit(new Coord("A1"));
-		world.registerSunk(new Coord("A1"));
+		world.registerHit(new Coord("02")); world.registerHit(new Coord("03")); world.registerHit(new Coord("01"));
+		world.registerSunk(new Coord("01"));
 		
 		assertEquals(1, world.getEnemyShips().size());
 		
 		Ship ship = world.getEnemyShips().iterator().next();
 		assertTrue(ship instanceof Destroyer);
-		assertEquals(new Coord("A1"), ship.getPosition());
+		assertEquals(new Coord("01"), ship.getPosition());
 		assertEquals(Orientation.OST, ship.getOrientation());
-		assertEquals(Arrays.asList(new Coord("A1"), new Coord("A2"),new Coord("A3")), ship.getSpace());
+		assertEquals(Arrays.asList(new Coord("01"), new Coord("02"),new Coord("03")), ship.getSpace());
 	}
 }

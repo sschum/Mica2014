@@ -69,41 +69,41 @@ public class HitTraceStrategyTest {
 		World world = new World(5, 5);
 		
 		//rand-test
-		Action result = toTest.getActionForMultipleCoords(world, list(new Coord("A0"), new Coord("A1")));
-		assertEquals(new Coord("A2"), result.getCoord());
+		Action result = toTest.getActionForMultipleCoords(world, list(new Coord("00"), new Coord("01")));
+		assertEquals(new Coord("02"), result.getCoord());
 		
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("A3"), new Coord("A4")));
-		assertEquals(new Coord("A2"), result.getCoord());
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("03"), new Coord("04")));
+		assertEquals(new Coord("02"), result.getCoord());
 		
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("A0"), new Coord("B0")));
-		assertEquals(new Coord("C0"), result.getCoord());
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("00"), new Coord("10")));
+		assertEquals(new Coord("20"), result.getCoord());
 		
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("D0"), new Coord("E0")));
-		assertEquals(new Coord("C0"), result.getCoord());
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("30"), new Coord("40")));
+		assertEquals(new Coord("20"), result.getCoord());
 		
 		//zwischenraum
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("A0"), new Coord("A2")));
-		assertEquals(new Coord("A1"), result.getCoord());
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("00"), new Coord("02")));
+		assertEquals(new Coord("01"), result.getCoord());
 		
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("A0"), new Coord("C0")));
-		assertEquals(new Coord("B0"), result.getCoord());
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("00"), new Coord("20")));
+		assertEquals(new Coord("10"), result.getCoord());
 		
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("A0"), new Coord("A3")));
-		assertTrue(	new Coord("A1").equals(result.getCoord()) ||
-					new Coord("A2").equals(result.getCoord()));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("00"), new Coord("03")));
+		assertTrue(	new Coord("01").equals(result.getCoord()) ||
+					new Coord("02").equals(result.getCoord()));
 		
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("A0"), new Coord("D0")));
-		assertTrue(	new Coord("B0").equals(result.getCoord()) ||
-					new Coord("C0").equals(result.getCoord()));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("00"), new Coord("30")));
+		assertTrue(	new Coord("10").equals(result.getCoord()) ||
+					new Coord("20").equals(result.getCoord()));
 		
 		//mitte
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("A1"), new Coord("A2")));
-		assertTrue(	new Coord("A0").equals(result.getCoord()) ||
-					new Coord("A3").equals(result.getCoord()));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("01"), new Coord("02")));
+		assertTrue(	new Coord("00").equals(result.getCoord()) ||
+					new Coord("03").equals(result.getCoord()));
 		
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("B0"), new Coord("C0")));
-		assertTrue(	new Coord("A0").equals(result.getCoord()) ||
-					new Coord("D0").equals(result.getCoord()));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("10"), new Coord("20")));
+		assertTrue(	new Coord("00").equals(result.getCoord()) ||
+					new Coord("30").equals(result.getCoord()));
 		
 		//schiffe mit der größer >= 3
 		/*
@@ -116,11 +116,11 @@ public class HitTraceStrategyTest {
 		 * 
 		 */
 		
-		world.registerHit(new Coord("A1")); world.registerHit(new Coord("A2")); world.registerHit(new Coord("A3"));
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("A1"), new Coord("A2"), new Coord("A3")));
+		world.registerHit(new Coord("01")); world.registerHit(new Coord("02")); world.registerHit(new Coord("03"));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("01"), new Coord("02"), new Coord("03")));
 		assertTrue(result.toString(),
-					new Coord("A0").equals(result.getCoord()) ||
-					new Coord("A4").equals(result.getCoord()));
+					new Coord("00").equals(result.getCoord()) ||
+					new Coord("04").equals(result.getCoord()));
 		
 		
 		/*
@@ -133,11 +133,11 @@ public class HitTraceStrategyTest {
 		 * 
 		 */
 		world = new World(5, 5);
-		world.registerHit(new Coord("B1")); world.registerHit(new Coord("C1")); world.registerHit(new Coord("D1"));
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("B1"), new Coord("C1"), new Coord("D1")));
+		world.registerHit(new Coord("11")); world.registerHit(new Coord("21")); world.registerHit(new Coord("31"));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("11"), new Coord("21"), new Coord("31")));
 		assertTrue(result.toString(),
-					new Coord("A1").equals(result.getCoord()) ||
-					new Coord("E1").equals(result.getCoord()));
+					new Coord("01").equals(result.getCoord()) ||
+					new Coord("41").equals(result.getCoord()));
 		
 		/*
 		 *   0 1 2 3 4
@@ -149,9 +149,9 @@ public class HitTraceStrategyTest {
 		 * 
 		 */
 		world = new World(5, 5);
-		world.registerHit(new Coord("A1")); world.registerHit(new Coord("B1")); world.registerHit(new Coord("C1"));
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("A1"), new Coord("B1"), new Coord("C1")));
-		assertEquals(new Coord("D1"), result.getCoord());
+		world.registerHit(new Coord("01")); world.registerHit(new Coord("11")); world.registerHit(new Coord("21"));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("01"), new Coord("11"), new Coord("21")));
+		assertEquals(new Coord("31"), result.getCoord());
 		
 		/*
 		 *   0 1 2 3 4
@@ -163,9 +163,9 @@ public class HitTraceStrategyTest {
 		 * 
 		 */
 		world = new World(5, 5);
-		world.registerHit(new Coord("C1")); world.registerHit(new Coord("D1")); world.registerHit(new Coord("E1"));
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("C1"), new Coord("D1"), new Coord("E1")));
-		assertEquals(new Coord("B1"), result.getCoord());
+		world.registerHit(new Coord("21")); world.registerHit(new Coord("31")); world.registerHit(new Coord("41"));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("21"), new Coord("31"), new Coord("41")));
+		assertEquals(new Coord("11"), result.getCoord());
 		
 		/*
 		 *   0 1 2 3 4
@@ -177,9 +177,9 @@ public class HitTraceStrategyTest {
 		 * 
 		 */
 		world = new World(5, 5);
-		world.registerMiss(new Coord("A1")); world.registerHit(new Coord("B1")); world.registerHit(new Coord("C1"));
-		result = toTest.getActionForMultipleCoords(world, list(new Coord("B1"), new Coord("C1")));
-		assertEquals(new Coord("D1"), result.getCoord());
+		world.registerMiss(new Coord("01")); world.registerHit(new Coord("11")); world.registerHit(new Coord("21"));
+		result = toTest.getActionForMultipleCoords(world, list(new Coord("11"), new Coord("21")));
+		assertEquals(new Coord("31"), result.getCoord());
 	}
 
 	@Test
@@ -214,8 +214,8 @@ public class HitTraceStrategyTest {
 		Action result = spy.getActionDecision(world);
 		assertNull(result);
 		
-		ships.add(new UnknownShip(new Coord("A0")));
-		ships.add(new UnknownShip(new Coord("B0")));
+		ships.add(new UnknownShip(new Coord("00")));
+		ships.add(new UnknownShip(new Coord("10")));
 		
 		result = spy.getActionDecision(world);
 		assertNotNull(result);

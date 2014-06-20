@@ -30,8 +30,8 @@ public class TorpedoStrategyTest {
 		 * 
 		 */
 		World world = new World(10, 10);
-		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("B1")));
-		world.placeOwnShip(new Submarine(Orientation.OST, new Coord("D3")));
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("11")));
+		world.placeOwnShip(new Submarine(Orientation.OST, new Coord("33")));
 		
 		assertTrue(toTest.collectTorpedoCoords(world).isEmpty());
 		
@@ -45,15 +45,15 @@ public class TorpedoStrategyTest {
 		 * 
 		 */
 		world = new World(10, 10);
-		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("B1")));
-		world.placeOwnShip(new Submarine(Orientation.OST, new Coord("E1")));
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("11")));
+		world.placeOwnShip(new Submarine(Orientation.OST, new Coord("41")));
 		
 		List<Coord> result = toTest.collectTorpedoCoords(world);
 		assertEquals(4, result.size());
-		assertTrue(result.contains(new Coord("B1")));
-		assertTrue(result.contains(new Coord("C1")));
-		assertTrue(result.contains(new Coord("E1")));
-		assertTrue(result.contains(new Coord("E2")));
+		assertTrue(result.contains(new Coord("11")));
+		assertTrue(result.contains(new Coord("21")));
+		assertTrue(result.contains(new Coord("41")));
+		assertTrue(result.contains(new Coord("42")));
 		
 		/*
 		 *   0 1 2 3 4 5
@@ -65,15 +65,15 @@ public class TorpedoStrategyTest {
 		 * 
 		 */
 		world = new World(10, 10);
-		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("B1")));
-		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("B3")));
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("11")));
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("13")));
 		
 		result = toTest.collectTorpedoCoords(world);
 		assertEquals(4, result.size());
-		assertTrue(result.contains(new Coord("B1")));
-		assertTrue(result.contains(new Coord("C1")));
-		assertTrue(result.contains(new Coord("B3")));
-		assertTrue(result.contains(new Coord("C3")));
+		assertTrue(result.contains(new Coord("11")));
+		assertTrue(result.contains(new Coord("21")));
+		assertTrue(result.contains(new Coord("13")));
+		assertTrue(result.contains(new Coord("23")));
 		
 		/*
 		 *   0 1 2 3 4 5
@@ -85,15 +85,15 @@ public class TorpedoStrategyTest {
 		 * 
 		 */
 		world = new World(10, 10);
-		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("A1")));
-		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("D1")));
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("01")));
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("31")));
 		
 		result = toTest.collectTorpedoCoords(world);
 		assertEquals(4, result.size());
-		assertTrue(result.contains(new Coord("A1")));
-		assertTrue(result.contains(new Coord("B1")));
-		assertTrue(result.contains(new Coord("D1")));
-		assertTrue(result.contains(new Coord("E1")));
+		assertTrue(result.contains(new Coord("01")));
+		assertTrue(result.contains(new Coord("11")));
+		assertTrue(result.contains(new Coord("31")));
+		assertTrue(result.contains(new Coord("41")));
 	}
 	
 	@Test
@@ -109,8 +109,8 @@ public class TorpedoStrategyTest {
 		 */
 		World world = new World(5, 5);
 		
-		Action result = toTest.getAction(world, Arrays.asList(new Coord("B1"), new Coord("C1"), new Coord("A3"), new Coord("B3")));
-		assertEquals(new Action(Type.TORPEDO_SUED, new Coord("A3")), result);
+		Action result = toTest.getAction(world, Arrays.asList(new Coord("11"), new Coord("21"), new Coord("03"), new Coord("13")));
+		assertEquals(new Action(Type.TORPEDO_SUED, new Coord("03")), result);
 		
 		/*
 		 *   0 1 2 3 4 5
@@ -121,9 +121,9 @@ public class TorpedoStrategyTest {
 		 * E
 		 * 
 		 */
-		world.registerMiss(new Coord("B3"));
-		world.registerMiss(new Coord("C3"));
-		result = toTest.getAction(world, Arrays.asList(new Coord("B1"), new Coord("C1"), new Coord("A3"), new Coord("B3")));
-		assertEquals(new Action(Type.TORPEDO_WEST, new Coord("A3")), result);
+		world.registerMiss(new Coord("13"));
+		world.registerMiss(new Coord("23"));
+		result = toTest.getAction(world, Arrays.asList(new Coord("11"), new Coord("21"), new Coord("03"), new Coord("13")));
+		assertEquals(new Action(Type.TORPEDO_WEST, new Coord("03")), result);
 	}
 }

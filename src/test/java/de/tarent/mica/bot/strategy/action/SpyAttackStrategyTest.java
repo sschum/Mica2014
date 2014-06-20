@@ -25,16 +25,16 @@ public class SpyAttackStrategyTest {
 		 *  # => Spy (inklusive *)
 		 *  
 		 *   0 1 2 3 4 5
-		 * A
-		 * B   # # #
-		 * C   # * #
-		 * D   # # # 
-		 * E
+		 * 0
+		 * 1   # # #
+		 * 2   # * #
+		 * 3   # # # 
+		 * 4
 		 * 
 		 */
 		
 		World world = new World(10, 10);
-		SpyArea spy = new SpyArea(new Coord("C2"));
+		SpyArea spy = new SpyArea(new Coord("22"));
 		List<Coord> result = toTest.collectPossipleCoords(world, spy);
 		
 		//damit sichergestellt ist, dass da auch keine duplikate vorkommen...
@@ -49,7 +49,7 @@ public class SpyAttackStrategyTest {
 		assertTrue(result.contains(spy.getCoord().getSouthNeighbor().getWestNeighbor()));
 		assertTrue(result.contains(spy.getCoord().getSouthNeighbor().getEastNeighbor()));
 		
-		spy = new SpyArea(new Coord("A0"));
+		spy = new SpyArea(new Coord("00"));
 		result = toTest.collectPossipleCoords(world, spy);
 		
 		//damit sichergestellt ist, dass da auch keine duplikate vorkommen...
@@ -63,19 +63,19 @@ public class SpyAttackStrategyTest {
 	@Test
 	public void nextArea(){
 		World world = new World(10, 10);
-		SpyArea spy = new SpyArea(new Coord("C2"), 3);
+		SpyArea spy = new SpyArea(new Coord("22"), 3);
 		world.registerSpy(spy);
 		
 		assertEquals(spy, toTest.nextSpyArea(world));
 		
 		//spy area bereits abgefarmt :D
-		world.registerHit(new Coord("C2"));
-		world.registerHit(new Coord("C1"));
-		world.registerHit(new Coord("C3"));
+		world.registerHit(new Coord("22"));
+		world.registerHit(new Coord("21"));
+		world.registerHit(new Coord("23"));
 		
 		assertNull(toTest.nextSpyArea(world));
 		
-		SpyArea otherSpy = new SpyArea(new Coord("F9"), 3);
+		SpyArea otherSpy = new SpyArea(new Coord("99"), 3);
 		world.registerSpy(otherSpy);
 		
 		assertEquals(otherSpy, toTest.nextSpyArea(world));
@@ -84,12 +84,12 @@ public class SpyAttackStrategyTest {
 	@Test
 	public void nextAction(){
 		SpyAttackStrategy spy = spy(toTest);
-		doReturn(Collections.singletonList(new Coord("A1"))).when(spy).collectPossipleCoords(any(World.class), any(SpyArea.class));
+		doReturn(Collections.singletonList(new Coord("01"))).when(spy).collectPossipleCoords(any(World.class), any(SpyArea.class));
 
 		World world = new World(10, 10);
-		assertEquals(new Action(Type.ATTACK, new Coord("A1")), spy.nextAction(world, null));
+		assertEquals(new Action(Type.ATTACK, new Coord("01")), spy.nextAction(world, null));
 		
-		world.registerHit(new Coord("A1"));
+		world.registerHit(new Coord("01"));
 		assertNull(spy.nextAction(world, null));
 	}
 	
@@ -101,7 +101,7 @@ public class SpyAttackStrategyTest {
 		assertNull(spy.getActionDecision(null));
 		
 		doReturn(new SpyArea(null)).when(spy).nextSpyArea(any(World.class));
-		doReturn(new Action(Type.ATTACK, new Coord("A1"))).when(spy).nextAction(any(World.class), any(SpyArea.class));
+		doReturn(new Action(Type.ATTACK, new Coord("01"))).when(spy).nextAction(any(World.class), any(SpyArea.class));
 		assertEquals(spy.nextAction(null, null), spy.getActionDecision(null));
 	}
 }

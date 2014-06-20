@@ -62,15 +62,15 @@ public class EnemyActionCommandControllerTest {
 		Field enemyView = mock(Field.class);
 		doReturn(enemyView).when(toTest.world).getEnemyView();
 		doReturn(Element.UNBEKANNT).when(enemyView).get(any(Coord.class));
-		toTest.enemyClusterbombed(new Coord("B1"));
+		toTest.enemyClusterbombed(new Coord("11"));
 		
 		ArgumentCaptor<Coord> cap = ArgumentCaptor.forClass(Coord.class);
 		verify(toTest.world, times(5)).registerEnemyMiss(cap.capture());
-		assertEquals(new Coord("B1"), cap.getAllValues().get(0));
-		assertEquals(new Coord("A1"), cap.getAllValues().get(1));
-		assertEquals(new Coord("B2"), cap.getAllValues().get(2));
-		assertEquals(new Coord("C1"), cap.getAllValues().get(3));
-		assertEquals(new Coord("B0"), cap.getAllValues().get(4));
+		assertEquals(new Coord("11"), cap.getAllValues().get(0));
+		assertEquals(new Coord("01"), cap.getAllValues().get(1));
+		assertEquals(new Coord("12"), cap.getAllValues().get(2));
+		assertEquals(new Coord("21"), cap.getAllValues().get(3));
+		assertEquals(new Coord("10"), cap.getAllValues().get(4));
 	}
 	
 	@Test
@@ -78,7 +78,7 @@ public class EnemyActionCommandControllerTest {
 		Field enemyView = mock(Field.class);
 		doReturn(enemyView).when(toTest.world).getEnemyView();
 		doReturn(Element.TREFFER).when(enemyView).get(any(Coord.class));
-		toTest.enemyClusterbombed(new Coord("B1"));
+		toTest.enemyClusterbombed(new Coord("11"));
 		
 		verify(toTest.world, never()).registerEnemyMiss(any(Coord.class));
 	}

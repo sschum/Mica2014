@@ -19,16 +19,16 @@ public class SpyStrategyTest {
 		
 		assertNull(toTest.nextSpyAction(null));
 		
-		toTest = new SpyStrategy(new Coord("A1"), new Coord("A2"));
+		toTest = new SpyStrategy(new Coord("01"), new Coord("02"));
 		Action result = toTest.nextSpyAction(null);
 		
 		assertEquals(Type.SPY_DRONE, result.getType());
-		assertEquals(new Coord("A1"), result.getCoord());
+		assertEquals(new Coord("01"), result.getCoord());
 		
 		result = toTest.nextSpyAction(null);
 		
 		assertEquals(Type.SPY_DRONE, result.getType());
-		assertEquals(new Coord("A2"), result.getCoord());
+		assertEquals(new Coord("02"), result.getCoord());
 	}
 	
 	@Test
@@ -39,7 +39,7 @@ public class SpyStrategyTest {
 		assertNull(spy.getActionDecision(null));
 		
 		doReturn(true).when(spy).canSpy(any(World.class));
-		doReturn(new Action(Type.SPY_DRONE, new Coord("A1"))).when(spy).nextSpyAction(any(World.class));
+		doReturn(new Action(Type.SPY_DRONE, new Coord("01"))).when(spy).nextSpyAction(any(World.class));
 		
 		assertEquals(spy.nextSpyAction(null), spy.getActionDecision(null));
 	}

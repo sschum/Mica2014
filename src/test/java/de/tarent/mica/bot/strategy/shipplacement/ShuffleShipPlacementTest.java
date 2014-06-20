@@ -33,7 +33,7 @@ public class ShuffleShipPlacementTest {
 			 * C
 			 */
 			Fleet fleet = new Fleet();
-			fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("A0")));
+			fleet.setSubmarine1(new Submarine(Orientation.SUED, new Coord("00")));
 			
 			return fleet;
 		}
@@ -56,13 +56,13 @@ public class ShuffleShipPlacementTest {
 
 		assertEquals("Zufall nicht ausreichend verteilt! " + positions,
 				8, positions.size());
-		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("A0"), new Coord("A1")))));
-		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("A1"), new Coord("A2")))));
-		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("A2"), new Coord("B2")))));
-		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("B2"), new Coord("C2")))));
-		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("C2"), new Coord("C1")))));
-		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("C1"), new Coord("C0")))));
-		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("C0"), new Coord("B0")))));
-		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("B0"), new Coord("A0")))));
+		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("00"), new Coord("01")))));
+		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("01"), new Coord("02")))));
+		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("02"), new Coord("12")))));
+		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("12"), new Coord("22")))));
+		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("22"), new Coord("21")))));
+		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("21"), new Coord("20")))));
+		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("20"), new Coord("10")))));
+		assertTrue(positions.contains(sorted(Arrays.asList(new Coord("10"), new Coord("00")))));
 	}
 }

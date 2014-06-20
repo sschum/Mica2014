@@ -11,28 +11,28 @@ start-game $host $port
 	
 		############################
 	#   0 1 2 3 4 5 6 7 8 9
-	# A          |          |
-	# B    1     |          |
-	# C _________|    2     |
-	# D     6 ? ? ?         |
-	# E ______? * ?_________|
-	# F       ? ? ?  |    5 |
-	# G    4   |     |? ? ? |
-	# H   ? ? ?| 3   |? * ? |
-	# I   ? * ?|     |? ? ? |
-	# J __? ? ?|_____|______|
+	# 0          |          |
+	# 1    1     |          |
+	# 2 _________|    2     |
+	# 3     6 ? ? ?         |
+	# 4 ______? * ?_________|
+	# 5       ? ? ?  |    5 |
+	# 6    4   |     |? ? ? |
+	# 7   ? ? ?| 3   |? * ? |
+	# 8   ? * ?|     |? ? ? |
+	# 9 __? ? ?|_____|______|
 	
 	add-hit-trace-strategy true 	#Brennende Schiffe werden ignoriert
-	add-spy-strategy E4	I2 H8		#zuerst wird der Gegner spioniert
+	add-spy-strategy 44	82 78		#zuerst wird der Gegner spioniert
 	add-random-spy-attack-strategy	#Wenn Spionage erfolgreich...
 	
 	  
-	add-area-attack-strategy A0 5 3
-	add-area-attack-strategy A5 5 5
-	add-area-attack-strategy F4 3 5
-	add-area-attack-strategy F0 4 5
-	add-area-attack-strategy F7 3 5
-	add-area-attack-strategy D0 5 2
+	add-area-attack-strategy 00 5 3
+	add-area-attack-strategy 05 5 5
+	add-area-attack-strategy 54 3 5
+	add-area-attack-strategy 50 4 5
+	add-area-attack-strategy 57 3 5
+	add-area-attack-strategy 30 5 2
 	
 	show-area-cover
 	show-action-strategies
