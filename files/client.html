@@ -65,7 +65,7 @@ function onkey(event){ if(event.keyCode==13){ send(); } }
  <div>Basics:
  <ul>
  <li>Look up the basic rules on the internet ;-)
- <li>The playingfield goes from A0-J9.
+ <li>The playingfield goes from 00-FF.
  <li>Ships cannot touch each other, not even at their corners.
  <li>If you hit, it's your turn again. If you miss, it's the other players turn. First player is chosen randomly.
  <li>Using a special attack (see below) always ends your turn, no matter what the outcome is.
@@ -74,7 +74,6 @@ function onkey(event){ if(event.keyCode==13){ send(); } }
  <li>There might be some timeout-problems for slow humans, sorry, we're working on it.
  <li>Coordinate-letters are not casesensitive, but the server itself always uses upper case.
  <li>Messages from the server start with a message-code for easier parsing. See list below.
- <li>Another parsing hint: no message will ever contain [A-J]\d unless it is meant to be a coordinate where something happened.
  <li>Messagecodes starting with 9 are errors. A player who gives no invalid commands/moves should never see those.
  <li>Always be prepared for additional/multiple messages and try to handle them! (All messages <i>can</i> be ignored, but you might miss some critical information.)
  <li>If you find a bug, please report it. We might even let you keep it ;-)
@@ -83,20 +82,20 @@ function onkey(event){ if(event.keyCode==13){ send(); } }
    <ul>
    <li><i>play </i> to join a game. (Two players, one game at any one time.)</li>
    <li><i>rename foo </i> to give yourself the name foo (works only after <i>play</i>).</li>
-   <li><i>A1,A2,A3,A4 </i> before the game starts, place a ship like that (here: a cruiser)
+   <li><i>01,02,03,04 </i> before the game starts, place a ship like that (here: a cruiser)
    <li><i>defaultships </i> a shortcut to deploy all ships at once (for quicker testing
    - you should not use that in a real game ;-) ). Equivalent to:
     <ul>
-<li>       a1,a2,a3,a4,a5
-<li>       g1,g2,g3,g4,g5
+<li>       01,02,03,04,05
+<li>       e1,e2,e3,e4,e5
 <li>       c1,c2,c3,c4
 <li>       c6,c7,c8,c9
-<li>       i1,i2,i3
-<li>       e1,e2,e3
+<li>       51,52,53
+<li>       21,22,23
 <li>       f7,f8
-<li>       i8,i9
+<li>       fc,fb
      </ul>
-   <li><i>F8 </i> launch a normal attack at square F8.
+   <li><i>8F </i> launch a normal attack at square 8F.
    </ul>
  </div>
  <div style="width:800px">Ships:<br><p>
@@ -140,7 +139,9 @@ function onkey(event){ if(event.keyCode==13){ send(); } }
     WAIT_FOR_SECOND_PLAYER_CONNECT = 02
     NEW_NAME = 03
     ACCEPTED_AS_OBSERVER = 04
-
+    REPLAY_START = 05
+    REPLAY_END = 06
+    
     PLACE_SHIPS = 10
     NEXT_SHIP = 11
     SHIP_READY = 12

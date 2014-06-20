@@ -1,0 +1,10 @@
+v3:
+- spielfeld ist jetzt 16*16=256 felder gross: 00-FF.
+- liest system-property fuer optionale zeitverzoegerung:
+  -Doutput.wait=500 (millisekunden pro observer-message)
+- automatisches konsolen-debug-logging aller eingehenden nachrichten
+- mehr observer-messages zu den special-moves
+- replay-funktion: -Dreplay.file=filename (wird jedem observer uebertragen, der sich
+  neu verbindet. Als file kann ein altes STDOUT des server verwendet werden.
+  Nur die "Observe:"-zeilen werden verwendet. Kombinierbar mit output.wait.
+- kleine bugfixes
