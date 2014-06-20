@@ -293,72 +293,14 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		for(Ship ship : world.getEnemyShips()){
 			if(!ship.isSunken()) continue;
 			
-			List<Coord> space = ship.getSpace();
-			Collections.sort(space, Coord.COMPARATOR);
-			
-			for(Coord c : space){
-				//NORD
-				Coord neighbor = c.getNorthNeighbor();
-				if(	world.isInWorld(neighbor) && 
-					!bl.contains(world.getEnemyField().get(neighbor))){
+			Set<Coord> frameCoords = ship.getFrameCoordinates();
+			for(Coord c : frameCoords){
+				if(	world.isInWorld(c) && 
+					!bl.contains(world.getEnemyField().get(c))){
 					
-					world.registerNothing(neighbor);
-				}
-				//OST
-				neighbor = c.getEastNeighbor();
-				if(	world.isInWorld(neighbor) && 
-					!bl.contains(world.getEnemyField().get(neighbor))){
-					
-					world.registerNothing(neighbor);
-				}
-				//SUED
-				neighbor = c.getSouthNeighbor();
-				if(	world.isInWorld(neighbor) && 
-					!bl.contains(world.getEnemyField().get(neighbor))){
-					
-					world.registerNothing(neighbor);
-				}
-				//WEST
-				neighbor = c.getWestNeighbor();
-				if(	world.isInWorld(neighbor) && 
-					!bl.contains(world.getEnemyField().get(neighbor))){
-					
-					world.registerNothing(neighbor);
+					world.registerNothing(c);
 				}
 			}
-			
-			//Auch noch die ecken, die nicht direkt am Schiff liegen
-			Coord first = space.get(0);
-			Coord last = space.get(space.size() - 1);
-			
-			Coord northWest;
-			Coord northEast;
-			Coord southWest;
-			Coord southEast;
-			
-			switch(ship.getOrientation()){
-			case NORD:
-			case SUED:
-				northWest = first.getNorthNeighbor().getWestNeighbor();
-				northEast = first.getNorthNeighbor().getEastNeighbor();
-				southWest = last.getSouthNeighbor().getWestNeighbor();
-				southEast = last.getSouthNeighbor().getEastNeighbor();
-				break;
-			case OST:
-			case WEST:
-				northWest = first.getNorthNeighbor().getWestNeighbor();
-				northEast = last.getNorthNeighbor().getEastNeighbor();
-				southWest = first.getSouthNeighbor().getWestNeighbor();
-				southEast = last.getSouthNeighbor().getEastNeighbor();
-				break;
-			default:
-				throw new IllegalStateException("Each sunken ship should have a orientation!");
-			}
-			
-			if(world.isInWorld(northWest)) world.registerMiss(northWest);
-			if(world.isInWorld(northEast)) world.registerMiss(northEast);
-			if(world.isInWorld(southWest)) world.registerMiss(southWest);
-			if(world.isInWorld(southEast)) world.registerMiss(southEast);
 		}
 	}
 	

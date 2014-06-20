@@ -93,6 +93,59 @@ public abstract class Ship {
 		return result;
 	}
 	
+	public Set<Coord> getFrameCoordinates(){
+		Set<Coord> result = new HashSet<Coord>(16); //(größte Größe) * 2 + 2*3
+		
+		List<Coord> space = getSpace();
+		
+		for(Coord c : space){
+			result.add(c.getNorthNeighbor());
+			result.add(c.getEastNeighbor());
+			result.add(c.getSouthNeighbor());
+			result.add(c.getWestNeighbor());
+		}
+		
+		//Auch noch die ecken, die nicht direkt am Schiff liegen
+		Coord first = space.get(0);
+		Coord last = space.get(space.size() - 1);
+		
+		Coord northWest;
+		Coord northEast;
+		Coord southWest;
+		Coord southEast;
+		
+		switch(getOrientation()){
+		case NORD:
+		case SUED:
+			northWest = first.getNorthNeighbor().getWestNeighbor();
+			northEast = first.getNorthNeighbor().getEastNeighbor();
+			southWest = last.getSouthNeighbor().getWestNeighbor();
+			southEast = last.getSouthNeighbor().getEastNeighbor();
+			break;
+		case OST:
+		case WEST:
+			northWest = first.getNorthNeighbor().getWestNeighbor();
+			northEast = last.getNorthNeighbor().getEastNeighbor();
+			southWest = first.getSouthNeighbor().getWestNeighbor();
+			southEast = last.getSouthNeighbor().getEastNeighbor();
+			break;
+		default:
+			throw new IllegalStateException("Each sunken ship should have a orientation!");
+		}
+		
+		result.add(northWest);
+		result.add(northEast);
+		result.add(southWest);
+		result.add(southEast);
+		
+		//eigene Koordinaten entfernen
+		for(Coord c : space){
+			result.remove(c);
+		}
+		
+		return result;
+	}
+	
 	public boolean isSunken() {
 		return attackCoords.size() == size;
 	}
