@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.io.File;
 import java.io.IOException;
+import java.util.Set;
 
 import org.junit.Test;
 
@@ -12,6 +13,7 @@ import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
+import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.Submarine;
 import de.tarent.mica.model.element.Ship.Orientation;
 
@@ -44,6 +46,8 @@ public class FleetSerializerTest {
 		testFile.deleteOnExit();
 		
 		FleetSerializer.serialize(fleet, testFile);
-		assertEquals(fleet.toString(), FleetSerializer.deserialize(testFile).toString());
+		
+		Set<Ship> orig = fleet.getAll();
+		assertTrue(FleetSerializer.deserialize(testFile).getAll().containsAll(orig));
 	}
 }

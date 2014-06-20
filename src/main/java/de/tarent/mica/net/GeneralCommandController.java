@@ -11,6 +11,7 @@ import de.tarent.mica.Action;
 import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.World;
+import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.util.Logger;
 
 /**
@@ -65,24 +66,14 @@ abstract class GeneralCommandController extends WebSocketClient {
 	}
 
 	private void sendFleetToServer(Fleet fleet) {
-		send(fleet.getCarrier1().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.getCarrier2().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.getCruiser1().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.getCruiser2().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.getDestroyer1().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.getDestroyer2().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.getSubmarine1().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
-		send(fleet.getSubmarine2().getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
+		for(Ship s : fleet.getAll()){
+			send(s.getSpace().toString().replace("[", "").replace("]", "").replace(" ", ""));
+		}
 	}
 
 	private void setFleetIntoModel(Fleet fleet) {
-		world.placeOwnShip(fleet.getCarrier1());
-		world.placeOwnShip(fleet.getCarrier2());
-		world.placeOwnShip(fleet.getCruiser1());
-		world.placeOwnShip(fleet.getCruiser2());
-		world.placeOwnShip(fleet.getDestroyer1());
-		world.placeOwnShip(fleet.getDestroyer2());
-		world.placeOwnShip(fleet.getSubmarine1());
-		world.placeOwnShip(fleet.getSubmarine2());
+		for(Ship s : fleet.getAll()){
+			world.placeOwnShip(s);
+		}
 	}
 }

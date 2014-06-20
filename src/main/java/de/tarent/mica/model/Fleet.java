@@ -1,8 +1,12 @@
 package de.tarent.mica.model;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
+import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.Submarine;
 
 /**
@@ -36,6 +40,21 @@ public class Fleet {
 	
 	public Fleet(){
 		
+	}
+	
+	public Set<Ship> getAll(){
+		Set<Ship> result = new HashSet<Ship>(8);
+		
+		result.add(getCarrier1());
+		result.add(getCarrier2());
+		result.add(getCruiser1());
+		result.add(getCruiser2());
+		result.add(getDestroyer1());
+		result.add(getDestroyer2());
+		result.add(getSubmarine1());
+		result.add(getSubmarine2());
+		
+		return result;
 	}
 	
 	public Carrier getCarrier1() {

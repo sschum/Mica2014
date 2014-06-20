@@ -36,23 +36,10 @@ public class FleetSerializer {
 		
 		try{
 			bw.write("#<Koordinate>_<Ausrichtung>_<Groesse>");
-			bw.write("\n");
-			bw.write(toString(fleet.getCarrier1()));
-			bw.write("\n");
-			bw.write(toString(fleet.getCarrier2()));
-			bw.write("\n");
-			bw.write(toString(fleet.getCruiser1()));
-			bw.write("\n");
-			bw.write(toString(fleet.getCruiser2()));
-			bw.write("\n");
-			bw.write(toString(fleet.getDestroyer1()));
-			bw.write("\n");
-			bw.write(toString(fleet.getDestroyer2()));
-			bw.write("\n");
-			bw.write(toString(fleet.getSubmarine1()));
-			bw.write("\n");
-			bw.write(toString(fleet.getSubmarine2()));
-			bw.write("\n");
+			for(Ship s : fleet.getAll()){
+				bw.write("\n");
+				bw.write(toString(s));
+			}
 		}finally{
 			if(bw != null) try{bw.close();}catch(IOException e){}
 		}

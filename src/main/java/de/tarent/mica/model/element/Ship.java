@@ -120,6 +120,45 @@ public abstract class Ship {
 	public Coord getPosition() {
 		return position;
 	}
+	
+	public static <T extends Ship> int getTheoreticallySpecialAttacks(T ship1, T ship2){
+		int theoreticallyPossible = 0;
+		
+		for(Coord s1Coord : ship1.getSpace()){
+			for(Coord s2Coord : ship2.getSpace()){
+				if(isCoordSameLevel(s1Coord, s2Coord)) theoreticallyPossible++;
+			}
+		}
+		
+		
+		if(	((ship1.getOrientation() == Orientation.SUED || ship1.getOrientation() == Orientation.NORD) &&
+			(ship2.getOrientation() == Orientation.SUED || ship2.getOrientation() == Orientation.NORD)) 
+			
+			||
+			
+			((ship1.getOrientation() == Orientation.OST || ship1.getOrientation() == Orientation.WEST) &&
+			(ship2.getOrientation() == Orientation.OST || ship2.getOrientation() == Orientation.WEST))	){
+			
+			//beide sind horizontal/vertikal ausgerichtet
+			//NOOP
+		}
+
+		//einer ist vertikal und der andere horiozontal ausgerichtet
+		//damit können (theoretisch) nur höchstens ein Punkt infrage kommen ;)
+		else if(theoreticallyPossible > 0) theoreticallyPossible = 1;
+		
+		return theoreticallyPossible;
+	}
+
+	private static boolean isCoordSameLevel(Coord c1, Coord c2) {
+		//horizontal gleich
+		if(c1.getY() == c2.getY()) return true;
+		
+		//vertikal gleich
+		if(c1.getX() == c2.getX()) return true;
+		
+		return false;
+	}
 
 	@Override
 	public int hashCode() {
