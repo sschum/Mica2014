@@ -54,6 +54,7 @@ public class Fleet {
 		result.add(getSubmarine1());
 		result.add(getSubmarine2());
 		
+		result.remove(null);
 		return result;
 	}
 	

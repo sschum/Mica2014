@@ -146,6 +146,10 @@ public abstract class Ship {
 		return result;
 	}
 	
+	public void replace(Coord newPosition){
+		this.position = newPosition;
+	}
+	
 	public boolean isSunken() {
 		return attackCoords.size() == size;
 	}
@@ -174,6 +178,10 @@ public abstract class Ship {
 		return position;
 	}
 	
+	public int getSize(){
+		return size;
+	}
+	
 	public static <T extends Ship> int getTheoreticallySpecialAttacks(T ship1, T ship2){
 		int theoreticallyPossible = 0;
 		
@@ -199,6 +207,11 @@ public abstract class Ship {
 		//einer ist vertikal und der andere horiozontal ausgerichtet
 		//damit können (theoretisch) nur höchstens ein Punkt infrage kommen ;)
 		else if(theoreticallyPossible > 0) theoreticallyPossible = 1;
+		
+		if(theoreticallyPossible == (ship1.getSize() * 2)) {
+			//sind in einer linie ausgerichtet -> das ergibt nur eine Spzialattake!
+			theoreticallyPossible = 1;
+		}
 		
 		return theoreticallyPossible;
 	}

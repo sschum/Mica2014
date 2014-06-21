@@ -39,6 +39,7 @@ public class Random extends java.util.Random {
 	public boolean nextBoolean() {
 		return nextInt() % 2 == 0;
 	}
+	
 
 	/**
 	 * Liefert ein Zufälliges Element aus dem gegebenen Array.
@@ -46,7 +47,7 @@ public class Random extends java.util.Random {
 	 * @param values
 	 * @return
 	 */
-	public <T> T choose(T[] values) {
+	public <T> T choose(@SuppressWarnings("unchecked") T...values) {
 		int index = Math.abs(nextInt() % values.length);
 		return values[index];
 	}

@@ -101,7 +101,7 @@ public class World {
 	void checkOutOfBounce(Field field, Coord c) {
 		Dimension dim = field.getDimension();
 		
-		if(c.getX() < 0 || c.getX() >= dim.width || c.getY() < 0 || c.getX() >= dim.height){
+		if(c.getX() < 0 || c.getX() >= dim.width || c.getY() < 0 || c.getY() >= dim.height){
 			throw new IllegalArgumentException("The given Coord(" + c + ") is out of bounce!");
 		}
 	}
