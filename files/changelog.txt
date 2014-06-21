@@ -1,3 +1,13 @@
+v4:
+- serverseitiger idle-timeout abgeschaltet
+- neuer manager-user:
+  - "manage <passwd>" (Passwort = -Dmanager.password=foo)
+  - "list"
+  - "start <rounds> <player1> <player2>
+- spiel muss jetzt immer erst vom manager gestartet werden
+- neue message NEW GAME = 09 (Bsp: "09: New game over 3 rounds vs. robinator, good luck!")
+- ein spiel kann jetzt mehrere runden haben, jede runde beginnt wieder mit PLACE_SHIPS = 10.
+
 v3:
 - spielfeld ist jetzt 16*16=256 felder gross: 00-FF.
 - liest system-property fuer optionale zeitverzoegerung:
