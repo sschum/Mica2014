@@ -1,5 +1,9 @@
 package de.tarent.mica.bot.strategy.shipplacement;
 
+import java.awt.Dimension;
+import java.util.HashSet;
+import java.util.Set;
+
 import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.bot.strategy.shipplacement.ReflectShipPlacement.MirrorAxis;
 import de.tarent.mica.bot.strategy.shipplacement.RotateShipPlacement.RotateDirection;
@@ -13,6 +17,7 @@ public class ShuffleShipPlacement extends ShipPlacementStrategy {
 	protected ShipPlacementStrategy delegate;
 	protected ReflectShipPlacement reflectPlacement;
 	protected RotateShipPlacement rotatePlacement;
+	protected MovingShipPlacement movePlacement;
 
 	public ShuffleShipPlacement(ShipPlacementStrategy delegate) {
 		super(delegate.worldDimension);
@@ -20,6 +25,7 @@ public class ShuffleShipPlacement extends ShipPlacementStrategy {
 		this.delegate = delegate;
 		this.reflectPlacement = new ReflectShipPlacement(delegate);
 		this.rotatePlacement = new RotateShipPlacement(delegate);
+		this.movePlacement = new MovingShipPlacement(delegate);
 	}
 
 	@Override
@@ -44,13 +50,17 @@ public class ShuffleShipPlacement extends ShipPlacementStrategy {
 		random.runXTimes(new Runnable() {
 			@Override
 			public void run() {
-				if(random.nextBoolean()){
-					reflectPlacement.reflect(fleet, random.choose(MirrorAxis.values()));
-				}else{
-					rotatePlacement.rotate(fleet, random.choose(RotateDirection.values()));
+				switch(random.nextInt() % 3){
+				case 0:	if(reflectPlacement != null) reflectPlacement.reflect(fleet, random.choose(MirrorAxis.values())); 
+						break;
+				case 1: if(rotatePlacement != null) rotatePlacement.rotate(fleet, random.choose(RotateDirection.values()));
+						break;
+				case 2:
+				default:
+						if(movePlacement != null) movePlacement.move(fleet);
+						break;
 				}
 			}
 		});
 	}
-
 }

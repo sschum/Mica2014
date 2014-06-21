@@ -48,6 +48,8 @@ public class ShuffleShipPlacementTest {
 	
 	@Test
 	public void getFleet(){
+		toTest.movePlacement = null;
+		
 		//durch das drehen und spiegeln müsste das einzelne schiff einmal am rand "laufen"
 		Set<List<Coord>> positions = new HashSet<List<Coord>>();
 		for(int i=0; i < 100; i++){

@@ -9,6 +9,7 @@ import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.Ship.Orientation;
+import de.tarent.mica.util.Logger;
 import de.tarent.mica.util.Random;
 
 @StrategyStats(description = "Diese Schiffstrategie verwendet eine beliebige andere Schiffstrategie um eine Flotte zu generieren." +
@@ -39,6 +40,8 @@ public class MovingShipPlacement extends ShipPlacementStrategy {
 	}
 	
 	public void move(Fleet fleet){
+		Logger.debug("Move fleet ...");
+		
 		Random rnd = new Random();
 		
 		int count = Ship.getTheoreticallySpecialAttacks(fleet.getCarrier1(), fleet.getCarrier2());
