@@ -13,6 +13,7 @@ import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.bot.GameMaster;
 import de.tarent.mica.bot.strategy.action.ActionStrategy;
 import de.tarent.mica.bot.strategy.action.AreaAttackStrategy;
+import de.tarent.mica.bot.strategy.action.ClusterbombStrategy;
 import de.tarent.mica.bot.strategy.action.HitTraceStrategy;
 import de.tarent.mica.bot.strategy.action.RandomAttackStrategy;
 import de.tarent.mica.bot.strategy.action.RandomSpyAttackStrategy;
@@ -189,6 +190,15 @@ public class GameActionHandlerFactoryCommand{
 	@Command(abbrev = "ats", description = "F\u00fcgt eine TorpedoStrategy hinzu.")
 	public String addTorpedoStrategy(){
 		actionStrategies.add(new TorpedoStrategy());
+		
+		return "Strategie hinzugef\u00fcgt.";
+	}
+	
+	@Command(abbrev = "acs", description = "F\u00fcgt eine ClusterbombStrategy hinzu.")
+	public String addClusterbombStrategy(
+			@Param(name = "coord", description = "Die zu bombardierenden Koordinaten.") 
+			Coord...cords){
+		actionStrategies.add(new ClusterbombStrategy(cords));
 		
 		return "Strategie hinzugef\u00fcgt.";
 	}
