@@ -208,7 +208,7 @@ public abstract class Ship {
 		//damit können (theoretisch) nur höchstens ein Punkt infrage kommen ;)
 		else if(theoreticallyPossible > 0) theoreticallyPossible = 1;
 		
-		if(theoreticallyPossible == (ship1.getSize() * 2)) {
+		if(theoreticallyPossible >= (ship1.getSize() * 2)) {
 			//sind in einer linie ausgerichtet -> das ergibt nur eine Spzialattake!
 			theoreticallyPossible = 1;
 		}

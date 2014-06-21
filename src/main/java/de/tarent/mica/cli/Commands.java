@@ -48,8 +48,14 @@ public class Commands {
 		sb.append("=   GAME OVER     =\n");
 		sb.append("===================\n");
 		sb.append(stats.getPlayerName());
+		sb.append("(");
+		sb.append(stats.getPlayerMoves());
+		sb.append(")");
 		sb.append(" VS ");
 		sb.append(stats.getEnemyName());
+		sb.append("(");
+		sb.append(stats.getEnemyMoves());
+		sb.append(")");
 		sb.append("\n\n");
 		sb.append(stats.getWorld());
 		

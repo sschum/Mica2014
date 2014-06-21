@@ -47,7 +47,7 @@ public class GeneralCommandControllerTest {
 		
 		gameHandler = Mockito.mock(GameActionHandler.class);
 		doReturn(fleet).when(gameHandler).getFleet();
-		toTest.ownName = "Rainu";
+		toTest.gameStats.setPlayerName("Rainu");
 		toTest.actionHandler = gameHandler;
 		
 		toTestSpy = Mockito.spy(toTest);

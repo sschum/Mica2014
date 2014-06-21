@@ -28,7 +28,7 @@ class MessageDispatcher {
 	private Pattern playerSunkMessagePattern = Pattern.compile("^[0-9]*:.*at ([0-9A-Za-z]{2})!.*$");
 	private Pattern spyMesssagePattern = Pattern.compile("^[0-9]*:.*The drone found ([0-9]*) ship segments at ([0-9A-Za-z]{2})!$");
 	private Pattern enemySpyMessagePattern = Pattern.compile("^[0-9]*:.*at ([0-9A-Za-z]{2})!.*$");
-	private Pattern enemyClusterMessagePattern = Pattern.compile("^[0-9]*:.*clusterbombed at ([0-9A-Za-z]{2})!$");
+	private Pattern enemyClusterMessagePattern = Pattern.compile("^[0-9]*:.*clusterbomb.*at ([0-9A-Za-z]{2})!$");
 
 	private WebSocketController controller;
 	

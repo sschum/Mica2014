@@ -11,16 +11,20 @@ public class GameStats {
 	private boolean won;
 	private String playerName;
 	private String enemyName;
+	private int playerMoves;
+	private int enemyMoves;
 	
 	public GameStats() {
 	}
-	
+
 	public GameStats(World world, boolean won, String playerName,
-			String enemyName) {
+			String enemyName, int playerMoves, int enemyMoves) {
 		this.world = world;
 		this.won = won;
 		this.playerName = playerName;
 		this.enemyName = enemyName;
+		this.playerMoves = playerMoves;
+		this.enemyMoves = enemyMoves;
 	}
 
 	public World getWorld() {
@@ -46,5 +50,17 @@ public class GameStats {
 	}
 	public void setEnemyName(String enemyName) {
 		this.enemyName = enemyName;
+	}
+	public int getPlayerMoves() {
+		return playerMoves;
+	}
+	public void setPlayerMoves(int playerMoves) {
+		this.playerMoves = playerMoves;
+	}
+	public int getEnemyMoves() {
+		return enemyMoves;
+	}
+	public void setEnemyMoves(int enemyMoves) {
+		this.enemyMoves = enemyMoves;
 	}
 }

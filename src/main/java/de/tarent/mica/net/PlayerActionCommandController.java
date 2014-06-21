@@ -11,6 +11,7 @@ import java.util.Set;
 import org.java_websocket.drafts.Draft;
 
 import de.tarent.mica.Action;
+import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.Action.Type;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
@@ -38,6 +39,11 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	}
 
 	@Override
+	protected void reset(GameActionHandler actionHandler) {
+		super.reset(actionHandler);
+	}
+	
+	@Override
 	void started(int playerNumber) {
 		super.started(playerNumber);
 
@@ -47,6 +53,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	
 	public void turnToSoon() {
 		repeatLastTurn = true;
+		decreasePlayerMoves();
 	}
 	
 	void myTurn(){
@@ -76,6 +83,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		}
 		
 		actionHistory.add(action);
+		increasePlayerMoves();
 	}
 	
 	private void torpedo(Type type, Coord coord) {
@@ -324,5 +332,13 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	 */
 	void spy(SpyArea spyArea) {
 		world.registerSpy(spyArea);
+	}
+	
+	void increasePlayerMoves(){
+		gameStats.setPlayerMoves(gameStats.getPlayerMoves() + 1);
+	}
+	
+	void decreasePlayerMoves(){
+		gameStats.setPlayerMoves(gameStats.getPlayerMoves() - 1);
 	}
 }

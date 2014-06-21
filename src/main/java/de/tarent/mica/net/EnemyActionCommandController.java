@@ -4,6 +4,7 @@ import java.net.URI;
 
 import org.java_websocket.drafts.Draft;
 
+import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.element.Carrier;
@@ -24,6 +25,11 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	EnemyActionCommandController(URI serverUri, Draft draft) {
 		super(serverUri, draft);
 	}
+	
+	@Override
+	protected void reset(GameActionHandler actionHandler) {
+		super.reset(actionHandler);
+	}
 
 	/**
 	 * Der Gegner hat getroffen...
@@ -32,6 +38,7 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	 */
 	void enemyHit(Coord coord) {
 		world.registerEnemyHit(coord);
+		increaseEnemyMoves();
 	}
 	
 	/**
@@ -39,6 +46,7 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	 */
 	public void enemyUsedWildfire() {
 		world.registerEnemySpecialAttack(Cruiser.class);
+		increaseEnemyMoves();
 	}
 	
 	/**
@@ -57,6 +65,7 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	 */
 	void enemyMissed(Coord coord) {
 		world.registerEnemyMiss(coord);
+		increaseEnemyMoves();
 	}
 	
 	/**
@@ -66,6 +75,7 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	 */
 	void enemySunk(Coord coord) {
 		world.registerEnemySunk(coord);
+		increaseEnemyMoves();
 	}
 	
 	/**
@@ -76,6 +86,7 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	void enemySpy(SpyArea spyArea) {
 		world.registerEnemySpy(spyArea);
 		world.registerEnemySpecialAttack(Destroyer.class);
+		increaseEnemyMoves();
 	}
 	
 	/**
@@ -129,12 +140,24 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 				world.registerEnemyMiss(west);
 			}
 		}catch(IllegalArgumentException e){}
+		
+		increaseEnemyMoves();
 	}
 	
 	/**
 	 * Der Gegner hat einen Torpedo benutzt!
 	 */
 	void enemyUsedTorpedo() {
-		world.registerEnemySpecialAttack(Submarine.class);		
+		world.registerEnemySpecialAttack(Submarine.class);
+		
+		increaseEnemyMoves();
+	}
+	
+	void increaseEnemyMoves(){
+		gameStats.setEnemyMoves(gameStats.getEnemyMoves() + 1);
+	}
+	
+	void decreaseEnemyMoves(){
+		gameStats.setEnemyMoves(gameStats.getEnemyMoves() - 1);
 	}
 }

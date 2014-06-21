@@ -1,15 +1,13 @@
 package de.tarent.mica.net;
 
 import java.net.URI;
-import java.util.ArrayList;
-import java.util.List;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
 
-import de.tarent.mica.Action;
 import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.model.Fleet;
+import de.tarent.mica.model.GameStats;
 import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.util.Logger;
@@ -23,13 +21,20 @@ import de.tarent.mica.util.Logger;
  */
 abstract class GeneralCommandController extends WebSocketClient {
 	protected int ownNumber;
-	protected String ownName;
-	protected String enemyName;
 	protected GameActionHandler actionHandler;
 	protected World world;
+	protected GameStats gameStats = new GameStats();
 	
 	GeneralCommandController(URI serverUri, Draft draft) {
 		super(serverUri, draft);
+		
+		reset(null);
+	}
+	
+	protected void reset(GameActionHandler actionHandler) {
+		this.world = null;
+		this.gameStats = new GameStats();
+		this.actionHandler = actionHandler;
 	}
 
 	void play(){
@@ -45,15 +50,15 @@ abstract class GeneralCommandController extends WebSocketClient {
 	
 	void renamed(int playerNumber, String playerName) {
 		if(playerNumber == ownNumber){
-			this.ownName = playerName;
+			this.gameStats.setPlayerName(playerName);
 		}else{
-			this.enemyName = playerName;
+			this.gameStats.setEnemyName(playerName);
 		}
 	}
 	
 	void rename() {
-		if(ownName != null){
-			send("rename " + ownName);
+		if(gameStats.getPlayerName() != null){
+			send("rename " + gameStats.getPlayerName());
 		}
 	}
 	
@@ -63,6 +68,18 @@ abstract class GeneralCommandController extends WebSocketClient {
 		setFleetIntoModel(fleet);
 		
 		Logger.info("Player fleet configuration:\n" + world.getOwnField());
+		
+		StringBuffer sb = new StringBuffer("Special-Attacks:");
+		sb.append("\n* Clusterbombs: ");
+		sb.append(Ship.getTheoreticallySpecialAttacks(fleet.getCarrier1(), fleet.getCarrier2()));
+		sb.append("\n* Wildfire: ");
+		sb.append(Ship.getTheoreticallySpecialAttacks(fleet.getCruiser1(), fleet.getCruiser2()));
+		sb.append("\n* Spy: ");
+		sb.append(Ship.getTheoreticallySpecialAttacks(fleet.getDestroyer1(), fleet.getDestroyer2()));
+		sb.append("\n* Torpedo: ");
+		sb.append(Ship.getTheoreticallySpecialAttacks(fleet.getSubmarine1(), fleet.getSubmarine2()));
+		
+		Logger.info(sb.toString());
 	}
 
 	private void sendFleetToServer(Fleet fleet) {

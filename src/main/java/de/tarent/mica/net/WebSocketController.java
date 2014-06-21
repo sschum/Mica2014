@@ -28,7 +28,6 @@ import de.tarent.mica.util.Logger;
 public class WebSocketController extends EnemyActionCommandController implements Controller {
 	protected MessageDispatcher dispatcher = new MessageDispatcher(this);
 	protected List<String> messageLog;
-	protected GameStats gameStats = null;
 	protected boolean isPlaying = false;
 	
 	public WebSocketController(String host, int port) throws URISyntaxException {
@@ -71,7 +70,7 @@ public class WebSocketController extends EnemyActionCommandController implements
 		messageLog = Collections.synchronizedList(new ArrayList<String>());
 		
 		Logger.debug("ServerHandshake: " + handshake);
-		Logger.info("Start new game with as " + ownName + "...");
+		Logger.info("Start new game with as " + gameStats.getPlayerName() + "...");
 		play();
 	}
 	
@@ -105,6 +104,13 @@ public class WebSocketController extends EnemyActionCommandController implements
 		this.notifyAll();
 	}
 	
+	@Override
+	protected void reset(GameActionHandler actionHandler) {
+		super.reset(actionHandler);
+		
+		this.isPlaying = true;
+	}
+	
 	/* **************
 	 * Controller-Handler
 	 * **************
@@ -112,11 +118,9 @@ public class WebSocketController extends EnemyActionCommandController implements
 	
 	@Override
 	public synchronized GameStats play(String name, GameActionHandler actionHandler) {
-		if(name != null)this.ownName = name;
+		reset(actionHandler);
 		
-		this.gameStats = null;
-		this.actionHandler = actionHandler;
-		this.isPlaying = true;
+		if(name != null)this.gameStats.setPlayerName(name);
 		
 		try {
 			connectBlocking();
@@ -135,13 +139,14 @@ public class WebSocketController extends EnemyActionCommandController implements
 	
 	void gameOver(boolean won) {
 		close();
-		GameStats stats = new GameStats();
-		stats.setWorld(world);
-		stats.setPlayerName(ownName);
-		stats.setEnemyName(enemyName);
-		stats.setWon(won);
 		
-		this.gameStats = stats;
+		if(won){
+			increasePlayerMoves();
+		}else{
+			increaseEnemyMoves();
+		}
+		
+		gameStats.setWorld(world);
 		
 		stopPlay();
 	}
