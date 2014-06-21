@@ -11,24 +11,29 @@ start-game $host $port
 	add-hit-trace-strategy true #Brennende Schiffe werden ignoriert
 	
 	############################
-	#   0 1 2 3 4 5 6 7 8 9
-	# 0          |          |
-	# 1    1     |          |
-	# 2 _________|    2     |
-	# 3     6    |          |
-	# 4 _________|__________|
-	# 5        |     |      |
-	# 6    4   |     |      |
-	# 7        | 3   |   5  |
-	# 8        |     |      |
-	# 9 _______|_____|______|
+	#   0 1 2 3 4 5 6 7 8 9 A B C D E F
+	# 0                    |
+	# 1                    |
+	# 2         4          |
+	# 3                    |
+	# 4                    |     3
+	# 5____________________|
+	# 6            |       |
+	# 7            |   1   |
+	# 8            |       |
+	# 9            |_______|___________
+	# A            |
+	# B    2       |
+	# C            |
+	# D            |      5
+	# E            |
+	# F            |
 	  
-	add-area-attack-strategy 00 5 3
-	add-area-attack-strategy 05 5 5
-	add-area-attack-strategy 54 3 5
-	add-area-attack-strategy 50 4 5
-	add-area-attack-strategy 57 3 5
-	add-area-attack-strategy 30 5 2
+	add-area-attack-strategy 66 4 4		#1
+	add-area-attack-strategy 60 6 10	#2
+	add-area-attack-strategy 0A 6 10	#3
+	add-area-attack-strategy 00 10 6	#4
+	add-area-attack-strategy A6 10 6	#5
 	
 	show-area-cover
 	show-action-strategies

@@ -143,7 +143,7 @@ public class GameActionHandlerFactoryCommand{
 				break;
 			}
 			
-			sb.append(i + " ");
+			sb.append(Integer.toHexString(i).toUpperCase() + " ");
 			last = c;
 		}
 		
