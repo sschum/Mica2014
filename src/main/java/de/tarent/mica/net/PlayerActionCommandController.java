@@ -31,6 +31,7 @@ import de.tarent.mica.model.element.Submarine;
 abstract class PlayerActionCommandController extends GeneralCommandController {
 	private List<Action> actionHistory;
 	private List<Coord> hitHistory;
+	private boolean repeatLastTurn = false;
 	
 	PlayerActionCommandController(URI serverUri, Draft draft) {
 		super(serverUri, draft);
@@ -44,8 +45,20 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		hitHistory = new ArrayList<Coord>();
 	}
 	
+	public void turnToSoon() {
+		repeatLastTurn = true;
+	}
+	
 	void myTurn(){
-		Action action = actionHandler.getNextAction(world);
+		Action action = null;
+		
+		if(repeatLastTurn && !actionHistory.isEmpty()){
+			action = actionHistory.get(actionHistory.size() - 1);
+			repeatLastTurn = false;
+		}else{
+			action = actionHandler.getNextAction(world);
+		}
+
 		switch(action.getType()){
 		case ATTACK:
 			attack(action.getCoord()); break;
