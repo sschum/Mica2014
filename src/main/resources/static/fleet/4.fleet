@@ -11,7 +11,7 @@
 # 9 ~ ~ ~ * ~ ~ ~ ~ ~ ~ ~ ~ * ~ ~ ~
 # A ~ ~ ~ * ~ * * * * * ~ ~ ~ ~ ~ ~
 # B ~ ~ ~ * ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-# C ~ ~ ~ * ~ ~ ~ ~ ~ * * ~ ~ ~ ~ ~
+# C ~ ~ ~ * ~ ~ ~ ~ * * ~ ~ ~ ~ ~ ~
 # D ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 # E ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 # F ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
@@ -21,7 +21,7 @@
 # 1x Clusterbomb
 # 2x Feuer
 # 1x Spionage
-# 1x Torpedo
+# 2x Torpedo
 #
 #<Koordinate>_<Ausrichtung>_<Groesse>
 39_OST_3
@@ -31,4 +31,4 @@
 6C_SUED_4
 83_SUED_5
 A5_OST_5
-C9_OST_2
+C8_OST_2
