@@ -34,11 +34,11 @@ public class ClusterbombStrategyTest {
 	@Test
 	public void getActionDecision(){
 		ClusterbombStrategy bomb = spy(toTest);
-		doReturn(false).when(bomb).canSpy(any(World.class));
+		doReturn(false).when(bomb).canBomb(any(World.class));
 		
 		assertNull(bomb.getActionDecision(null));
 		
-		doReturn(true).when(bomb).canSpy(any(World.class));
+		doReturn(true).when(bomb).canBomb(any(World.class));
 		doReturn(new Action(Type.CLUSTERBOMB, new Coord("01"))).when(bomb).nextBombAction(any(World.class));
 		
 		assertEquals(bomb.nextBombAction(null), bomb.getActionDecision(null));

@@ -25,8 +25,8 @@ public abstract class SpecialAttackStrategy extends ActionStrategy {
 		
 		int theoreticallyPossible = Ship.getTheoreticallySpecialAttacks(ship.get(0), ship.get(1));
 
-		int usedSpy = world.getSpecialAttackCount(attackClass);
-		int possible = theoreticallyPossible - usedSpy;
+		int used = world.getSpecialAttackCount(attackClass);
+		int possible = theoreticallyPossible - used;
 		
 		return possible;
 	}

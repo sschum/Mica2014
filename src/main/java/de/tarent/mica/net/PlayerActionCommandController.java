@@ -33,6 +33,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	private List<Action> actionHistory;
 	private List<Coord> hitHistory;
 	private boolean repeatLastTurn = false;
+	private boolean clusterbombMode = false;
 	
 	PlayerActionCommandController(URI serverUri, Draft draft) {
 		super(serverUri, draft);
@@ -41,6 +42,9 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	@Override
 	protected void reset(GameActionHandler actionHandler) {
 		super.reset(actionHandler);
+		
+		repeatLastTurn = false;
+		clusterbombMode = false;
 	}
 	
 	@Override
@@ -53,10 +57,20 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	
 	public void turnToSoon() {
 		repeatLastTurn = true;
+		clusterbombMode = false;
 		decreasePlayerMoves();
 	}
 	
+	void clusterbombed(){
+		clusterbombMode = false;
+		world.increaseSpecialAttack(Carrier.class);
+	}
+	
 	void myTurn(){
+		//nach einer clusterbombe bekommen wir ein "packet" an nachrichten
+		//nichts desto troz ist nach einer clusterbombe ende!
+		if(clusterbombMode) return;
+		
 		Action action = null;
 		
 		if(repeatLastTurn && !actionHistory.isEmpty()){
@@ -68,18 +82,24 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 
 		switch(action.getType()){
 		case ATTACK:
-			attack(action.getCoord()); break;
+			attack(action.getCoord()); 
+			break;
 		case CLUSTERBOMB:
-			clusterbomb(action.getCoord()); break;
+			clusterbombMode = true;
+			clusterbomb(action.getCoord()); 
+			break;
 		case SPY_DRONE:
-			spyDrone(action.getCoord()); break;
+			spyDrone(action.getCoord()); 
+			break;
 		case WILDFIRE:
-			wildfire(action.getCoord()); break;
+			wildfire(action.getCoord()); 
+			break;
 		case TORPEDO_NORD:
 		case TORPEDO_OST:
 		case TORPEDO_SUED:
 		case TORPEDO_WEST:
-			torpedo(action.getType(), action.getCoord()); break;
+			torpedo(action.getType(), action.getCoord()); 
+			break;
 		}
 		
 		actionHistory.add(action);
@@ -142,7 +162,6 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		 */
 		case CLUSTERBOMB:
 			hitClusterbomb(coord, lastAction);
-			world.increaseSpecialAttack(Carrier.class);
 			break;
 		/*
 		 * Bei den Torpedos weis ich, dass diese so weit laufen, bis sie auf

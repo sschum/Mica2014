@@ -22,14 +22,14 @@ public class ClusterbombStrategy extends SpecialAttackStrategy {
 
 	@Override
 	public Action getActionDecision(World world) {
-		if(canSpy(world)){
+		if(canBomb(world)){
 			return nextBombAction(world);
 		}
 		
 		return null;
 	}
 
-	protected boolean canSpy(World world) {
+	protected boolean canBomb(World world) {
 		//ich kann nur bombardieren, wenn Carrier
 		//auf einer ebene eine gemeinsame Position besitzen
 		//und auch noch zwei "leben" ;)

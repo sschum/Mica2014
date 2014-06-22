@@ -76,8 +76,10 @@ class MessageDispatcher {
 				case NOT_YOUR_TURN:
 					controller.turnToSoon();
 					return;
-				case WILDFIRE:
 				case CLUSTERBOMB:
+					controller.clusterbombed();
+					return;
+				case WILDFIRE:
 				case ENEMY_SHIP_HIT:
 					matcher = hitMessagePattern.matcher(message);
 					if(matcher.matches()){
