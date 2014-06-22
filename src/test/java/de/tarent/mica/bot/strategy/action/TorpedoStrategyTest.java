@@ -22,11 +22,11 @@ public class TorpedoStrategyTest {
 	public void collectTorpedoCoords(){
 		/*
 		 *   0 1 2 3 4 5
-		 * A
-		 * B   *
-		 * C   *
-		 * D       * *
-		 * E
+		 * 0
+		 * 1   *
+		 * 2   *
+		 * 3       * *
+		 * 4
 		 * 
 		 */
 		World world = new World(10, 10);
@@ -37,11 +37,11 @@ public class TorpedoStrategyTest {
 		
 		/*
 		 *   0 1 2 3 4 5
-		 * A
-		 * B   *
-		 * C   *
-		 * D       
-		 * E   * *
+		 * 0
+		 * 1   *
+		 * 2   *
+		 * 3       
+		 * 4   * *
 		 * 
 		 */
 		world = new World(10, 10);
@@ -57,11 +57,11 @@ public class TorpedoStrategyTest {
 		
 		/*
 		 *   0 1 2 3 4 5
-		 * A
-		 * B   *   *
-		 * C   *   *
-		 * D       
-		 * E  
+		 * 0
+		 * 1   *   *
+		 * 2   *   *
+		 * 3       
+		 * 4  
 		 * 
 		 */
 		world = new World(10, 10);
@@ -77,11 +77,11 @@ public class TorpedoStrategyTest {
 		
 		/*
 		 *   0 1 2 3 4 5
-		 * A   *
-		 * B   * 
-		 * C      
-		 * D   *    
-		 * E   *
+		 * 0   *
+		 * 1   * 
+		 * 2      
+		 * 3   *    
+		 * 4   *
 		 * 
 		 */
 		world = new World(10, 10);
@@ -94,6 +94,28 @@ public class TorpedoStrategyTest {
 		assertTrue(result.contains(new Coord("11")));
 		assertTrue(result.contains(new Coord("31")));
 		assertTrue(result.contains(new Coord("41")));
+		
+		/*
+		 *   0 1 2 3 4 5
+		 * 0   *
+		 * 1   * <= getroffen
+		 * 2      
+		 * 3   *    
+		 * 4   * <= getroffen
+		 * 
+		 */
+		world = new World(10, 10);
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("01")));
+		world.placeOwnShip(new Submarine(Orientation.SUED, new Coord("31")));
+		world.registerEnemyHit(new Coord("11"));
+		world.registerEnemyHit(new Coord("41"));
+		
+		result = toTest.collectTorpedoCoords(world);
+		assertEquals(2, result.size());
+		assertTrue(result.contains(new Coord("01")));
+		assertFalse(result.contains(new Coord("11")));
+		assertTrue(result.contains(new Coord("31")));
+		assertFalse(result.contains(new Coord("41")));
 	}
 	
 	@Test

@@ -2,6 +2,7 @@ package de.tarent.mica.bot.strategy.action;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -33,6 +34,17 @@ public class TorpedoStrategy extends SpecialAttackStrategy {
 			List<Submarine> submarines = getShips(Submarine.class, world);
 			possibleCoords.addAll(submarines.get(0).getSpace());
 			possibleCoords.addAll(submarines.get(1).getSpace());
+		}
+		
+		//anschließend müssen noch die Coordinaten entfernt werden, 
+		//die bereits getroffen wurden
+		Iterator<Coord> iter = possibleCoords.iterator();
+		while(iter.hasNext()){
+			Coord c = iter.next();
+			
+			if(world.getEnemyView().get(c) == Element.TREFFER){
+				iter.remove();
+			}
 		}
 		
 		return new ArrayList<Coord>(possibleCoords);
