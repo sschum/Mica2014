@@ -99,23 +99,18 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		default:
 			throw new IllegalStateException("This code should be never reached!");	
 		}
-		
-		world.registerSpecialAttack(Submarine.class);
 	}
 
 	private void wildfire(Coord coord) {
 		send("*" + coord);
-		world.registerSpecialAttack(Cruiser.class);
 	}
 
 	private void spyDrone(Coord coord) {
 		send("#" + coord);
-		world.registerSpecialAttack(Destroyer.class);
 	}
 
 	private void clusterbomb(Coord coord) {
 		send("+" + coord);
-		world.registerSpecialAttack(Carrier.class);
 	}
 
 	private void attack(Coord coord) {
@@ -147,6 +142,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		 */
 		case CLUSTERBOMB:
 			hitClusterbomb(coord, lastAction);
+			world.increaseSpecialAttack(Carrier.class);
 			break;
 		/*
 		 * Bei den Torpedos weis ich, dass diese so weit laufen, bis sie auf
@@ -154,15 +150,23 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		 */
 		case TORPEDO_NORD:
 			hitTorpedoNord(coord, lastAction);
+			world.increaseSpecialAttack(Submarine.class);
 			break;
 		case TORPEDO_OST:
 			hitTorpedoOst(coord, lastAction);
+			world.increaseSpecialAttack(Submarine.class);
 			break;
 		case TORPEDO_SUED:
 			hitTorpedoSued(coord, lastAction);
+			world.increaseSpecialAttack(Submarine.class);
 			break;
 		case TORPEDO_WEST:
 			hitTorpedoWest(coord, lastAction);
+			world.increaseSpecialAttack(Submarine.class);
+			break;
+		case WILDFIRE:
+			//TODO: Schiff als brennend markieren?!
+			world.increaseSpecialAttack(Carrier.class);
 			break;
 		}
 	}
@@ -257,15 +261,19 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		 */
 		case TORPEDO_NORD:
 			missedTorpedoNord(lastAction);
+			world.increaseSpecialAttack(Submarine.class);
 			break;
 		case TORPEDO_OST:
 			missedTorpedoOst(lastAction);
+			world.increaseSpecialAttack(Submarine.class);
 			break;
 		case TORPEDO_SUED:
 			missedTorpedoSued(lastAction);
+			world.increaseSpecialAttack(Submarine.class);
 			break;
 		case TORPEDO_WEST:
 			missedTorpedoWest(lastAction);
+			world.increaseSpecialAttack(Submarine.class);
 			break;
 		}
 	}
@@ -306,6 +314,12 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	private static final Set<Element> bl = Collections.unmodifiableSet(new HashSet<Element>(Arrays.asList(Element.SCHIFF, Element.TREFFER)));
 	void sunk(String shipType) {
 		//TODO: versuchen ein schiff brennen zu lassen und dann ein schiff zu versinken: In einer Runde zwei schiffe versenkt?!
+		Action lastAction = actionHistory.get(actionHistory.size() - 1);
+		if(lastAction.getType() == Type.ATTACK){
+			//letzter angriff bekommt keine "hit"-Nachricht mehr!
+			world.registerHit(lastAction.getCoord());
+		}
+		
 		Coord lastHit = hitHistory.get(hitHistory.size() - 1);
 		world.registerSunk(lastHit);
 
@@ -332,6 +346,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	 */
 	void spy(SpyArea spyArea) {
 		world.registerSpy(spyArea);
+		world.increaseSpecialAttack(Destroyer.class);
 	}
 	
 	void increasePlayerMoves(){

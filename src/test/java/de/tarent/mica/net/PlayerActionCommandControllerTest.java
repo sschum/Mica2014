@@ -65,37 +65,30 @@ public class PlayerActionCommandControllerTest {
 		
 		doReturn(new Action(Type.CLUSTERBOMB, new Coord("01"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();
-		assertEquals(1, toTestSpy.world.getSpecialAttackCount(Carrier.class));
 		verify(toTestSpy).send(eq("+01"));
 		
 		doReturn(new Action(Type.SPY_DRONE, new Coord("01"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();
-		assertEquals(1, toTestSpy.world.getSpecialAttackCount(Destroyer.class));
 		verify(toTestSpy).send(eq("#01"));
 		
 		doReturn(new Action(Type.WILDFIRE, new Coord("01"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();
-		assertEquals(1, toTestSpy.world.getSpecialAttackCount(Cruiser.class));
 		verify(toTestSpy).send(eq("*01"));
 		
 		doReturn(new Action(Type.TORPEDO_NORD, new Coord("01"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();
-		assertEquals(1, toTestSpy.world.getSpecialAttackCount(Submarine.class));
 		verify(toTestSpy).send(eq("N01"));
 		
 		doReturn(new Action(Type.TORPEDO_OST, new Coord("01"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();
-		assertEquals(2, toTestSpy.world.getSpecialAttackCount(Submarine.class));
 		verify(toTestSpy).send(eq("O01"));
 		
 		doReturn(new Action(Type.TORPEDO_SUED, new Coord("01"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();
-		assertEquals(3, toTestSpy.world.getSpecialAttackCount(Submarine.class));
 		verify(toTestSpy).send(eq("S01"));
 		
 		doReturn(new Action(Type.TORPEDO_WEST, new Coord("01"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();
-		assertEquals(4, toTestSpy.world.getSpecialAttackCount(Submarine.class));
 		verify(toTestSpy).send(eq("W01"));
 	}
 	

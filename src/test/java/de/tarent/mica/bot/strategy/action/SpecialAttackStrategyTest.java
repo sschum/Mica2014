@@ -89,7 +89,7 @@ public class SpecialAttackStrategyTest {
 		 * F     *
 		 */
 		world = new World(10, 10);
-		world.registerSpecialAttack(Destroyer.class); //es wurde schon spoiniert
+		world.increaseSpecialAttack(Destroyer.class); //es wurde schon spoiniert
 		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("11")));
 		world.placeOwnShip(new Destroyer(Orientation.SUED, new Coord("32")));
 		assertEquals(0, toTest.getPossibleSpecialAttackCount(Destroyer.class, world));
@@ -103,7 +103,7 @@ public class SpecialAttackStrategyTest {
 		 * E
 		 */
 		world = new World(10, 10);
-		world.registerSpecialAttack(Destroyer.class); //es wurde schon spoiniert
+		world.increaseSpecialAttack(Destroyer.class); //es wurde schon spoiniert
 		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("11")));
 		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("30")));
 		assertEquals(1, toTest.getPossibleSpecialAttackCount(Destroyer.class, world));
@@ -117,8 +117,8 @@ public class SpecialAttackStrategyTest {
 		 * E
 		 */
 		world = new World(10, 10);
-		world.registerSpecialAttack(Destroyer.class);
-		world.registerSpecialAttack(Destroyer.class); //es wurde schon zweimal spoiniert
+		world.increaseSpecialAttack(Destroyer.class);
+		world.increaseSpecialAttack(Destroyer.class); //es wurde schon zweimal spoiniert
 		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("11")));
 		world.placeOwnShip(new Destroyer(Orientation.OST, new Coord("30")));
 		assertEquals(0, toTest.getPossibleSpecialAttackCount(Destroyer.class, world));

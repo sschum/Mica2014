@@ -276,12 +276,28 @@ public class World {
 	 * @param shipType Um welche Attacke handelt es sich?
 	 * @return
 	 */
-	public World registerSpecialAttack(Class<? extends Ship> shipType){
+	public World increaseSpecialAttack(Class<? extends Ship> shipType){
 		if(!specialAttackCounts.containsKey(shipType)){
 			specialAttackCounts.put(shipType, 0);
 		}
 		
 		specialAttackCounts.put(shipType, specialAttackCounts.get(shipType) + 1);
+		return this;
+	}
+	
+	/**
+	 * DeRegistriert eine Benutzung einer Spzialattake. Jedes Schiff hat eine solche!
+	 * 
+	 * @param shipType Um welche Attacke handelt es sich?
+	 * @return
+	 */
+	public World decreaseSpecialAttack(Class<? extends Ship> shipType){
+		if(!specialAttackCounts.containsKey(shipType)){
+			specialAttackCounts.put(shipType, 0);
+		}else{
+			specialAttackCounts.put(shipType, specialAttackCounts.get(shipType) - 1);
+		}
+
 		return this;
 	}
 	
