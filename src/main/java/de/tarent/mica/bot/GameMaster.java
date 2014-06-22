@@ -9,6 +9,7 @@ import de.tarent.mica.bot.strategy.shipplacement.ShipPlacementStrategy;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.GameStats;
 import de.tarent.mica.model.World;
+import de.tarent.mica.util.Logger;
 
 /**
  * Diese Klasee ist für alle automatisierten Actionen zuständig.
@@ -43,6 +44,8 @@ public class GameMaster implements GameActionHandler {
 		for(ActionStrategy s : actionStrategies){
 			Action action = s.getActionDecision(world);
 			if(action != null){
+				
+				Logger.debug("Action-Decision: The " + s.getClass().getSimpleName() + " has been decided for " + action);
 				return action;
 			}
 		}

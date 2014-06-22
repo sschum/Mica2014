@@ -69,14 +69,13 @@ public class WebSocketController extends EnemyActionCommandController implements
 	public void onOpen(ServerHandshake handshake) {
 		messageLog = Collections.synchronizedList(new ArrayList<String>());
 		
-		Logger.debug("ServerHandshake: " + handshake);
 		Logger.info("Start new game with as " + gameStats.getPlayerName() + "...");
 		play();
 	}
 	
 	@Override
 	public void send(String text) throws NotYetConnectedException {
-		Logger.debug("Outgoing Message: " + text);
+		Logger.info("Outgoing Message: " + text);
 		logSend(text);
 		super.send(text);
 	}
@@ -84,7 +83,7 @@ public class WebSocketController extends EnemyActionCommandController implements
 	@Override
 	public void onMessage(String message) {
 		logMessage(message);
-		Logger.debug("Incoming Message: " + message);
+		Logger.info("Incoming Message: " + message);
 		dispatcher.onMessage(message);	//der dispatcher kümmert sich um die nachrichtenverarbeitung
 	}
 	
@@ -95,7 +94,7 @@ public class WebSocketController extends EnemyActionCommandController implements
 	
 	@Override
 	public void onClose(int code, String reason, boolean remote) {
-		Logger.debug("Server closed connection. Reason: " + reason);
+		Logger.info("Server closed connection. Reason: " + reason);
 		stopPlay();
 	}
 	

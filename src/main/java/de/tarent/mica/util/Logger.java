@@ -55,7 +55,7 @@ public class Logger {
 	}
 
 	public static void warn(String message) {
-		info(message, null);
+		warn(message, null);
 	}
 	
 	public static void warn(String message, Throwable t) {
