@@ -2,7 +2,7 @@
 # die Standard-Strategie zu verwenden
 
 #Spiel starten
-start-game $host $port
+start-game $host $port $playername
 
 	#Factory-Subshells...
 	clear-action-strategies

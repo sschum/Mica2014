@@ -2,7 +2,7 @@
 #
 
 #Spiel starten
-start-game $host $port
+start-game $host $port $playername
 
 #Factory-Subshells...
 exit #wir benutzen die vordefinierten Strategien..
