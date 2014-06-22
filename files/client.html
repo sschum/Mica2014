@@ -80,7 +80,14 @@ function onkey(event){ if(event.keyCode==13){ send(); } }
  </ul> 
  <div>Commands:
    <ul>
-   <li><i>play </i> to join a game. (Two players, one game at any one time.)</li>
+   <li><i>manage foo</i> to become a manager, using password foo (system-property <i>manager.password</i>)
+     <ul>
+       <li><i>list</i> to show all currently connected players
+       <li><i>start numberOfRounds playerOne playerTwo</i> to start a new match (there can be only one game running at a time)
+     </ul>
+   </li>
+   <li><i>observe </i> to turn into an observer, who receives info about the games, but can't do anything</li>
+   <li><i>play </i> to join a game. (unlimited number of potential players but only one game at a time, started by the manager)</li>
    <li><i>rename foo </i> to give yourself the name foo (works only after <i>play</i>).</li>
    <li><i>01,02,03,04 </i> before the game starts, place a ship like that (here: a cruiser)
    <li><i>defaultships </i> a shortcut to deploy all ships at once (for quicker testing
@@ -141,7 +148,10 @@ function onkey(event){ if(event.keyCode==13){ send(); } }
     ACCEPTED_AS_OBSERVER = 04
     REPLAY_START = 05
     REPLAY_END = 06
-    
+    ACCEPTED_AS_MANAGER = 07
+    NEW_PLAYER = 08
+    NEW_GAME = 09
+                
     PLACE_SHIPS = 10
     NEXT_SHIP = 11
     SHIP_READY = 12
