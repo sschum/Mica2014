@@ -73,7 +73,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 			Action lastAction = actionHistory.get(actionHistory.size() - 1);
 			registerClusterbomb(null, lastAction);
 			
-			Logger.debug("World:\n" + world.getEnemyField());
+			Logger.debug("World:\n" + world);
 		}
 	}
 	
@@ -203,7 +203,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		//hab ich diesen bereich spioniert? Wenn ja, ist dieser jetzt abgeräumt?
 		checkSpyAreas();
 		
-		Logger.debug("World:\n" + world.getEnemyField());
+		Logger.debug("World:\n" + world);
 	}
 
 	private void hitAttack(Action lastAction) {
@@ -343,7 +343,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 			break;
 		}
 		
-		Logger.debug("World:\n" + world.getEnemyField());
+		Logger.debug("World:\n" + world);
 	}
 
 	private void missedAttack(Action lastAction) {
@@ -417,7 +417,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		world.increaseSpecialAttack(Destroyer.class);
 		checkSpyAreas();
 		
-		Logger.debug("World:\n" + world.getEnemyField());
+		Logger.debug("World:\n" + world);
 	}
 	
 	void increasePlayerMoves(){

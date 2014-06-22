@@ -15,6 +15,7 @@ import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.UnknownShip;
+import de.tarent.mica.util.Output;
 
 /**
  * Diese Klasse representiert die Spielwelt.
@@ -516,15 +517,9 @@ public class World {
 
 	@Override
 	public String toString() {
-		StringBuffer sb = new StringBuffer();
-
-		sb.append("Player-Field:\n");
-		sb.append(ownField);
-		sb.append("\nEnemy-Field:\n");
-		sb.append(enemyField);
-		sb.append("\nEnemy-View:\n");
-		sb.append(enemyView);
-		
-		return sb.toString();
+		return Output.makeSideBySide(" | ", 
+				"Player-Field:\n" + ownField,
+				"Enemy-Field:\n" + enemyField,
+				"Enemy-View:\n" + enemyView);
 	}
 }
