@@ -29,6 +29,7 @@ class MessageDispatcher {
 	private Pattern spyMesssagePattern = Pattern.compile("^[0-9]*:.*The drone found ([0-9]*) ship segments at ([0-9A-Za-z]{2})!$");
 	private Pattern enemySpyMessagePattern = Pattern.compile("^[0-9]*:.*at ([0-9A-Za-z]{2})!.*$");
 	private Pattern enemyClusterMessagePattern = Pattern.compile("^[0-9]*:.*clusterbomb.*at ([0-9A-Za-z]{2})!$");
+	private Pattern wasteClusterbomb = Pattern.compile("^[0-9]*:.*wasted.*clusterbomb.*$");
 
 	private WebSocketController controller;
 	
@@ -77,7 +78,8 @@ class MessageDispatcher {
 					controller.turnToSoon();
 					return;
 				case CLUSTERBOMB:
-					controller.clusterbombed();
+					matcher = wasteClusterbomb.matcher(message);
+					controller.clusterbombed(!matcher.matches());
 					return;
 				case WILDFIRE:
 				case ENEMY_SHIP_HIT:

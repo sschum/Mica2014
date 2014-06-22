@@ -66,7 +66,7 @@ public class PlayerActionCommandControllerTest {
 		doReturn(new Action(Type.CLUSTERBOMB, new Coord("01"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();
 		verify(toTestSpy).send(eq("+01"));
-		toTestSpy.clusterbombed();
+		toTestSpy.clusterbombed(true);
 		
 		doReturn(new Action(Type.SPY_DRONE, new Coord("01"))).when(gameHandler).getNextAction(any(World.class));
 		toTestSpy.myTurn();

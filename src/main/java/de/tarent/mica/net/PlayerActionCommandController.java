@@ -21,6 +21,7 @@ import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.Submarine;
+import de.tarent.mica.util.Logger;
 
 /**
  * Diese ist ein Teil des {@link WebSocketController}s. Diese Klasse beinhaltet
@@ -61,9 +62,16 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		decreasePlayerMoves();
 	}
 	
-	void clusterbombed(){
+	void clusterbombed(boolean hit){
 		clusterbombMode = false;
 		world.increaseSpecialAttack(Carrier.class);
+		
+		//wenn eine Clusterbombe getroffen hat, wird das durch die Mthode "hit" abgedeckt!
+		if(!hit){
+			//wenn sie allerding gar nichts getroffen hat, muss sie wenigstens noch registriert werden
+			Action lastAction = actionHistory.get(actionHistory.size() - 1);
+			registerClusterbomb(null, lastAction);
+		}
 	}
 	
 	void myTurn(){
@@ -161,7 +169,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		 * C   +
 		 */
 		case CLUSTERBOMB:
-			hitClusterbomb(coord, lastAction);
+			registerClusterbomb(coord, lastAction);
 			break;
 		/*
 		 * Bei den Torpedos weis ich, dass diese so weit laufen, bis sie auf
@@ -194,7 +202,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		world.registerHit(lastAction.getCoord());
 	}
 	
-	private void hitClusterbomb(Coord coord, Action lastAction) {
+	private void registerClusterbomb(Coord coord, Action lastAction) {
 		//Da man sich nicht darauf verlassen sollte, in welcher reihenfolge die Nachrichten eintreffen
 		//werde ich das Kreuz als Fehlschlag eintragen, sofern kein Treffer verzeichnet ist
 		Coord lastCoord = lastAction.getCoord();
