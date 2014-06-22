@@ -51,7 +51,7 @@ public class SpyAttackStrategy extends ActionStrategy {
 		
 		for(Coord c : area){
 			Element e = world.getEnemyField().get(c);
-			if(e == Element.TREFFER || e == Element.SCHIFF){
+			if(!isUnknown(e)){
 				taken++;
 			}
 		}
@@ -98,12 +98,15 @@ public class SpyAttackStrategy extends ActionStrategy {
 		
 		for(Coord c : area){
 			Element e = world.getEnemyField().get(c);
-			if(e == Element.UNBEKANNT){
+			if(isUnknown(e)){
 				return new Action(Type.ATTACK, c);
 			}
 		}
 		
 		return null;
 	}
-
+	
+	private boolean isUnknown(Element element){
+		return element == Element.UNBEKANNT || element == Element.SPIONAGE;
+	}
 }

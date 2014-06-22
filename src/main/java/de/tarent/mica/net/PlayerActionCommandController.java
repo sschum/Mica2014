@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
@@ -71,6 +72,8 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 			//wenn sie allerding gar nichts getroffen hat, muss sie wenigstens noch registriert werden
 			Action lastAction = actionHistory.get(actionHistory.size() - 1);
 			registerClusterbomb(null, lastAction);
+			
+			Logger.debug("World:\n" + world.getEnemyField());
 		}
 	}
 	
@@ -196,6 +199,11 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 			world.increaseSpecialAttack(Carrier.class);
 			break;
 		}
+		
+		//hab ich diesen bereich spioniert? Wenn ja, ist dieser jetzt abgeräumt?
+		checkSpyAreas();
+		
+		Logger.debug("World:\n" + world.getEnemyField());
 	}
 
 	private void hitAttack(Action lastAction) {
@@ -273,6 +281,37 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		world.registerHit(coord);
 	}
 
+	protected void checkSpyAreas() {
+		for(SpyArea area : world.getSpyAreas()){
+			Set<Coord> areaCoords = new HashSet<Coord>();
+			areaCoords.add(area.getCoord());
+			areaCoords.add(area.getCoord().getNorthNeighbor());
+			areaCoords.add(area.getCoord().getSouthNeighbor());
+			areaCoords.add(area.getCoord().getEastNeighbor());
+			areaCoords.add(area.getCoord().getWestNeighbor());
+			areaCoords.add(area.getCoord().getNorthNeighbor().getWestNeighbor());
+			areaCoords.add(area.getCoord().getNorthNeighbor().getEastNeighbor());
+			areaCoords.add(area.getCoord().getSouthNeighbor().getWestNeighbor());
+			areaCoords.add(area.getCoord().getSouthNeighbor().getEastNeighbor());
+			
+			int hit = 0;
+			for(Coord c : areaCoords){
+				if(world.isInWorld(c) && world.getEnemyField().get(c) == Element.TREFFER){
+					hit++;
+				}
+			}
+
+			if(hit == area.getSegments()){
+				//alles abgegrast!
+				for(Coord c : areaCoords){
+					if(world.isInWorld(c) && world.getEnemyField().get(c) == Element.UNBEKANNT){
+						world.registerMiss(c);
+					}
+				}
+			}
+		}
+	}
+	
 	/**
 	 * Der Spieler hat verfehlt...
 	 */
@@ -303,6 +342,8 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 			world.increaseSpecialAttack(Submarine.class);
 			break;
 		}
+		
+		Logger.debug("World:\n" + world.getEnemyField());
 	}
 
 	private void missedAttack(Action lastAction) {
@@ -374,6 +415,9 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	void spy(SpyArea spyArea) {
 		world.registerSpy(spyArea);
 		world.increaseSpecialAttack(Destroyer.class);
+		checkSpyAreas();
+		
+		Logger.debug("World:\n" + world.getEnemyField());
 	}
 	
 	void increasePlayerMoves(){

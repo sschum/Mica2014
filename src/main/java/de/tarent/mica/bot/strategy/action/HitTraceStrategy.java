@@ -117,18 +117,18 @@ public class HitTraceStrategy extends ActionStrategy {
 			Coord west = first.getWestNeighbor();
 			Coord east = last.getEastNeighbor();
 			
-			if(world.isInWorld(west) && world.getEnemyField().get(west) == Element.UNBEKANNT){
+			if(world.isInWorld(west) && isUnknown(world.getEnemyField().get(west))){
 				return west;
-			}else if(world.isInWorld(east) && world.getEnemyField().get(east) == Element.UNBEKANNT){
+			}else if(world.isInWorld(east) && isUnknown(world.getEnemyField().get(east))){
 				return east;
 			}
 		}else{
 			Coord north = first.getNorthNeighbor();
 			Coord south = last.getSouthNeighbor();
 			
-			if(world.isInWorld(north) && world.getEnemyField().get(north) == Element.UNBEKANNT){
+			if(world.isInWorld(north) && isUnknown(world.getEnemyField().get(north))){
 				return north;
-			}else if(world.isInWorld(south) && world.getEnemyField().get(south) == Element.UNBEKANNT){
+			}else if(world.isInWorld(south) && isUnknown(world.getEnemyField().get(south))){
 				return south;
 			}
 		}
@@ -148,7 +148,7 @@ public class HitTraceStrategy extends ActionStrategy {
 			Coord next = iter.next();
 			if(!world.isInWorld(next)){
 				iter.remove();
-			}else if(world.getEnemyField().get(next) != Element.UNBEKANNT){
+			}else if(!isUnknown(world.getEnemyField().get(next))){
 				iter.remove();
 			}
 		}
@@ -166,6 +166,10 @@ public class HitTraceStrategy extends ActionStrategy {
 		if(ignoreBurningShips && ship.isBurning()) return false;
 		
 		return !ship.isSunken();
+	}
+	
+	private boolean isUnknown(Element element){
+		return element == Element.UNBEKANNT || element == Element.SPIONAGE;
 	}
 	
 	@Override
