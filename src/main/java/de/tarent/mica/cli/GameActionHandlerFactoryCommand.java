@@ -1,6 +1,7 @@
 package de.tarent.mica.cli;
 
 import java.awt.Dimension;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
@@ -9,6 +10,8 @@ import java.util.Map;
 
 import asg.cliche.Command;
 import asg.cliche.Param;
+import asg.cliche.Shell;
+import asg.cliche.ShellFactory;
 import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.bot.GameMaster;
 import de.tarent.mica.bot.strategy.action.ActionStrategy;
@@ -17,6 +20,7 @@ import de.tarent.mica.bot.strategy.action.ClusterbombStrategy;
 import de.tarent.mica.bot.strategy.action.HitTraceStrategy;
 import de.tarent.mica.bot.strategy.action.RandomAttackStrategy;
 import de.tarent.mica.bot.strategy.action.RandomSpyAttackStrategy;
+import de.tarent.mica.bot.strategy.action.SpecialPowerStrategy;
 import de.tarent.mica.bot.strategy.action.SpyAttackStrategy;
 import de.tarent.mica.bot.strategy.action.SpyStrategy;
 import de.tarent.mica.bot.strategy.action.TorpedoStrategy;
@@ -28,6 +32,7 @@ import de.tarent.mica.model.Coord;
 public class GameActionHandlerFactoryCommand{
 	private List<ActionStrategy> actionStrategies = new ArrayList<ActionStrategy>();
 	private ShipPlacementStrategy shipPlacementStrategy;
+	private Shell shell;
 	
 	public GameActionHandlerFactoryCommand() {
 		//default-einstellungen hier...
@@ -36,6 +41,10 @@ public class GameActionHandlerFactoryCommand{
 		//das "unwarscheinlichste" muss als erstes
 		actionStrategies.add(new HitTraceStrategy(true));
 		actionStrategies.add(new RandomAttackStrategy());
+	}
+	
+	public void setShell(Shell shell) {
+		this.shell = shell;
 	}
 	
 	public GameActionHandler buildGameActionHandler() {
@@ -199,6 +208,19 @@ public class GameActionHandlerFactoryCommand{
 			@Param(name = "coord", description = "Die zu bombardierenden Koordinaten.") 
 			Coord...cords){
 		actionStrategies.add(new ClusterbombStrategy(cords));
+		
+		return "Strategie hinzugef\u00fcgt.";
+	}
+	
+	@Command(abbrev = "asps", description = "F\u00fcgt eine SpecialPowerStrategy hinzu.")
+	public String addSpecialPowserStrategy() throws IOException{
+		SpecialPowerStrategyFactoryCommand cmd = new SpecialPowerStrategyFactoryCommand();
+		Shell subShell = ShellFactory.createSubshell("special-power", shell, "special-power-strategy-factory", cmd);
+		subShell.commandLoop();
+		
+		//nachdem die sub-shell verlassen wurde, bekomme ich wieder die kotrolle
+		SpecialPowerStrategy strategy = cmd.buildStrategy();
+		actionStrategies.add(strategy);
 		
 		return "Strategie hinzugef\u00fcgt.";
 	}

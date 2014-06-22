@@ -35,6 +35,7 @@ public class Commands {
 		
 		GameActionHandlerFactoryCommand cmd = new GameActionHandlerFactoryCommand();
 		Shell subShell = ShellFactory.createSubshell("game-master", shell, "game-master-factory", cmd);
+		cmd.setShell(subShell);
 		subShell.commandLoop();
 		
 		//nachdem die sub-shell verlassen wurde, bekomme ich wieder die kotrolle
