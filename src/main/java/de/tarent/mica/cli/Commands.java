@@ -2,6 +2,7 @@ package de.tarent.mica.cli;
 
 import java.io.IOException;
 import java.net.URISyntaxException;
+import java.util.List;
 
 import de.tarent.mica.Controller;
 import de.tarent.mica.GameActionHandler;
@@ -42,24 +43,38 @@ public class Commands {
 		GameActionHandler handler = cmd.buildGameActionHandler();
 		
 		Controller gameController = buildController(host, port);
-		GameStats stats = gameController.play(playerName, handler);
+		List<GameStats> stats = gameController.play(playerName, handler);
+		
+		int playerWin = 0;
 		
 		StringBuffer sb = new StringBuffer();
 		sb.append("===================\n");
 		sb.append("=   GAME OVER     =\n");
 		sb.append("===================\n");
-		sb.append(stats.getPlayerName());
-		sb.append("(");
-		sb.append(stats.getPlayerMoves());
-		sb.append(")");
-		sb.append(" VS ");
-		sb.append(stats.getEnemyName());
-		sb.append("(");
-		sb.append(stats.getEnemyMoves());
-		sb.append(")");
+		for(GameStats stat : stats){
+			sb.append(stat.getPlayerName());
+			sb.append("(");
+			sb.append(stat.getPlayerMoves());
+			sb.append(")");
+			sb.append(stat.isWon() ? " - Winner -" : " - Looser -");
+			sb.append(" VS ");
+			sb.append(stat.getEnemyName());
+			sb.append("(");
+			sb.append(stat.getEnemyMoves());
+			sb.append(")");
+			sb.append(!stat.isWon() ? " - Winner -" : " - Looser -");
+			sb.append("\n\n");
+			sb.append(stat.getWorld());
+			sb.append("\n\n");
+			
+			if(stat.isWon()) playerWin++;
+		}
+		sb.append("Final score: Player ");
+		sb.append(playerWin);
+		sb.append(" Enemy ");
+		sb.append(stats.size() - playerWin);
 		sb.append("\n\n");
-		sb.append(stats.getWorld());
-		
+
 		return sb.toString();
 	}
 

@@ -130,4 +130,14 @@ public class SpecialPowerStrategyTest {
 		spy.useMostSpecialAttack(world);
 		verify(spy).useStrategy(eq(Carrier.class), same(world));
 	}
+	
+	@Test
+	public void reset(){
+		toTest.reset();
+		
+		verify(carrierStrategy).reset();
+		verify(cruiserStrategy).reset();
+		verify(destroyerStrategy).reset();
+		verify(submarineStrategy).reset();
+	}
 }

@@ -2,6 +2,7 @@ package de.tarent.mica.bot.strategy.action;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,9 +16,20 @@ import de.tarent.mica.model.element.Carrier;
 @StrategyStats(description = "Diese Strategie bombardiert (wenn m\u00f6glich) den Gegner.")
 public class ClusterbombStrategy extends SpecialAttackStrategy {
 	protected final List<Coord> bombPoints;
+	protected List<Coord> sessionBombPoints;
 	
 	public ClusterbombStrategy(Coord...bombPoints) {
-		this.bombPoints = new ArrayList<Coord>(Arrays.asList(bombPoints));
+		this.bombPoints = Collections.unmodifiableList(new ArrayList<Coord>(Arrays.asList(bombPoints)));
+		
+		reset();
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+
+		//copy der liste erzeugen
+		this.sessionBombPoints = new ArrayList<Coord>(bombPoints);
 	}
 
 	@Override
@@ -37,7 +49,7 @@ public class ClusterbombStrategy extends SpecialAttackStrategy {
 	}
 
 	protected Action nextBombAction(World world) {
-		Iterator<Coord> iter = bombPoints.iterator();
+		Iterator<Coord> iter = sessionBombPoints.iterator();
 		
 		while(iter.hasNext()){
 			Coord next = iter.next();

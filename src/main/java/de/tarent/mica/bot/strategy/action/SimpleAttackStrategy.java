@@ -32,6 +32,14 @@ public class SimpleAttackStrategy extends ActionStrategy {
 	protected Dimension todoDimension;
 	
 	@Override
+	public void reset() {
+		super.reset();
+
+		todo = null;
+		todoDimension = null;
+	}
+	
+	@Override
 	public Action getActionDecision(World world) {
 		if(todoDimension == null || !todoDimension.equals(world.getWorldDimension())){
 			//erste initialisierung...

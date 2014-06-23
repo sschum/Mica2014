@@ -1,6 +1,8 @@
 package de.tarent.mica.net;
 
 import java.net.URI;
+import java.util.ArrayList;
+import java.util.List;
 
 import org.java_websocket.client.WebSocketClient;
 import org.java_websocket.drafts.Draft;
@@ -21,48 +23,62 @@ import de.tarent.mica.util.Logger;
  */
 abstract class GeneralCommandController extends WebSocketClient {
 	protected int ownNumber;
+	protected String playerName;
+	protected String enemyName;
 	protected GameActionHandler actionHandler;
 	protected World world;
-	protected GameStats gameStats = new GameStats();
+	protected List<GameStats> gameStats = new ArrayList<GameStats>();
 	
 	GeneralCommandController(URI serverUri, Draft draft) {
 		super(serverUri, draft);
-		
-		reset(null);
 	}
 	
-	protected void reset(GameActionHandler actionHandler) {
+	protected void reset() {
 		this.world = null;
-		this.gameStats = new GameStats();
-		this.actionHandler = actionHandler;
+		
+		GameStats stats = new GameStats();
+		this.gameStats.add(stats);
 	}
 
+	protected GameStats getCurrentGameStats(){
+		return gameStats.get(gameStats.size() - 1);
+	}
+	
 	void play(){
 		send("play");
 	}
 	
 	void started(int playerNumber) {
-		//spiel wurde gestartet...
-		//welt kann initialisiert werden
-		world = new World(16, 16);
 		ownNumber = playerNumber;
+	}
+	
+	void newGame(int rounds, String enemyName){
+		this.enemyName = enemyName;
 	}
 	
 	void renamed(int playerNumber, String playerName) {
 		if(playerNumber == ownNumber){
-			this.gameStats.setPlayerName(playerName);
+			this.playerName = playerName;
 		}else{
-			this.gameStats.setEnemyName(playerName);
+			this.enemyName = playerName;
 		}
 	}
 	
 	void rename() {
-		if(gameStats.getPlayerName() != null){
-			send("rename " + gameStats.getPlayerName());
+		if(playerName != null){
+			send("rename " + playerName);
 		}
 	}
 	
 	void placeShips() {
+		reset();
+		
+		Logger.info("Start round #" + gameStats.size());
+		
+		//spiel wurde gestartet...
+		//welt kann initialisiert werden
+		world = new World(16, 16);
+		
 		Fleet fleet = actionHandler.getFleet();
 		sendFleetToServer(fleet);
 		setFleetIntoModel(fleet);

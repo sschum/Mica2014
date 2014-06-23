@@ -19,6 +19,9 @@ public class WebSocketControllerTest {
 	@Before
 	public void setup() throws URISyntaxException{
 		toTest = new WebSocketController("", 1312);
+		
+		toTest.reset();
+		
 		toTestSpy = spy(toTest);
 	}
 	
@@ -71,11 +74,7 @@ public class WebSocketControllerTest {
 	
 	@Test
 	public void gameOver(){
-		doNothing().when(toTestSpy).close();
-		
 		toTestSpy.actionHandler = mock(GameActionHandler.class);
 		toTestSpy.gameOver(false);
-		
-		verify(toTestSpy).close();
 	}
 }

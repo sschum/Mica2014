@@ -27,8 +27,8 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	}
 	
 	@Override
-	protected void reset(GameActionHandler actionHandler) {
-		super.reset(actionHandler);
+	protected void reset() {
+		super.reset();
 	}
 
 	/**
@@ -154,10 +154,10 @@ abstract class EnemyActionCommandController extends PlayerActionCommandControlle
 	}
 	
 	void increaseEnemyMoves(){
-		gameStats.setEnemyMoves(gameStats.getEnemyMoves() + 1);
+		getCurrentGameStats().setEnemyMoves(getCurrentGameStats().getEnemyMoves() + 1);
 	}
 	
 	void decreaseEnemyMoves(){
-		gameStats.setEnemyMoves(gameStats.getEnemyMoves() - 1);
+		getCurrentGameStats().setEnemyMoves(getCurrentGameStats().getEnemyMoves() - 1);
 	}
 }

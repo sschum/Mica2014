@@ -42,16 +42,16 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	}
 
 	@Override
-	protected void reset(GameActionHandler actionHandler) {
-		super.reset(actionHandler);
+	protected void reset() {
+		super.reset();
 		
 		repeatLastTurn = false;
 		clusterbombMode = false;
 	}
 	
 	@Override
-	void started(int playerNumber) {
-		super.started(playerNumber);
+	void placeShips() {
+		super.placeShips();
 
 		actionHistory = new ArrayList<Action>();
 		hitHistory = new ArrayList<Coord>();
@@ -421,10 +421,10 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	}
 	
 	void increasePlayerMoves(){
-		gameStats.setPlayerMoves(gameStats.getPlayerMoves() + 1);
+		getCurrentGameStats().setPlayerMoves(getCurrentGameStats().getPlayerMoves() + 1);
 	}
 	
 	void decreasePlayerMoves(){
-		gameStats.setPlayerMoves(gameStats.getPlayerMoves() - 1);
+		getCurrentGameStats().setPlayerMoves(getCurrentGameStats().getPlayerMoves() - 1);
 	}
 }

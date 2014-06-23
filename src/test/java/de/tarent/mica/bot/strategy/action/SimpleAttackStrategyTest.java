@@ -2,10 +2,14 @@ package de.tarent.mica.bot.strategy.action;
 
 import static org.junit.Assert.*;
 
+import java.awt.Dimension;
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import de.tarent.mica.Action;
 import de.tarent.mica.bot.strategy.action.SimpleAttackStrategy;
+import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.World;
 
 public class SimpleAttackStrategyTest {
@@ -53,4 +57,14 @@ public class SimpleAttackStrategyTest {
 		}
 	}
 			
+	@Test
+	public void reset(){
+		toTest.todo = new ArrayList<Coord>();
+		toTest.todoDimension = new Dimension();
+		
+		toTest.reset();
+		
+		assertNull(toTest.todo);
+		assertNull(toTest.todoDimension);
+	}
 }

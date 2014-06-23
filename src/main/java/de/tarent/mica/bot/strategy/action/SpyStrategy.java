@@ -2,6 +2,7 @@ package de.tarent.mica.bot.strategy.action;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.Iterator;
 import java.util.List;
 
@@ -15,9 +16,20 @@ import de.tarent.mica.model.element.Destroyer;
 @StrategyStats(description = "Diese Strategie spioniert (wenn m\u00f6glich) den Gegner aus.")
 public class SpyStrategy extends SpecialAttackStrategy {
 	protected final List<Coord> spyPoints;
+	protected List<Coord> sessionSpyPoints;
 	
 	public SpyStrategy(Coord...spyPoints) {
-		this.spyPoints = new ArrayList<Coord>(Arrays.asList(spyPoints));
+		this.spyPoints = Collections.unmodifiableList(new ArrayList<Coord>(Arrays.asList(spyPoints)));
+		
+		reset();
+	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+
+		//kopie der liste erstellen
+		this.sessionSpyPoints = new ArrayList<Coord>(spyPoints);
 	}
 
 	@Override
@@ -37,7 +49,7 @@ public class SpyStrategy extends SpecialAttackStrategy {
 	}
 
 	protected Action nextSpyAction(World world) {
-		Iterator<Coord> iter = spyPoints.iterator();
+		Iterator<Coord> iter = sessionSpyPoints.iterator();
 		
 		while(iter.hasNext()){
 			Coord next = iter.next();

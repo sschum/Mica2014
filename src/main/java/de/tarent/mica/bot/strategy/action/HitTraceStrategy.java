@@ -24,10 +24,10 @@ import de.tarent.mica.util.Random;
  */
 @StrategyStats(description = "Diese Strategie versucht getroffene - aber noch nicht versunkene - Schiffe weiter zu treffen.")
 public class HitTraceStrategy extends ActionStrategy {
-	private boolean ignoreBurningShips = true;
+	private final boolean ignoreBurningShips;
 		
 	public HitTraceStrategy(){
-		
+		this.ignoreBurningShips = true;
 	}
 	
 	public HitTraceStrategy(boolean ignoreBurningShips){

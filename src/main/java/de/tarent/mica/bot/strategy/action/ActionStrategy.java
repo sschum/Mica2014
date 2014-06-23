@@ -27,6 +27,14 @@ public abstract class ActionStrategy {
 	public abstract Action getActionDecision(World world);
 	
 	/**
+	 * Führt einen Reset der Strategie durch. Nach diesem Reset, verhält sich
+	 * die Strategie so, als wäre sie frisch initialisiert wurden.
+	 */
+	public void reset() {
+		
+	}
+	
+	/**
 	 * Liefert eine kurze Beschreibung der Strategie
 	 * 
 	 * @return

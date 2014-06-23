@@ -69,7 +69,7 @@ public class WebSocketController extends EnemyActionCommandController implements
 	public void onOpen(ServerHandshake handshake) {
 		messageLog = Collections.synchronizedList(new ArrayList<String>());
 		
-		Logger.info("Start new game with as " + gameStats.getPlayerName() + "...");
+		Logger.info("Start new game with as " + this.playerName + "...");
 		play();
 	}
 	
@@ -104,8 +104,8 @@ public class WebSocketController extends EnemyActionCommandController implements
 	}
 	
 	@Override
-	protected void reset(GameActionHandler actionHandler) {
-		super.reset(actionHandler);
+	protected void reset() {
+		super.reset();
 		
 		this.isPlaying = true;
 	}
@@ -116,10 +116,10 @@ public class WebSocketController extends EnemyActionCommandController implements
 	 */
 	
 	@Override
-	public synchronized GameStats play(String name, GameActionHandler actionHandler) {
-		reset(actionHandler);
-		
-		if(name != null)this.gameStats.setPlayerName(name);
+	public synchronized List<GameStats> play(String name, GameActionHandler actionHandler) {
+		this.actionHandler = actionHandler;
+		this.playerName = name;
+		this.isPlaying = true;
 		
 		try {
 			connectBlocking();
@@ -136,18 +136,24 @@ public class WebSocketController extends EnemyActionCommandController implements
 		return this.gameStats;
 	}
 	
-	void gameOver(boolean won) {
+	void matchIsOver(){
 		close();
 		
+		stopPlay();
+	}
+	
+	void gameOver(boolean won) {
 		if(won){
 			increasePlayerMoves();
 		}else{
 			increaseEnemyMoves();
 		}
 		
-		gameStats.setWorld(world);
-		
-		stopPlay();
+		getCurrentGameStats().setWon(won);
+		getCurrentGameStats().setPlayerName(playerName);
+		getCurrentGameStats().setEnemyName(enemyName);
+		getCurrentGameStats().setWorld(world);
+		this.actionHandler.handleRoundOver(won);
 	}
 
 }

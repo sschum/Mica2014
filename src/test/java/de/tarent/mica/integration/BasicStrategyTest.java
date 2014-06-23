@@ -3,6 +3,7 @@ package de.tarent.mica.integration;
 import static org.junit.Assert.*;
 
 import java.net.URISyntaxException;
+import java.util.List;
 
 import org.junit.Ignore;
 import org.junit.Test;
@@ -18,8 +19,8 @@ public class BasicStrategyTest {
 	final int intServerPort = 40000;
 	final String intServer = "localhost";
 	
-	GameStats player1Stats;
-	GameStats player2Stats;
+	List<GameStats> player1Stats;
+	List<GameStats> player2Stats;
 	
 	@Test
 	public void test() throws URISyntaxException, InterruptedException {
@@ -51,6 +52,6 @@ public class BasicStrategyTest {
 		player2Thread.join();
 		
 		assertTrue("Kein Spieler hat gewonnen oO", 
-				player1Stats.isWon() || player2Stats.isWon());
+				player1Stats.get(0).isWon() || player2Stats.get(0).isWon());
 	}
 }

@@ -1,5 +1,7 @@
 package de.tarent.mica;
 
+import java.util.List;
+
 import de.tarent.mica.model.GameStats;
 
 
@@ -18,7 +20,7 @@ public interface Controller {
 	 * 
 	 * @param name Gewünschter Spielername.
 	 * @param actionHandler Der Aktionhandler für dieses Spiel
-	 * @return Das Spielergebnis
+	 * @return Die Spielergebnise
 	 */
-	GameStats play(String name, GameActionHandler actionHandler);
+	List<GameStats> play(String name, GameActionHandler actionHandler);
 }

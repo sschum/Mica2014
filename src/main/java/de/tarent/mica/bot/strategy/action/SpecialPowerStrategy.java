@@ -37,6 +37,16 @@ public class SpecialPowerStrategy extends SpecialAttackStrategy {
 		this.destroyerStrategy = destroyerStrategy;
 		this.submarineStrategy = submarineStrategy;
 	}
+	
+	@Override
+	public void reset() {
+		super.reset();
+
+		if(carrierStrategy != null) carrierStrategy.reset();
+		if(cruiserStrategy != null) cruiserStrategy.reset();
+		if(destroyerStrategy != null) destroyerStrategy.reset();
+		if(submarineStrategy != null) submarineStrategy.reset();
+	}
 
 	@Override
 	public Action getActionDecision(World world) {

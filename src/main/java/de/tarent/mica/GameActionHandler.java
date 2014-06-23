@@ -1,7 +1,6 @@
 package de.tarent.mica;
 
 import de.tarent.mica.model.Fleet;
-import de.tarent.mica.model.GameStats;
 import de.tarent.mica.model.World;
 
 
@@ -33,4 +32,11 @@ public interface GameActionHandler {
 	 * @return Die nächste Aktion, die ausgeführt werden soll.
 	 */
 	public Action getNextAction(World world);
+
+	/**
+	 * Diese Methode wird aufgerufen, wenn eine Runde zuende ist.
+	 * 
+	 * @param won Hat der Spieler diese Runde gewonnen?
+	 */
+	public void handleRoundOver(boolean won);
 }

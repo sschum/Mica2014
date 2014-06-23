@@ -29,7 +29,9 @@ class MessageDispatcher {
 	private Pattern spyMesssagePattern = Pattern.compile("^[0-9]*:.*The drone found ([0-9]*) ship segments at ([0-9A-Za-z]{2})!$");
 	private Pattern enemySpyMessagePattern = Pattern.compile("^[0-9]*:.*at ([0-9A-Za-z]{2})!.*$");
 	private Pattern enemyClusterMessagePattern = Pattern.compile("^[0-9]*:.*clusterbomb.*at ([0-9A-Za-z]{2})!$");
-	private Pattern wasteClusterbomb = Pattern.compile("^[0-9]*:.*wasted.*clusterbomb.*$");
+	private Pattern wasteClusterbombPattern = Pattern.compile("^[0-9]*:.*wasted.*clusterbomb.*$");
+	private Pattern newGamePattern = Pattern.compile("^[0-9]*: New game over ([0-9]*) rounds vs. (.*), good luck!");
+	private Pattern matchIsOverPattern = Pattern.compile("The match is over,.*");
 
 	private WebSocketController controller;
 	
@@ -51,6 +53,12 @@ class MessageDispatcher {
 				case SHIP_READY:
 				case ALL_SHIPS_READY:
 					//ignorierte Messages...
+					return;
+				case NEW_GAME:
+					matcher = newGamePattern.matcher(message);
+					matcher.matches();
+					
+					controller.newGame(Integer.parseInt(matcher.group(1)), matcher.group(2));
 					return;
 				case NEW_NAME:
 					matcher = renameMessagePattern.matcher(message);
@@ -78,7 +86,7 @@ class MessageDispatcher {
 					controller.turnToSoon();
 					return;
 				case CLUSTERBOMB:
-					matcher = wasteClusterbomb.matcher(message);
+					matcher = wasteClusterbombPattern.matcher(message);
 					controller.clusterbombed(!matcher.matches());
 					return;
 				case WILDFIRE:
@@ -153,6 +161,13 @@ class MessageDispatcher {
 				default:
 					break;
 				}
+			}
+		}else{
+			matcher = matchIsOverPattern.matcher(message);
+			if(matcher.matches()){
+				//Diese Nachricht hat keine Nummer...
+				controller.matchIsOver();
+				return;
 			}
 		}
 		

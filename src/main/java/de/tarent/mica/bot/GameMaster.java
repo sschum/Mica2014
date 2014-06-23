@@ -38,14 +38,22 @@ public class GameMaster implements GameActionHandler {
 		// TODO Auto-generated method stub
 
 	}
+	
+	@Override
+	public void handleRoundOver(boolean won) {
+		for(ActionStrategy s : actionStrategies){
+			s.reset();
+		}
+	}
 
 	@Override
 	public Action getNextAction(World world) {
 		for(ActionStrategy s : actionStrategies){
+			Logger.debug("Ask " + s.getClass().getSimpleName() + " for decision...");
+			
 			Action action = s.getActionDecision(world);
 			if(action != null){
-				
-				Logger.debug("Action-Decision: The " + s.getClass().getSimpleName() + " has been decided for " + action);
+				Logger.debug("The " + s.getClass().getSimpleName() + " has been decided for " + action);
 				return action;
 			}
 		}

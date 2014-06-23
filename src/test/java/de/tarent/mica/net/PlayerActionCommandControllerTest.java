@@ -50,6 +50,7 @@ public class PlayerActionCommandControllerTest {
 		Utils.setPrivate("actionHistory", toTest, new ArrayList<Action>());
 		Utils.setPrivate("hitHistory", toTest, new ArrayList<Action>());
 		toTest.actionHandler = gameHandler;
+		toTest.reset();
 		toTest.world = new World(10, 10);
 		
 		toTestSpy = Mockito.spy(toTest);

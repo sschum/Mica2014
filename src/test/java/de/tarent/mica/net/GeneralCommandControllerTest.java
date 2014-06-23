@@ -47,8 +47,10 @@ public class GeneralCommandControllerTest {
 		
 		gameHandler = Mockito.mock(GameActionHandler.class);
 		doReturn(fleet).when(gameHandler).getFleet();
-		toTest.gameStats.setPlayerName("Rainu");
+		
 		toTest.actionHandler = gameHandler;
+		toTest.reset();
+		toTest.playerName = "Rainu";
 		
 		toTestSpy = Mockito.spy(toTest);
 		doNothing().when(toTestSpy).send(anyString());
@@ -65,10 +67,6 @@ public class GeneralCommandControllerTest {
 	public void started() throws Exception{
 		assertNull(toTest.world);
 		toTest.started(1);
-		
-		World world = toTest.world;
-		assertNotNull(world);
-		assertEquals(new Dimension(16, 16), world.getWorldDimension());
 	}
 	
 	@Test
@@ -90,5 +88,19 @@ public class GeneralCommandControllerTest {
 	    verify(toTestSpy).send(eq("41,42,43"));
 	    verify(toTestSpy).send(eq("57,58"));
 	    verify(toTestSpy).send(eq("88,89"));
+	    
+	    World world = toTestSpy.world;
+		assertNotNull(world);
+		assertEquals(new Dimension(16, 16), world.getWorldDimension());
+		
+
+		verify(toTestSpy).reset();
+	}
+	
+	@Test
+	public void reset(){
+		for(int i=0; i < 13; i++) toTest.reset();
+		
+		assertEquals(14, toTest.gameStats.size());
 	}
 }

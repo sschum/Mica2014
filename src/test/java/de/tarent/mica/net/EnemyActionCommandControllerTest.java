@@ -23,7 +23,9 @@ public class EnemyActionCommandControllerTest {
 	@Before
 	public void setup() throws URISyntaxException{
 		toTest = new WebSocketController("", 1312);
+		toTest.reset();
 		toTest.world = mock(World.class, Mockito.RETURNS_DEEP_STUBS);
+		
 		toTestSpy = spy(toTest);
 	}
 	
