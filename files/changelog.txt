@@ -1,3 +1,15 @@
+v6:
+- die defaultships sind jetzt wieder an der position, die in der client.html
+  dokumentiert ist. In v5 waren sie davon abweichend auf:
+  new Ship(player.field, Area.areasFromString("01,02,03,04,05"));
+  new Ship(player.field, Area.areasFromString("17,18,19,1a,1b"));
+  new Ship(player.field, Area.areasFromString("c1,c2,c3,c4"));
+  new Ship(player.field, Area.areasFromString("c6,c7,c8,c9"));
+  new Ship(player.field, Area.areasFromString("51,52,53"));
+  new Ship(player.field, Area.areasFromString("21,22,23"));
+  new Ship(player.field, Area.areasFromString("4a,4b"));
+  new Ship(player.field, Area.areasFromString("4e,4f"));
+
 v5:
 - bugfix: neue runde wurde nur gestartet, wenn spieler 1 gewonnen hat, aber
   nicht, wenn spieler 2 gewonnen hat.
