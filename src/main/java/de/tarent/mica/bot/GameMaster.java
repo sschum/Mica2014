@@ -47,6 +47,7 @@ public class GameMaster implements GameActionHandler {
 		}
 	}
 
+	
 	@Override
 	public Action getNextAction(World world) {
 		for(ActionStrategy s : actionStrategies){
@@ -55,6 +56,7 @@ public class GameMaster implements GameActionHandler {
 			Action action = s.getActionDecision(world);
 			if(action != null){
 				Logger.debug("The " + s.getClass().getSimpleName() + " has been decided for " + action);
+
 				return action;
 			}
 		}
@@ -64,5 +66,12 @@ public class GameMaster implements GameActionHandler {
 			Logger.debug("Serialized world: " + ObjectSerializer.serialise(world));
 		} catch (IOException e) {}
 		return null;
+	}
+	
+	public static void main(String[] args) throws ClassNotFoundException, IOException {
+		List<ActionStrategy> actionStrategies = (List<ActionStrategy>)ObjectSerializer.deserialise("");
+		World world = (World)ObjectSerializer.deserialise("");
+		
+		System.out.println(new GameMaster(null, actionStrategies).getNextAction(world));
 	}
 }

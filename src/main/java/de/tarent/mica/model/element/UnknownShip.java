@@ -52,6 +52,8 @@ public class UnknownShip extends Ship {
 	
 	@Override
 	public Orientation getOrientation() {
+		if(getSpace().size() <= 1) return Orientation.UNBEKANNT;
+		
 		List<Coord> coords = getSpace();
 		Coord c1 = coords.get(0);
 		Coord c2 = coords.get(1);

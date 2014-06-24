@@ -55,15 +55,17 @@ public class HitTraceStrategy extends ActionStrategy {
 		if(coords.isEmpty()) return null;	//keine entscheidungsgrundlage vorhanden!
 		
 		//gibt es schiffe in unmittelbarer nähe?
-		Ship nearShip = getNearShip(world, ship);
-		if(nearShip != null){
-			List<Coord> allCoords = new ArrayList<Coord>(ship.getSpace());
-			allCoords.addAll(nearShip.getSpace());
-			boolean isHorizontal = allCoords.get(0).getY() == allCoords.get(1).getY();
-			
-			Coord gab = getGap(isHorizontal, allCoords);
-			if(gab != null) return buildAction(gab);
-		}
+//		Ship nearShip = getNearShip(world, ship);
+//		if(nearShip != null){
+//			List<Coord> allCoords = new ArrayList<Coord>(ship.getSpace());
+//			allCoords.addAll(nearShip.getSpace());
+//			Collections.sort(allCoords, Coord.COMPARATOR);
+//			
+//			boolean isHorizontal = allCoords.get(0).getY() == allCoords.get(1).getY();
+//			
+//			Coord gab = getGap(isHorizontal, allCoords);
+//			if(gab != null) return buildAction(gab);
+//		}
 		
 		if(coords.size() >= 2){
 			return getActionForMultipleCoords(world, coords);
