@@ -11,7 +11,6 @@ import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.World;
-import de.tarent.mica.util.Random;
 
 /**
  * Diese Strategy sorgt dafür, dass normale Attacken im Karoformat ausgeführt werden:
@@ -30,6 +29,7 @@ import de.tarent.mica.util.Random;
 public class SimpleAttackStrategy extends ActionStrategy {
 	protected List<Coord> todo = null;
 	protected Dimension todoDimension;
+	
 	
 	@Override
 	public void reset() {
@@ -63,14 +63,8 @@ public class SimpleAttackStrategy extends ActionStrategy {
 	}
 
 	protected List<Coord> initialiseCoords(Dimension dim) {
-		boolean sw = new Random().nextBoolean();
-		Coord start = null;
-		if(sw){
-			start = new Coord(0, 0);
-			
-		}else{
-			start = new Coord(1, 0);
-		}
+		boolean sw = true;
+		Coord start = new Coord(0, 0);
 
 		List<Coord> result = new ArrayList<Coord>();
 		result.add(start);
