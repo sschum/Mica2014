@@ -16,6 +16,8 @@ import de.tarent.mica.model.Coord;
  */
 @StrategyStats(description = "Diese Strategie orientiert sich an der RandomAttackStrategy. Nur wird hier nur der angegebene Bereich betrachtet.")
 public class AreaAttackStrategy extends RandomAttackStrategy {
+	private static final long serialVersionUID = 1098069483677813949L;
+
 	protected final Coord startCoord;
 	protected final Dimension area;
 	

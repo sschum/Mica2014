@@ -229,4 +229,23 @@ public class HitTraceStrategyTest {
 		assertNull(result);
 	}
 	
+	@Test
+	public void getActionDecision_nearShips(){
+		/*  0 1 2 3
+		 * 0  
+		 * 1  * <= erster hit 
+		 * 2                  
+		 * 3  * <= zweiter hit
+		 * 
+		 * Diese Konstelation kann ZWEI sein ABER auch ein schiff. In der
+		 * Welt, werden diese ersteinmal als ZWEI dargestellt. Die Chancen
+		 * stehen hier aber gut, dass es sich um EIN schiff handelt...
+		 */
+		
+		World world = new World(4, 4);
+		world.registerHit(new Coord("11"));
+		world.registerHit(new Coord("31"));
+		
+		assertEquals(new Coord("21"), toTest.getActionDecision(world).getCoord());
+	}
 }

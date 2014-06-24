@@ -16,6 +16,7 @@ import de.tarent.mica.model.element.Submarine;
 
 @StrategyStats(description = "Diese Strategie sorgt daf\u00fcr, dass Torpedos in die erfolgsversprechendste Richtung gefeuert werden.")
 public class TorpedoStrategy extends SpecialAttackStrategy {
+	private static final long serialVersionUID = 6794569569155037503L;
 
 	@Override
 	public Action getActionDecision(World world) {

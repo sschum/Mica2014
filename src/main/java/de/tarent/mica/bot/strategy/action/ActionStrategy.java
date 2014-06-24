@@ -1,5 +1,7 @@
 package de.tarent.mica.bot.strategy.action;
 
+import java.io.Serializable;
+
 import de.tarent.mica.Action;
 import de.tarent.mica.bot.strategy.StrategyStats;
 import de.tarent.mica.model.World;
@@ -10,7 +12,8 @@ import de.tarent.mica.model.World;
  * @author rainu
  *
  */
-public abstract class ActionStrategy {
+public abstract class ActionStrategy implements Serializable {
+	private static final long serialVersionUID = 9104657826660962461L;
 
 	public ActionStrategy() {
 		if(!getClass().isAnnotationPresent(StrategyStats.class)){

@@ -1,11 +1,6 @@
 package de.tarent.mica.model;
 
 import java.awt.Dimension;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -16,8 +11,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
-import javax.xml.bind.DatatypeConverter;
 
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.element.Ship;
@@ -126,32 +119,93 @@ public class World implements Serializable {
 		checkOutOfBounce(enemyField, c);
 		enemyField.set(c, Element.TREFFER);
 		
+		boolean found = false;
 		for(Ship ship : enemyShips){
 			if(isNeighbor(c, ship.getSpace())){
 				ship.addAttackCoord(c);
-				return this;
+				found = true;
+				break;
 			}
 		}
 		
 		//kein schiff gefunden... neues anlegen
-		enemyShips.add(new UnknownShip(c));
+		if(!found) {
+			enemyShips.add(new UnknownShip(c));
+		}
 				
-		return this;
-	}
-	
-	/**
-	 * Trägt ein Schiff in das Gegnerische Feld ein.
-	 * 
-	 * @param c
-	 * @return
-	 */
-	public World registerShip(Coord c){
-		checkOutOfBounce(enemyField, c);
-		enemyField.set(c, Element.SCHIFF);
+		//es kann passieren, dass jetzt aus zwei schiffen eines wird...
+		/*  0 1 2 3
+		 * 0  * <= erster hit
+		 * 1  * <= dritter hit
+		 * 2  * <= zweiter hit
+		 * 3
+		 * 
+		 * Die ersten zwei treffer lassen vermuten, dass es zwei schiffe sind,
+		 * erst der dritte treffer offenbart, dass es EIN schiff ist.
+		 */
+		List<Ship> toRemove = new ArrayList<Ship>();
+		
+		List<Ship> enemyShips = new ArrayList<Ship>(this.enemyShips);
+		mainLoop: for(int i=0; i < enemyShips.size(); i++){
+			Ship ship = enemyShips.get(i);
+			
+			for(int j=0; j < enemyShips.size(); j++){
+				if(j == i) continue;
+				
+				Ship oShip = enemyShips.get(j);
+				Coord first = ship.getSpace().get(0);
+				Coord last = ship.getSpace().get(ship.getSpace().size() - 1);
+				
+				List<Coord> oShipCoords = oShip.getSpace();
+				if(	oShipCoords.contains(first) ||
+					oShipCoords.contains(first.getNorthNeighbor()) ||
+					oShipCoords.contains(first.getEastNeighbor()) ||
+					oShipCoords.contains(first.getSouthNeighbor()) ||
+					oShipCoords.contains(first.getWestNeighbor()) ||
+					oShipCoords.contains(last) ||
+					oShipCoords.contains(last.getNorthNeighbor()) ||
+					oShipCoords.contains(last.getEastNeighbor()) ||
+					oShipCoords.contains(last.getSouthNeighbor()) ||
+					oShipCoords.contains(last.getWestNeighbor())){
+					
+					//aus zwei wird eines...
+					Ship newShip = new UnknownShip();
+					for(Coord sc : enemyShips.get(i).getSpace()){
+						newShip.addAttackCoord(sc);
+					}
+					for(Coord sc : enemyShips.get(j).getSpace()){
+						newShip.addAttackCoord(sc);
+					}
+
+					toRemove.add(enemyShips.get(i));
+					toRemove.add(enemyShips.get(j));
+					enemyShips.add(newShip);
+					
+					break mainLoop;
+				}
+			}
+		}
+		
+		if(!toRemove.isEmpty()){
+			Iterator<Ship> iter = enemyShips.iterator();
+			while(iter.hasNext()){
+				Ship ship = iter.next();
+				
+				for(Ship rm : toRemove){
+					if(ship.equals(rm)){
+						iter.remove();
+						break;
+					}
+				}
+			}
+			
+			this.enemyShips.clear();
+			this.enemyShips.addAll(enemyShips);
+		}
 		
 		return this;
 	}
-	
+		
 	/**
 	 * Trägt eine Verfehlung in das Gegnerische Feld ein.
 	 * 
@@ -323,17 +377,6 @@ public class World implements Serializable {
 		}
 		
 		return specialAttackCounts.get(shipType);
-	}
-	
-	/**
-	 * Liefert Alle bekannten Positionen der Gegnerischen Schiffe.
-	 * Ist keine Position bekannt, wird dennoch ein Set geliefert.
-	 * Dieses ist dann jedoch leer!
-	 * 
-	 * @return
-	 */
-	public Set<Coord> getShipCoordinates(){
-		return enemyField.getCoordinatesFor(Element.SCHIFF);
 	}
 	
 	/**
@@ -530,31 +573,5 @@ public class World implements Serializable {
 				"Player-Field:\n" + ownField,
 				"Enemy-Field:\n" + enemyField,
 				"Enemy-View:\n" + enemyView);
-	}
-	
-	public static String serialise(World world) throws IOException{
-		ByteArrayOutputStream baos = new ByteArrayOutputStream();
-		ObjectOutputStream oos = new ObjectOutputStream(baos);
-
-		oos.writeObject(world);
-		oos.close();
-		
-		return DatatypeConverter.printBase64Binary(baos.toByteArray());
-	}
-	
-	public static World deserialise(String sWorld) throws IOException, ClassNotFoundException{
-		byte[] input = DatatypeConverter.parseBase64Binary(sWorld);
-
-		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(input));
-		try {
-			return (World) ois.readObject();
-		} finally {
-			ois.close();
-		}
-	}
-	
-	public static void main(String[] args) throws IOException, ClassNotFoundException {
-		String s = serialise(new World(5,5));
-		System.out.println(deserialise(s));
 	}
 }

@@ -14,6 +14,7 @@ import de.tarent.mica.model.element.Ship;
  *
  */
 public abstract class SpecialAttackStrategy extends ActionStrategy {
+	private static final long serialVersionUID = -7878435072071230970L;
 
 	public abstract Action getActionDecision(World world);
 

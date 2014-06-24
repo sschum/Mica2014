@@ -24,6 +24,8 @@ import de.tarent.mica.util.Random;
  */
 @StrategyStats(description = "Diese Strategie versucht getroffene - aber noch nicht versunkene - Schiffe weiter zu treffen.")
 public class HitTraceStrategy extends ActionStrategy {
+	private static final long serialVersionUID = -3473563700285439959L;
+
 	private final boolean ignoreBurningShips;
 		
 	public HitTraceStrategy(){
@@ -38,19 +40,30 @@ public class HitTraceStrategy extends ActionStrategy {
 	public Action getActionDecision(World world) {
 		Set<Ship> ships = world.getEnemyShips();
 		if(ships.isEmpty()) return null;
-		
+
 		for(Ship ship : ships){
 			if(shouldAttack(ship)){
 				return getAction(world, ship);
 			}
 		}
-		
+
 		return null;
 	}
 
 	private Action getAction(World world, Ship ship) {
 		List<Coord> coords = ship.getSpace();
 		if(coords.isEmpty()) return null;	//keine entscheidungsgrundlage vorhanden!
+		
+		//gibt es schiffe in unmittelbarer nähe?
+		Ship nearShip = getNearShip(world, ship);
+		if(nearShip != null){
+			List<Coord> allCoords = new ArrayList<Coord>(ship.getSpace());
+			allCoords.addAll(nearShip.getSpace());
+			boolean isHorizontal = allCoords.get(0).getY() == allCoords.get(1).getY();
+			
+			Coord gab = getGap(isHorizontal, allCoords);
+			if(gab != null) return buildAction(gab);
+		}
 		
 		if(coords.size() >= 2){
 			return getActionForMultipleCoords(world, coords);
@@ -59,6 +72,24 @@ public class HitTraceStrategy extends ActionStrategy {
 		}
 	}
 	
+	private Ship getNearShip(World world, Ship ship) {
+		for(Ship other : world.getEnemyShips()){
+			if(other.equals(ship)) continue;
+			
+			for(Coord c : ship.getSpace()){
+				if(	other.getSpace().contains(c.getNorthNeighbor().getNorthNeighbor()) ||
+					other.getSpace().contains(c.getEastNeighbor().getEastNeighbor()) ||
+					other.getSpace().contains(c.getSouthNeighbor().getSouthNeighbor()) ||
+					other.getSpace().contains(c.getWestNeighbor().getWestNeighbor())){
+					
+					return other;
+				}
+			}
+		}
+		
+		return null;
+	}
+
 	Action getActionForMultipleCoords(World world, List<Coord> coords) {
 		List<Coord> clone = new ArrayList<Coord>(coords);
 		Collections.sort(clone, Coord.COMPARATOR);
@@ -148,7 +179,7 @@ public class HitTraceStrategy extends ActionStrategy {
 			Coord next = iter.next();
 			if(!world.isInWorld(next)){
 				iter.remove();
-			}else if(!isUnknown(world.getEnemyField().get(next))){
+			}else if(isHit(world.getEnemyField().get(next))){
 				iter.remove();
 			}
 		}
@@ -170,6 +201,10 @@ public class HitTraceStrategy extends ActionStrategy {
 	
 	private boolean isUnknown(Element element){
 		return element == Element.UNBEKANNT || element == Element.SPIONAGE;
+	}
+	
+	private boolean isHit(Element element){
+		return element == Element.SCHIFF || element == Element.TREFFER;
 	}
 	
 	@Override

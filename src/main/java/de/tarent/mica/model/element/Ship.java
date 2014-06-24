@@ -274,6 +274,6 @@ public abstract class Ship implements Serializable {
 
 	@Override
 	public String toString() {
-		return getClass().getSimpleName() + " @ " + position + "(" + orientation + ") " + (isSunken() ? "\u03EE" : "") + (isBurning() ? "\u03DF" : "") + " - [" + getSpace() + "]";
+		return getClass().getSimpleName() + " @ " + getPosition() + "(" + orientation + ") " + (isSunken() ? "\u03EE" : "") + (isBurning() ? "\u03DF" : "") + " - [" + getSpace() + "]";
 	}
 }

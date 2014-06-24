@@ -10,6 +10,7 @@ import de.tarent.mica.bot.strategy.shipplacement.ShipPlacementStrategy;
 import de.tarent.mica.model.Fleet;
 import de.tarent.mica.model.World;
 import de.tarent.mica.util.Logger;
+import de.tarent.mica.util.ObjectSerializer;
 
 /**
  * Diese Klasee ist für alle automatisierten Actionen zuständig.
@@ -59,7 +60,8 @@ public class GameMaster implements GameActionHandler {
 		}
 		
 		try {
-			Logger.debug("Serialized world: " + World.serialise(world));
+			Logger.debug("Serialized strategies: " + ObjectSerializer.serialise(actionStrategies));
+			Logger.debug("Serialized world: " + ObjectSerializer.serialise(world));
 		} catch (IOException e) {}
 		return null;
 	}

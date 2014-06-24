@@ -20,6 +20,7 @@ import de.tarent.mica.model.element.Submarine;
 		 "Dabei wird darauf geachtet, dass zuerst die Attacke ausgef\u00fchrt wird, die am wenigsten zur Verf\u00fcgung steht!" +
 		 "Sollte ein Schiff angeschlagen sein, wird erst versucht deren Speciallatacke zu verwenden, bevor es zu sp\u00e4t ist.")
 public class SpecialPowerStrategy extends SpecialAttackStrategy {
+	private static final long serialVersionUID = 7290811094275558664L;
 
 	protected SpecialAttackStrategy carrierStrategy;
 	protected SpecialAttackStrategy cruiserStrategy;

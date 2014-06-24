@@ -27,6 +27,8 @@ import de.tarent.mica.model.World;
  */
 @StrategyStats(description = "Diese Strategie sorgt daf\u00fcr, dass normale Attacken im Karoformat ausgef\u00fchrt werden.")
 public class SimpleAttackStrategy extends ActionStrategy {
+	private static final long serialVersionUID = 3942463973695814235L;
+
 	protected List<Coord> todo = null;
 	protected Dimension todoDimension;
 	

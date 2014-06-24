@@ -83,6 +83,39 @@ public class WorldTest {
 	}
 	
 	@Test
+	public void registerHit_shipPosition(){
+		/*  0 1 2 3
+		 * 0  * <= erster hit
+		 * 1  * <= dritter hit
+		 * 2  * <= zweiter hit
+		 * 3
+		 * 
+		 * Die ersten zwei treffer lassen vermuten, dass es zwei schiffe sind,
+		 * erst der dritte treffer offenbart, dass es EIN schiff ist.
+		 */
+		
+		World world = new World(4, 4);
+		Coord firstHit = new Coord(0, 1);
+		Coord secondHit = new Coord(2, 1);
+		Coord thirdHit = new Coord(1, 1);
+		
+		world.registerHit(firstHit);
+		assertEquals(Element.TREFFER, world.getEnemyField().get(firstHit));
+		
+		assertEquals(1, world.getEnemyShips().size());
+		
+		world.registerHit(secondHit);
+		assertEquals(Element.TREFFER, world.getEnemyField().get(secondHit));
+		
+		assertEquals(2, world.getEnemyShips().size());
+		
+		world.registerHit(thirdHit);
+		assertEquals(Element.TREFFER, world.getEnemyField().get(thirdHit));
+		
+		assertEquals(1, world.getEnemyShips().size());
+	}
+	
+	@Test
 	public void registerMiss(){
 		World world = new World(1, 1);
 		Coord coord = new Coord(0, 0);
@@ -118,26 +151,6 @@ public class WorldTest {
 		
 		try{
 			world.registerSpy(new SpyArea(coord));
-			fail("It should be thrown an IllegalArgumentException.");
-		}catch(IllegalArgumentException e){}
-	}
-	
-	@Test
-	public void registerShip(){
-		World world = new World(1, 1);
-		Coord coord = new Coord(0, 0);
-		world.registerShip(coord);
-		
-		assertEquals(Element.SCHIFF, world.getEnemyField().get(coord));
-	}
-	
-	@Test
-	public void registerShip_outOfBounce(){
-		World world = new World(1, 1);
-		Coord coord = new Coord(2, 2);
-		
-		try{
-			world.registerShip(coord);
 			fail("It should be thrown an IllegalArgumentException.");
 		}catch(IllegalArgumentException e){}
 	}
@@ -255,15 +268,6 @@ public class WorldTest {
 	}
 	
 	@Test
-	public void getShipCoordinates(){
-		World world = new World(5, 5);
-		world.registerShip(new Coord(0, 0));
-		Set<Coord> result = world.getShipCoordinates();
-		assertEquals(1, result.size());
-		assertTrue(result.contains(new Coord(0, 0)));
-	}
-	
-	@Test
 	public void getSpyAreas(){
 		World world = new World(5, 5);
 		world.registerSpy(new SpyArea(new Coord(0,0)));
@@ -302,24 +306,5 @@ public class WorldTest {
 		assertEquals(new Coord("01"), ship.getPosition());
 		assertEquals(Orientation.OST, ship.getOrientation());
 		assertEquals(Arrays.asList(new Coord("01"), new Coord("02"),new Coord("03")), ship.getSpace());
-	}
-	
-	@Test
-	public void deSerialize() throws Exception{
-		final World world = new World(5, 5);
-		final Random rnd = new Random();
-		
-		rnd.runXTimes(new Runnable() {
-			@Override
-			public void run() {
-				Coord c = new Coord(rnd.nextInt(5), rnd.nextInt(5));
-				
-				world.registerEnemyMiss(c);
-				world.registerMiss(c);
-			}
-		});
-		
-		String base64 = World.serialise(world);
-		assertEquals(world.toString(), World.deserialise(base64).toString());
 	}
 }

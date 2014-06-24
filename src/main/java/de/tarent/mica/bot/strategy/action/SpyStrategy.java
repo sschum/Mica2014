@@ -15,6 +15,8 @@ import de.tarent.mica.model.element.Destroyer;
 
 @StrategyStats(description = "Diese Strategie spioniert (wenn m\u00f6glich) den Gegner aus.")
 public class SpyStrategy extends SpecialAttackStrategy {
+	private static final long serialVersionUID = 7680520248124658901L;
+
 	protected final List<Coord> spyPoints;
 	protected List<Coord> sessionSpyPoints;
 	

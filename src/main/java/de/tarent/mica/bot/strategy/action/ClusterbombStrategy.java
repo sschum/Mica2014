@@ -15,6 +15,8 @@ import de.tarent.mica.model.element.Carrier;
 
 @StrategyStats(description = "Diese Strategie bombardiert (wenn m\u00f6glich) den Gegner.")
 public class ClusterbombStrategy extends SpecialAttackStrategy {
+	private static final long serialVersionUID = -3678870560176475965L;
+
 	protected final List<Coord> bombPoints;
 	protected List<Coord> sessionBombPoints;
 	

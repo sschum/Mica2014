@@ -10,6 +10,7 @@ import de.tarent.mica.util.Random;
 
 @StrategyStats(description = "Diese Strategie attackiert zuf\u00e4llig spionierte Bereiche, bei denen noch etwas \"zu hohlen\" ist.")
 public class RandomSpyAttackStrategy extends SpyAttackStrategy {
+	private static final long serialVersionUID = -1463096679723795434L;
 
 	@Override
 	protected List<SpyArea> collectUnlootedSpyAreas(World world) {

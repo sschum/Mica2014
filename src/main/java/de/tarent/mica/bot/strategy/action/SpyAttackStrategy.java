@@ -14,6 +14,7 @@ import de.tarent.mica.model.element.SpyArea;
 
 @StrategyStats(description = "Diese Strategie attackiert spionierte Bereiche, bei denen noch etwas \"zu hohlen\" ist.")
 public class SpyAttackStrategy extends ActionStrategy {
+	private static final long serialVersionUID = 5641292138770748478L;
 
 	@Override
 	public Action getActionDecision(World world) {
@@ -51,7 +52,7 @@ public class SpyAttackStrategy extends ActionStrategy {
 		
 		for(Coord c : area){
 			Element e = world.getEnemyField().get(c);
-			if(!isUnknown(e)){
+			if(isHit(e)){
 				taken++;
 			}
 		}
@@ -108,5 +109,9 @@ public class SpyAttackStrategy extends ActionStrategy {
 	
 	private boolean isUnknown(Element element){
 		return element == Element.UNBEKANNT || element == Element.SPIONAGE;
+	}
+	
+	private boolean isHit(Element element){
+		return element == Element.SCHIFF || element == Element.TREFFER;
 	}
 }

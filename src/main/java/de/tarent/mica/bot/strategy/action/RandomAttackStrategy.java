@@ -26,6 +26,7 @@ import de.tarent.mica.util.Random;
 		"Dieser Zufall ist allerdings noch so \"schlau\", dass er " +
 		"die Attacken so koordiniert, dass am Ende nur ein Karofeld abgedeckt wird.")
 public class RandomAttackStrategy extends SimpleAttackStrategy {
+	private static final long serialVersionUID = -4975980313475975150L;
 
 	@Override
 	protected List<Coord> initialiseCoords(Dimension dim) {
