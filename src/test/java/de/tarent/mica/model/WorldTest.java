@@ -2,6 +2,7 @@ package de.tarent.mica.model;
 
 import static org.junit.Assert.*;
 
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.Set;
 
@@ -17,6 +18,7 @@ import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.Submarine;
 import de.tarent.mica.model.element.Ship.Orientation;
 import de.tarent.mica.model.element.UnknownShip;
+import de.tarent.mica.util.Random;
 
 public class WorldTest {
 
@@ -300,5 +302,24 @@ public class WorldTest {
 		assertEquals(new Coord("01"), ship.getPosition());
 		assertEquals(Orientation.OST, ship.getOrientation());
 		assertEquals(Arrays.asList(new Coord("01"), new Coord("02"),new Coord("03")), ship.getSpace());
+	}
+	
+	@Test
+	public void deSerialize() throws Exception{
+		final World world = new World(5, 5);
+		final Random rnd = new Random();
+		
+		rnd.runXTimes(new Runnable() {
+			@Override
+			public void run() {
+				Coord c = new Coord(rnd.nextInt(5), rnd.nextInt(5));
+				
+				world.registerEnemyMiss(c);
+				world.registerMiss(c);
+			}
+		});
+		
+		String base64 = World.serialise(world);
+		assertEquals(world.toString(), World.deserialise(base64).toString());
 	}
 }

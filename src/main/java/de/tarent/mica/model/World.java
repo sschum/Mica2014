@@ -1,6 +1,12 @@
 package de.tarent.mica.model;
 
 import java.awt.Dimension;
+import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -10,6 +16,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+
+import javax.xml.bind.DatatypeConverter;
 
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.element.Ship;
@@ -23,8 +31,9 @@ import de.tarent.mica.util.Output;
  * @author rainu
  *
  */
-public class World {
-
+public class World implements Serializable {
+	private static final long serialVersionUID = 5109408065862674738L;
+	
 	private Field ownField;
 	private Field enemyField;
 	private Field enemyView;
@@ -521,5 +530,31 @@ public class World {
 				"Player-Field:\n" + ownField,
 				"Enemy-Field:\n" + enemyField,
 				"Enemy-View:\n" + enemyView);
+	}
+	
+	public static String serialise(World world) throws IOException{
+		ByteArrayOutputStream baos = new ByteArrayOutputStream();
+		ObjectOutputStream oos = new ObjectOutputStream(baos);
+
+		oos.writeObject(world);
+		oos.close();
+		
+		return DatatypeConverter.printBase64Binary(baos.toByteArray());
+	}
+	
+	public static World deserialise(String sWorld) throws IOException, ClassNotFoundException{
+		byte[] input = DatatypeConverter.parseBase64Binary(sWorld);
+
+		ObjectInputStream ois = new ObjectInputStream(new ByteArrayInputStream(input));
+		try {
+			return (World) ois.readObject();
+		} finally {
+			ois.close();
+		}
+	}
+	
+	public static void main(String[] args) throws IOException, ClassNotFoundException {
+		String s = serialise(new World(5,5));
+		System.out.println(deserialise(s));
 	}
 }

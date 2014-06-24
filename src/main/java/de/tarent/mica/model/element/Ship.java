@@ -1,5 +1,6 @@
 package de.tarent.mica.model.element;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
@@ -14,7 +15,9 @@ import de.tarent.mica.model.Coord;
  * @author rainu
  *
  */
-public abstract class Ship {
+public abstract class Ship implements Serializable {
+	private static final long serialVersionUID = 1444748025030628429L;
+
 	public static enum Orientation{
 		NORD, OST, SUED, WEST, UNBEKANNT
 	}

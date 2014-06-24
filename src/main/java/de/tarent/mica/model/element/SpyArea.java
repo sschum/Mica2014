@@ -1,5 +1,7 @@
 package de.tarent.mica.model.element;
 
+import java.io.Serializable;
+
 import de.tarent.mica.model.Coord;
 
 /**
@@ -8,8 +10,9 @@ import de.tarent.mica.model.Coord;
  * @author rainu
  *
  */
-public class SpyArea {
-
+public class SpyArea implements Serializable {
+	private static final long serialVersionUID = -3606935546394004896L;
+	
 	private Coord coord;
 	private int segments = -1;
 	

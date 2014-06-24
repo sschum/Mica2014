@@ -1,11 +1,14 @@
 package de.tarent.mica.model;
 
 import java.awt.Dimension;
+import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
-public class Field {
+public class Field implements Serializable {
+	private static final long serialVersionUID = -5305398769890417016L;
+
 	public static enum Element{	//TODO: Besseren Namen dafür finde ;)
 		UNBEKANNT('?'),
 		SCHIFF('*'),

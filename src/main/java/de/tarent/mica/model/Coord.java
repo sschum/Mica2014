@@ -1,5 +1,6 @@
 package de.tarent.mica.model;
 
+import java.io.Serializable;
 import java.util.Comparator;
 
 /**
@@ -9,7 +10,9 @@ import java.util.Comparator;
  * @author rainu
  *
  */
-public class Coord{
+public class Coord implements Serializable {
+	private static final long serialVersionUID = 5332121396721319701L;
+
 	public static Comparator<Coord> COMPARATOR = new Comparator<Coord>() {
 		@Override
 		public int compare(Coord o1, Coord o2) {
