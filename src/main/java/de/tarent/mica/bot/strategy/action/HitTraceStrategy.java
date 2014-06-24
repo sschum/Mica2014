@@ -179,7 +179,7 @@ public class HitTraceStrategy extends ActionStrategy {
 			Coord next = iter.next();
 			if(!world.isInWorld(next)){
 				iter.remove();
-			}else if(isHit(world.getEnemyField().get(next))){
+			}else if(isHitOrMiss(world.getEnemyField().get(next))){
 				iter.remove();
 			}
 		}
@@ -203,8 +203,8 @@ public class HitTraceStrategy extends ActionStrategy {
 		return element == Element.UNBEKANNT || element == Element.SPIONAGE;
 	}
 	
-	private boolean isHit(Element element){
-		return element == Element.SCHIFF || element == Element.TREFFER;
+	private boolean isHitOrMiss(Element element){
+		return element == Element.SCHIFF || element == Element.TREFFER || element == Element.WASSER;
 	}
 	
 	@Override
