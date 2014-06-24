@@ -1,3 +1,8 @@
+v5:
+- bugfix: neue runde wurde nur gestartet, wenn spieler 1 gewonnen hat, aber
+  nicht, wenn spieler 2 gewonnen hat.
+- kleinkram
+
 v4:
 - serverseitiger idle-timeout abgeschaltet
 - neuer manager-user:
