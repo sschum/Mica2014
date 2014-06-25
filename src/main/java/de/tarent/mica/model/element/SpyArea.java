@@ -31,7 +31,10 @@ public class SpyArea implements Serializable {
 	public int getSegments() {
 		return segments;
 	}
-	
+	public void setSegments(int segments) {
+		this.segments = segments;
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

@@ -68,5 +68,4 @@ public class MessageDispatcherTest {
 		toTest.onMessage(msg(DRONEEE, "at 51!"));
 		verify(controller).enemySpy(eq(new SpyArea(new Coord("51"))));
 	}
-
 }

@@ -91,6 +91,13 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 			action = actionHandler.getNextAction(world);
 		}
 
+		if(action == null){
+			//ich hab keine chance mehr ;(
+			send("13: Ich geb' off!");
+			close();
+			return;
+		}
+		
 		switch(action.getType()){
 		case ATTACK:
 			attack(action.getCoord()); 
@@ -283,16 +290,7 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 
 	protected void checkSpyAreas() {
 		for(SpyArea area : world.getSpyAreas()){
-			Set<Coord> areaCoords = new HashSet<Coord>();
-			areaCoords.add(area.getCoord());
-			areaCoords.add(area.getCoord().getNorthNeighbor());
-			areaCoords.add(area.getCoord().getSouthNeighbor());
-			areaCoords.add(area.getCoord().getEastNeighbor());
-			areaCoords.add(area.getCoord().getWestNeighbor());
-			areaCoords.add(area.getCoord().getNorthNeighbor().getWestNeighbor());
-			areaCoords.add(area.getCoord().getNorthNeighbor().getEastNeighbor());
-			areaCoords.add(area.getCoord().getSouthNeighbor().getWestNeighbor());
-			areaCoords.add(area.getCoord().getSouthNeighbor().getEastNeighbor());
+			Set<Coord> areaCoords = collectSpyAreaCoords(area);
 			
 			int hit = 0;
 			for(Coord c : areaCoords){
@@ -310,6 +308,20 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 				}
 			}
 		}
+	}
+
+	protected Set<Coord> collectSpyAreaCoords(SpyArea area) {
+		Set<Coord> areaCoords = new HashSet<Coord>();
+		areaCoords.add(area.getCoord());
+		areaCoords.add(area.getCoord().getNorthNeighbor());
+		areaCoords.add(area.getCoord().getSouthNeighbor());
+		areaCoords.add(area.getCoord().getEastNeighbor());
+		areaCoords.add(area.getCoord().getWestNeighbor());
+		areaCoords.add(area.getCoord().getNorthNeighbor().getWestNeighbor());
+		areaCoords.add(area.getCoord().getNorthNeighbor().getEastNeighbor());
+		areaCoords.add(area.getCoord().getSouthNeighbor().getWestNeighbor());
+		areaCoords.add(area.getCoord().getSouthNeighbor().getEastNeighbor());
+		return areaCoords;
 	}
 	
 	/**
@@ -413,6 +425,18 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	 * @param spyArea
 	 */
 	void spy(SpyArea spyArea) {
+		/*
+		 *  Wenn im Spionierten bereich bereits ZUVOR ein o. mehrere Schiffsektoren getroffen wurden,
+		 *  werden vom Server NUR die anzahl unentdeckter(!) Sektoren mitgeteilt
+		 */
+		Set<Coord> spyCoords = collectSpyAreaCoords(spyArea);
+		for(Coord c : spyCoords){
+			if(world.isInWorld(c) && world.getEnemyField().get(c) == Element.TREFFER){
+				spyArea.setSegments(spyArea.getSegments() + 1);
+			}
+		}
+		
+		
 		world.registerSpy(spyArea);
 		world.increaseSpecialAttack(Destroyer.class);
 		checkSpyAreas();

@@ -21,6 +21,7 @@ import de.tarent.mica.model.World;
 import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
+import de.tarent.mica.model.element.SpyArea;
 import de.tarent.mica.model.element.Submarine;
 import de.tarent.mica.model.element.Ship.Orientation;
 
@@ -239,5 +240,27 @@ public class PlayerActionCommandControllerTest {
 		for(int x=9; x <= 0; x--){
 			verify(world).registerHit(eq(new Coord(x, actionHistory.get(0).getCoord().getY())));
 		}
+	}
+	
+	@Test
+	public void spy_special(){
+		/*  0 1 2 3
+		 * 0  
+		 * 1  
+		 * 2    /              
+		 * 3  * +
+		 */
+		
+		/*
+		 *  Wenn im Spionierten bereich bereits ZUVOR ein o. mehrere Schiffsektoren getroffen wurden,
+		 *  werden vom Server NUR die anzahl unentdeckter(!) Sektoren mitgeteilt
+		 */
+		
+		toTest.world = new World(5, 5);
+		toTest.world.registerHit(new Coord("32"));
+		
+		toTest.spy(new SpyArea(new Coord("22"), 1));
+		
+		assertEquals(2, toTest.world.getSpyAreas().iterator().next().getSegments());
 	}
 }
