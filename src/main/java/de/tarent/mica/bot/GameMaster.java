@@ -53,11 +53,15 @@ public class GameMaster implements GameActionHandler {
 		for(ActionStrategy s : actionStrategies){
 			Logger.debug("Ask " + s.getClass().getSimpleName() + " for decision...");
 			
-			Action action = s.getActionDecision(world);
-			if(action != null){
-				Logger.debug("The " + s.getClass().getSimpleName() + " has been decided for " + action);
-
-				return action;
+			try{
+				Action action = s.getActionDecision(world);
+				if(action != null){
+					Logger.debug("The " + s.getClass().getSimpleName() + " has been decided for " + action);
+	
+					return action;
+				}
+			}catch(RuntimeException e){
+				Logger.error(s.getClass().getSimpleName() + " occures an error!", e);
 			}
 		}
 		
@@ -65,6 +69,7 @@ public class GameMaster implements GameActionHandler {
 			Logger.debug("Serialized strategies: " + ObjectSerializer.serialise(actionStrategies));
 			Logger.debug("Serialized world: " + ObjectSerializer.serialise(world));
 		} catch (IOException e) {}
+		
 		return null;
 	}
 	
@@ -72,6 +77,7 @@ public class GameMaster implements GameActionHandler {
 		List<ActionStrategy> actionStrategies = (List<ActionStrategy>)ObjectSerializer.deserialise("");
 		World world = (World)ObjectSerializer.deserialise("");
 		
+		System.out.println(world);
 		System.out.println(new GameMaster(null, actionStrategies).getNextAction(world));
 	}
 }

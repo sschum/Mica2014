@@ -69,7 +69,23 @@ public class Logger {
 		}
 	}
 	
+	public static void error(String message) {
+		error(message, null);
+	}
+	
+	public static void error(String message, Throwable t) {
+		StackTraceElement[] stacktrace = Thread.currentThread().getStackTrace();
+		
+		if(t == null){
+			LOG.log(Level.ALL, createMessage(stacktrace[3], message));
+		}
+		else{
+			LOG.log(Level.ALL, createMessage(stacktrace[2], message), t);
+		}
+	}
+	
 	private static String createMessage(StackTraceElement ste, String message){
 		return ste.getClassName() + "." + ste.getMethodName() + ":" + ste.getLineNumber() + " " + message;
 	}
+
 }
