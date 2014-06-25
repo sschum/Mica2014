@@ -231,7 +231,6 @@ public class HitTraceStrategyTest {
 	}
 	
 	@Test
-	@Ignore("Bitte fix mich!") //TODO: Schiffe die "um die ecke" liegen dürfen nicht vorkommen...
 	public void getActionDecision_nearShips(){
 		/*  0 1 2 3
 		 * 0  
@@ -249,5 +248,51 @@ public class HitTraceStrategyTest {
 		world.registerHit(new Coord("31"));
 		
 		assertEquals(new Coord("21"), toTest.getActionDecision(world).getCoord());
+		
+		/*  0 1 2 3
+		 * 0  
+		 * 1  *
+		 * 2                  
+		 * 3  * *
+		 */
+		
+		world = new World(4, 4);
+		world.registerHit(new Coord("11"));
+		world.registerHit(new Coord("31"));
+		world.registerHit(new Coord("32"));
+		
+		assertFalse(new Coord("21").equals(toTest.getActionDecision(world).getCoord()));
+		
+		/*  0 1 2 3
+		 * 0  
+		 * 1  *
+		 * 2                  
+		 * 3  *
+		 * 4  *
+		 */
+		
+		world = new World(5, 4);
+		world.registerHit(new Coord("11"));
+		world.registerHit(new Coord("31"));
+		world.registerHit(new Coord("41"));
+		
+		assertEquals(new Coord("21"), toTest.getActionDecision(world).getCoord());
+		
+		/*  0 1 2 3
+		 * 0  
+		 * 1  *
+		 * 2  ~               
+		 * 3  *
+		 * 4  *
+		 * 5
+		 */
+		
+		world = new World(6, 4);
+		world.registerHit(new Coord("11"));
+		world.registerHit(new Coord("31"));
+		world.registerHit(new Coord("41"));
+		world.registerMiss(new Coord("21"));
+		
+		assertFalse(new Coord("21").equals(toTest.getActionDecision(world).getCoord()));
 	}
 }

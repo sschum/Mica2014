@@ -55,17 +55,20 @@ public class HitTraceStrategy extends ActionStrategy {
 		if(coords.isEmpty()) return null;	//keine entscheidungsgrundlage vorhanden!
 		
 		//gibt es schiffe in unmittelbarer nähe?
-//		Ship nearShip = getNearShip(world, ship);
-//		if(nearShip != null){
-//			List<Coord> allCoords = new ArrayList<Coord>(ship.getSpace());
-//			allCoords.addAll(nearShip.getSpace());
-//			Collections.sort(allCoords, Coord.COMPARATOR);
-//			
-//			boolean isHorizontal = allCoords.get(0).getY() == allCoords.get(1).getY();
-//			
-//			Coord gab = getGap(isHorizontal, allCoords);
-//			if(gab != null) return buildAction(gab);
-//		}
+		Ship nearShip = getNearShip(world, ship);
+		if(nearShip != null){
+			List<Coord> allCoords = new ArrayList<Coord>(ship.getSpace());
+			allCoords.addAll(nearShip.getSpace());
+			Collections.sort(allCoords, Coord.COMPARATOR);
+			
+			if(inLine(allCoords)){
+				boolean isHorizontal = allCoords.get(0).getY() == allCoords.get(1).getY();
+				
+				Coord gab = getGap(isHorizontal, allCoords);
+				if(gab != null && isUnknown(world.getEnemyField().get(gab)))
+					return buildAction(gab);
+			}
+		}
 		
 		if(coords.size() >= 2){
 			return getActionForMultipleCoords(world, coords);
@@ -73,7 +76,35 @@ public class HitTraceStrategy extends ActionStrategy {
 			return getActionForSingleCoord(world, coords.get(0));
 		}
 	}
-	
+
+	private boolean inLine(List<Coord> allCoords) {
+		if(allCoords.size() <= 1) return false;
+		
+		int x = allCoords.get(0).getX();
+		boolean sameX = true;
+		for(int i=1; i < allCoords.size(); i++){
+			if(allCoords.get(i).getX() != x){
+				sameX = false;
+				break;
+			}
+		}
+		
+		if(!sameX){
+			int y = allCoords.get(0).getY();
+			boolean sameY = true;
+			for(int i=1; i < allCoords.size(); i++){
+				if(allCoords.get(i).getY() != y){
+					sameY = false;
+					break;
+				}
+			}
+			
+			return sameY;
+		}
+		
+		return true;
+	}
+
 	private Ship getNearShip(World world, Ship ship) {
 		for(Ship other : world.getEnemyShips()){
 			if(other.equals(ship)) continue;
