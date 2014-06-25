@@ -7,6 +7,7 @@ import de.tarent.mica.model.element.Carrier;
 import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.Ship;
+import de.tarent.mica.model.element.Ship.Orientation;
 import de.tarent.mica.model.element.Submarine;
 
 /**
@@ -105,6 +106,37 @@ public class Fleet {
 	}
 	public void setSubmarine2(Submarine submarine2) {
 		this.submarine2 = submarine2;
+	}
+	
+	public static Fleet defaultShips(){
+		/*
+		 *   0 1 2 3 4 5 6 7 8 9 A B C D E F 
+		 * 0 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 * 1 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 * 2 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 * 3 ~ ~ ~ ~ * * * * * ~ ~ ~ ~ ~ ~ ~
+		 * 4 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 * 5 ~ ~ ~ ~ * * * * ~ * * * * ~ ~ ~
+		 * 6 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 * 7 ~ ~ ~ ~ * * * ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 * 8 ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ * * ~ ~ ~ ~
+		 * 9 ~ ~ ~ ~ * * * * * ~ ~ ~ ~ ~ ~ ~
+		 * A ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 * B ~ ~ ~ ~ * * * ~ ~ ~ ~ * * ~ ~ ~
+		 * C ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 * D ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 * E ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 * F ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+		 */
+		return new Fleet(
+				new Carrier(Orientation.OST, new Coord("34")), 
+				new Carrier(Orientation.OST, new Coord("94")), 
+				new Cruiser(Orientation.OST, new Coord("54")), 
+				new Cruiser(Orientation.OST, new Coord("59")), 
+				new Destroyer(Orientation.OST, new Coord("74")), 
+				new Destroyer(Orientation.OST, new Coord("B4")), 
+				new Submarine(Orientation.OST, new Coord("8A")), 
+				new Submarine(Orientation.OST, new Coord("BB")));
 	}
 
 	@Override
