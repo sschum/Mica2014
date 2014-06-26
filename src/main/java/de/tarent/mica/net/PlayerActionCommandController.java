@@ -5,19 +5,16 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashSet;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
 
 import org.java_websocket.drafts.Draft;
 
 import de.tarent.mica.Action;
-import de.tarent.mica.GameActionHandler;
 import de.tarent.mica.Action.Type;
 import de.tarent.mica.model.Coord;
 import de.tarent.mica.model.Field.Element;
 import de.tarent.mica.model.element.Carrier;
-import de.tarent.mica.model.element.Cruiser;
 import de.tarent.mica.model.element.Destroyer;
 import de.tarent.mica.model.element.Ship;
 import de.tarent.mica.model.element.SpyArea;
@@ -35,7 +32,6 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	private List<Action> actionHistory;
 	private List<Coord> hitHistory;
 	private boolean repeatLastTurn = false;
-	private boolean clusterbombMode = false;
 	
 	PlayerActionCommandController(URI serverUri, Draft draft) {
 		super(serverUri, draft);
@@ -46,7 +42,6 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		super.reset();
 		
 		repeatLastTurn = false;
-		clusterbombMode = false;
 	}
 	
 	@Override
@@ -59,12 +54,10 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	
 	public void turnToSoon() {
 		repeatLastTurn = true;
-		clusterbombMode = false;
 		decreasePlayerMoves();
 	}
 	
 	void clusterbombed(boolean hit){
-		clusterbombMode = false;
 		world.increaseSpecialAttack(Carrier.class);
 		
 		//wenn eine Clusterbombe getroffen hat, wird das durch die Mthode "hit" abgedeckt!
@@ -78,9 +71,6 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	}
 	
 	void myTurn(){
-		//nach einer clusterbombe bekommen wir ein "packet" an nachrichten
-		//nichts desto troz ist nach einer clusterbombe ende!
-		if(clusterbombMode) return;
 		
 		Action action = null;
 		
@@ -103,7 +93,6 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 			attack(action.getCoord()); 
 			break;
 		case CLUSTERBOMB:
-			clusterbombMode = true;
 			clusterbomb(action.getCoord()); 
 			break;
 		case SPY_DRONE:
@@ -160,10 +149,30 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 	 * @param coord Wo hab ich getroffen (optional)
 	 */
 	void hit(Coord coord) {
+		hit(coord, null);
+	}
+	
+	/**
+	 * Der Spieler hat getroffen und das Schiff wurde versenkt
+	 * 
+	 * @param coord
+	 * @param sunkenShipType
+	 */
+	void hit(Coord coord, String sunkenShipType) {
 		Action lastAction = actionHistory.get(actionHistory.size() - 1);
 		
-		if(coord != null) hitHistory.add(coord);
-		else hitHistory.add(lastAction.getCoord());
+		if(coord != null){
+			hitHistory.add(coord);
+		} else {
+			switch(lastAction.getType()){
+			case ATTACK:
+			case CLUSTERBOMB:
+			case WILDFIRE:
+				//bei einem torpedo beinhaltet die letzte Aktion NICHT den Treffer
+				hitHistory.add(lastAction.getCoord());
+				break;
+			}
+		}
 		
 		switch(lastAction.getType()){
 		case ATTACK:
@@ -186,19 +195,23 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		 * ein Schiff stoßen oder ins leere lief. 
 		 */
 		case TORPEDO_NORD:
-			hitTorpedoNord(coord, lastAction);
+			if(coord != null) hitTorpedoNord(coord, lastAction);
+			else hitTorpedoNord(hitHistory.get(hitHistory.size() - 1), lastAction);
 			world.increaseSpecialAttack(Submarine.class);
 			break;
 		case TORPEDO_OST:
-			hitTorpedoOst(coord, lastAction);
+			if(coord != null) hitTorpedoOst(coord, lastAction);
+			else hitTorpedoOst(hitHistory.get(hitHistory.size() - 1), lastAction);
 			world.increaseSpecialAttack(Submarine.class);
 			break;
 		case TORPEDO_SUED:
-			hitTorpedoSued(coord, lastAction);
+			if(coord != null) hitTorpedoSued(coord, lastAction);
+			else hitTorpedoSued(hitHistory.get(hitHistory.size() - 1), lastAction);
 			world.increaseSpecialAttack(Submarine.class);
 			break;
 		case TORPEDO_WEST:
-			hitTorpedoWest(coord, lastAction);
+			if(coord != null) hitTorpedoWest(coord, lastAction);
+			else hitTorpedoWest(hitHistory.get(hitHistory.size() - 1), lastAction);
 			world.increaseSpecialAttack(Submarine.class);
 			break;
 		case WILDFIRE:
@@ -209,6 +222,14 @@ abstract class PlayerActionCommandController extends GeneralCommandController {
 		
 		//hab ich diesen bereich spioniert? Wenn ja, ist dieser jetzt abgeräumt?
 		checkSpyAreas();
+		
+		if(sunkenShipType != null){
+			sunk(sunkenShipType);
+		}
+		if(lastAction.getType() == Type.ATTACK){
+			//nach normalen attacken dürfen wir nocheinmal...
+			myTurn();
+		}
 		
 		Logger.debug("World:\n" + world);
 	}

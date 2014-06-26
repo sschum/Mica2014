@@ -96,9 +96,10 @@ public class BasicStrategyTest {
 		final Controller player2 = new WebSocketController(intServer, intServerPort);
 		
 		List<Action> actions = Arrays.asList(
-				new Action(Type.ATTACK, new Coord("34")),
-				new Action(Type.ATTACK, new Coord("35")),
-				new Action(Type.SPY_DRONE, new Coord("25")));
+				new Action(Type.ATTACK, new Coord("59")),
+				new Action(Type.ATTACK, new Coord("5C")),
+				new Action(Type.ATTACK, new Coord("5A")),
+				new Action(Type.TORPEDO_NORD, new Coord("8B")));
 		
 		final GameActionHandler handler1 = new SequenceHandler(actions, Fleet.defaultShips());
 		final GameActionHandler handler2 = new SequenceHandler(actions, Fleet.defaultShips());
@@ -124,10 +125,11 @@ public class BasicStrategyTest {
 		player1Thread.join();
 		player2Thread.join();
 		
+		//TODO:Nach Spezialattacken sollte man IMMER auf "Your Turn" warten!
 		try {
-			System.out.println(player1Stats.get(0).getWorld().getSpyAreas());
+			System.out.println(player1Stats.get(0).getWorld().getEnemyShips());
 		} finally {
-			System.out.println(player2Stats.get(0).getWorld().getSpyAreas());
+			System.out.println(player2Stats.get(0).getWorld().getEnemyShips());
 		}
 	}
 }

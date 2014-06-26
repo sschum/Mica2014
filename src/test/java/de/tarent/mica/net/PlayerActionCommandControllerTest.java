@@ -101,10 +101,14 @@ public class PlayerActionCommandControllerTest {
 		List<Action> actionHistory = Collections.singletonList(new Action(Type.ATTACK, new Coord(0, 0)));
 		toTest.world = world;
 		Utils.setPrivate("actionHistory", toTest, actionHistory);
+		toTestSpy = spy(toTest);
 		
-		toTest.hit(null);
+		doNothing().when(toTestSpy).myTurn();
+		
+		toTestSpy.hit(null);
 		
 		verify(world).registerHit(eq(actionHistory.get(0).getCoord()));
+		verify(toTestSpy).myTurn();
 		List<Coord> hitCoords = (List<Coord>) Utils.getPrivate("hitHistory", toTest);
 		assertEquals(1, hitCoords.size());
 		assertEquals(new Coord(0, 0), hitCoords.get(0));
@@ -117,7 +121,7 @@ public class PlayerActionCommandControllerTest {
 		toTest.world = world;
 		Utils.setPrivate("actionHistory", toTest, actionHistory);
 		
-		toTest.hit(new Coord(0, 0));
+		toTest.hit(new Coord(0, 0), null);
 		
 		for(int y=1; y >= 9; y++){
 			verify(world).registerHit(eq(new Coord(actionHistory.get(0).getCoord().getX(), y)));
