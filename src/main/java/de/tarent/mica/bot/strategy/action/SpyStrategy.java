@@ -63,6 +63,11 @@ public class SpyStrategy extends SpecialAttackStrategy {
 	}
 	
 	@Override
+	public String getShortName() {
+		return getClass().getSimpleName() + "@" + spyPoints.toString().replace("[", "").replace("]", "").replace(", ", "_");
+	}
+	
+	@Override
 	public String toString() {
 		return super.toString() + "\n\tspy-points: " + spyPoints.toString().replace("[", "").replace("]", "");
 	}

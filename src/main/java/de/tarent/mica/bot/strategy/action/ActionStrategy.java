@@ -47,6 +47,14 @@ public abstract class ActionStrategy implements Serializable {
 	}
 	
 	/**
+	 * Liefert einen Namen der Strategie. Dieser sollte in eine Zeile(!) passen!
+	 * 
+	 * @return
+	 */
+	public abstract String getShortName();
+		
+	
+	/**
 	 * Liefert eine kurze Beschreibung der übergebenen Strategie
 	 * 
 	 * @return

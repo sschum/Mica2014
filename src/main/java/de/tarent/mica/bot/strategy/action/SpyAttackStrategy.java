@@ -114,4 +114,9 @@ public class SpyAttackStrategy extends ActionStrategy {
 	private boolean isHit(Element element){
 		return element == Element.SCHIFF || element == Element.TREFFER;
 	}
+	
+	@Override
+	public String getShortName() {
+		return getClass().getSimpleName();
+	}
 }

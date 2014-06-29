@@ -63,6 +63,11 @@ public class ClusterbombStrategy extends SpecialAttackStrategy {
 	}
 	
 	@Override
+	public String getShortName() {
+		return getClass().getSimpleName() + "@" + bombPoints.toString().replace("[", "").replace("]", "").replace(", ", "_");
+	}
+	
+	@Override
 	public String toString() {
 		return super.toString() + "\n\tbomb-points: " + bombPoints.toString().replace("[", "").replace("]", "");
 	}

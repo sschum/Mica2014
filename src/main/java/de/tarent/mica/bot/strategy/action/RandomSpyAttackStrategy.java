@@ -27,4 +27,9 @@ public class RandomSpyAttackStrategy extends SpyAttackStrategy {
 		
 		return result;
 	}
+	
+	@Override
+	public String getShortName() {
+		return getClass().getSimpleName();
+	}
 }

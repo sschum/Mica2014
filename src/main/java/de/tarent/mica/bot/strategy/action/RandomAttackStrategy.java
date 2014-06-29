@@ -35,4 +35,9 @@ public class RandomAttackStrategy extends SimpleAttackStrategy {
 		
 		return result;
 	}
+	
+	@Override
+	public String getShortName() {
+		return getClass().getSimpleName();
+	}
 }

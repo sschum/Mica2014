@@ -148,4 +148,12 @@ public class SpecialPowerStrategy extends SpecialAttackStrategy {
 		return underAttack;
 	}
 
+	@Override
+	public String getShortName() {
+		return getClass().getSimpleName() + 
+				"@" + ( carrierStrategy != null ? carrierStrategy.getShortName() : "") + 
+				"_" + ( cruiserStrategy != null ? cruiserStrategy.getShortName() : "") +
+				"_" + ( destroyerStrategy != null ? destroyerStrategy.getShortName() : "") +
+				"_" + ( submarineStrategy != null ? submarineStrategy.getShortName() : "");
+	}
 }

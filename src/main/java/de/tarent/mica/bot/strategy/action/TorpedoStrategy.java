@@ -132,4 +132,8 @@ public class TorpedoStrategy extends SpecialAttackStrategy {
 		return count;
 	}
 
+	@Override
+	public String getShortName() {
+		return getClass().getSimpleName();
+	}
 }

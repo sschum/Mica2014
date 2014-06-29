@@ -64,6 +64,11 @@ public class AreaAttackStrategy extends RandomAttackStrategy {
 	public Dimension getArea() {
 		return area;
 	}
+	
+	@Override
+	public String getShortName() {
+		return getClass().getSimpleName() + "@" + startCoord + "_" + area.width + "x" + area.height;
+	}
 
 	@Override
 	public String toString() {

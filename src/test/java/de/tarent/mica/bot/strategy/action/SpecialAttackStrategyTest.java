@@ -18,6 +18,10 @@ public class SpecialAttackStrategyTest {
 		public Action getActionDecision(World world) {
 			return null;
 		}
+		@Override
+		public String getShortName() {
+			return null;
+		}
 	}
 	
 	SpecialAttackStrategy toTest = new MySpecialAttackStrategy();

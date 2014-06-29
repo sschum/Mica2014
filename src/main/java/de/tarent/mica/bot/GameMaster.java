@@ -13,7 +13,7 @@ import de.tarent.mica.util.Logger;
 import de.tarent.mica.util.ObjectSerializer;
 
 /**
- * Diese Klasee ist für alle automatisierten Actionen zuständig.
+ * Diese Klasse ist für alle automatisierten Actionen zuständig.
  * Sie ist somit der "Kopf" des Bots.
  * 
  * @author rainu
@@ -51,17 +51,17 @@ public class GameMaster implements GameActionHandler {
 	@Override
 	public Action getNextAction(World world) {
 		for(ActionStrategy s : actionStrategies){
-			Logger.debug("Ask " + s.getClass().getSimpleName() + " for decision...");
+			Logger.debug("Ask " + s.getShortName() + " for decision...");
 			
 			try{
 				Action action = s.getActionDecision(world);
 				if(action != null){
-					Logger.debug("The " + s.getClass().getSimpleName() + " has been decided for " + action);
+					Logger.debug("The " + s.getShortName() + " has been decided for " + action);
 	
 					return action;
 				}
 			}catch(RuntimeException e){
-				Logger.error(s.getClass().getSimpleName() + " occures an error!", e);
+				Logger.error(s.getShortName() + " occures an error!", e);
 			}
 		}
 		

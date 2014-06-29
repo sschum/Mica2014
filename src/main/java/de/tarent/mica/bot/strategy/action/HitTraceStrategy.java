@@ -241,6 +241,11 @@ public class HitTraceStrategy extends ActionStrategy {
 	}
 	
 	@Override
+	public String getShortName() {
+		return getClass().getSimpleName() + "@" + ignoreBurningShips;
+	}
+	
+	@Override
 	public String toString() {
 		return super.toString() + "\n\tignore burning ships: " + ignoreBurningShips;
 	}
