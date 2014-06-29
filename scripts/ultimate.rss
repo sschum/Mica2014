@@ -11,27 +11,27 @@ start-game $host $port $playername
 	
 	############################
 	#   0 1 2 3 4 5 6 7 8 9 A B C D E F
-	# 0                    |     
-	# 1     ? ? ?          |      + 
-	# 2     ? * ?  4       |    + * + 
-	# 3     ? ? ?     +    |      +  
+	# 0 ? ? ?              |        + 
+	# 1 ? * ?              |      + * +
+	# 2 ? ? ?      4       |        +  
+	# 3               +    |    
 	# 4             + * +  |     3
-	# 5_______________+____|      ? ? ?
-	# 6            |       |      ? * ?
-	# 7            |   1   |      ? ? ?
-	# 8            |       |
-	# 9            |_______|___________
+	# 5_______________+____|      
+	# 6            |       |      
+	# 7 ? ? ?      |   1   |      ? ? ?
+	# 8 ? * ?      |       |      ? * ?
+	# 9 ? ? ?      |_______|______? ? ?
 	# A            |  +
-	# B    2       |+ * +           +
-	# C            |  +           + * +
-	# D     +      |      5 ? ? ?   +  
-	# E   + * +    |        ? * ?
-	# F     +      |        ? ? ?
+	# B    2       |+ * +         
+	# C            |  +           
+	# D   +        |      5         + 
+	# E + * +      |              + * + 
+	# F   +        |                +   
 	
 	add-special-powser-strategy					#Specialattacken am Anfang einsetzten (solange es noch möglich ist!)
 	
-		add-spy-strategy EB	23 6E					#zuerst wird der Gegner spioniert
-		add-clusterbomb-strategy E2 2D B7 47 CE		#Bombenteppisch für weitere Abdeckung!
+		add-spy-strategy 11 8E 81					#zuerst wird der Gegner spioniert
+		add-clusterbomb-strategy 1E E1 EE B7 47		#Bombenteppisch für weitere Abdeckung!
 		add-torpedo-strategy						#Torpedos abfeuern wenn es geht
 		exit
 	
