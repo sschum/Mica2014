@@ -1,7 +1,9 @@
 package de.tarent.mica.bot;
 
 import java.io.IOException;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import de.tarent.mica.Action;
 import de.tarent.mica.GameActionHandler;
@@ -23,6 +25,7 @@ public class GameMaster implements GameActionHandler {
 
 	private ShipPlacementStrategy shipPlacementStrategy;
 	private List<ActionStrategy> actionStrategies;
+	private Set<Integer> usedFleets = new HashSet<Integer>();
 	
 	public GameMaster(ShipPlacementStrategy shipPlacementStrategy, List<ActionStrategy> actionStrategies) {
 		this.shipPlacementStrategy = shipPlacementStrategy;
@@ -31,7 +34,19 @@ public class GameMaster implements GameActionHandler {
 	
 	@Override
 	public Fleet getFleet() {
-		return shipPlacementStrategy.getFleet();
+		Fleet fleet = null;
+		
+		for(int i = 0;  i < 1312; i++){
+			fleet = shipPlacementStrategy.getFleet();
+			if(usedFleets.contains(fleet.hashCode())){
+				Logger.info("Generated fleet was already used! Try to generate a new uniq fleet...");
+			}else{
+				break;
+			}
+		}
+		usedFleets.add(fleet.hashCode());
+		
+		return fleet;
 	}
 
 	@Override
