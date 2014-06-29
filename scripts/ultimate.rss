@@ -11,38 +11,49 @@ start-game $host $port $playername
 	
 	############################
 	#   0 1 2 3 4 5 6 7 8 9 A B C D E F
-	# 0 ? ? ?              |        + 
-	# 1 ? * ?              |      + * +
-	# 2 ? ? ?      4       |        +  
-	# 3               +    |    
-	# 4             + * +  |     3
-	# 5_______________+____|      
-	# 6            |       |      
-	# 7 ? ? ?      |   1   |      ? ? ?
-	# 8 ? * ?      |       |      ? * ?
-	# 9 ? ? ?      |_______|______? ? ?
-	# A            |  +
-	# B    2       |+ * +         
-	# C            |  +           
-	# D   +        |      5         + 
-	# E + * +      |              + * + 
-	# F   +        |                +   
+    # 0 ? ? ?  |      ? ? ?    |    + 
+    # 1 ? * ?  |  9   ? * ?  5 |  + * +
+    # 2 ? ? ?  |      ? ? ?    | 13 +  
+    # 3_____15_|_______|_______|_______
+    # 4        |       |       |11
+    # 5   7    |  3    |   1   |  
+    # 6        |       |       |    +
+    # 7___+____|_______|_______|__+ * +
+    # 8 + * +  |       |       |    +
+    # 9   + 12 |   2   |   4   |   8
+    # A        |       |       |
+    # B________|_______|_______|_______
+    # C     14 |       |       |16
+    # D   +    |       |+  10  |  ? ? ?
+    # E + * +  |  6   + * +    |  ? * ? 
+    # F   +    |       |+      |  ? ? ? 
 	
 	add-special-powser-strategy					#Specialattacken am Anfang einsetzten (solange es noch möglich ist!)
 	
-		add-spy-strategy 11 8E 81					#zuerst wird der Gegner spioniert
-		add-clusterbomb-strategy 1E E1 EE B7 47		#Bombenteppisch für weitere Abdeckung!
+		add-spy-strategy 11 EE 18					#zuerst wird der Gegner spioniert
+		add-clusterbomb-strategy 1E E1 7E 81 E8		#Bombenteppisch für weitere Abdeckung!
 		add-torpedo-strategy						#Torpedos abfeuern wenn es geht
 		exit
 	
 	add-hit-trace-strategy true 				#Brennende Schiffe werden ignoriert
 	add-random-spy-attack-strategy				#Wenn Spionage erfolgreich...
 	
-	add-area-attack-strategy 66 4 4		#1
-	add-area-attack-strategy 60 6 10	#2
-	add-area-attack-strategy 0A 6 10	#3
-	add-area-attack-strategy 00 10 6	#4
-	add-area-attack-strategy A6 10 6	#5
+	add-area-attack-strategy 48 4 4 #1
+	add-area-attack-strategy 84 4 4 #2
+	add-area-attack-strategy 44 4 4 #3
+	add-area-attack-strategy 88 4 4 #4
+	add-area-attack-strategy 08 4 4 #5
+	add-area-attack-strategy C4 4 4 #6
+	add-area-attack-strategy 40 4 4 #7
+	add-area-attack-strategy 8C 4 4 #8
+	add-area-attack-strategy 04 4 4 #9
+	add-area-attack-strategy C8 4 4 #10
+	add-area-attack-strategy 4C 4 4 #11
+	add-area-attack-strategy 80 4 4 #12
+	add-area-attack-strategy 0C 4 4 #13
+	add-area-attack-strategy C0 4 4 #14
+	add-area-attack-strategy 00 4 4 #15
+	add-area-attack-strategy CC 4 4 #16
 	
 	show-area-cover
 	show-action-strategies
