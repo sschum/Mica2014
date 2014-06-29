@@ -51,7 +51,12 @@ public class Commands {
 		sb.append("===================\n");
 		sb.append("=   GAME OVER     =\n");
 		sb.append("===================\n");
-		for(GameStats stat : stats){
+		for(int i=0; i < stats.size(); i++){
+			GameStats stat = stats.get(i);
+			
+			sb.append("Round #");
+			sb.append(i);
+			sb.append(": ");
 			sb.append(stat.getPlayerName());
 			sb.append("(");
 			sb.append(stat.getPlayerMoves());
