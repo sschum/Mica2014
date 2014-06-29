@@ -64,8 +64,17 @@
      }
 
      function getCoordTuple(positionString) {
-       return { x: positionString.charCodeAt(0)-65,
-                y: parseInt(positionString[1]) };
+	var myX = positionString.charCodeAt(0)-48;
+	if (myX > 15) {
+	  myX = myX - 7;
+	}
+	var myY = positionString.charCodeAt(1)-48;
+	if (myY > 15) {
+	  myY = myY - 7;
+	}
+
+       return { x: myX,
+                y: myY };
      }
 
      function parseMessage(messageData) {
@@ -73,7 +82,7 @@
        msg.code = getFirstMatch(messageData, /(\d\d):/);
        msg.quoted = getMatches(messageData, /\'([^\']+)\'/g);
        var noop  = /'/; //only for emacs syntax highlighting
-       msg.positionRaw = getFirstMatch(messageData, /\s([A-J][0-9])\s/);
+       msg.positionRaw = getFirstMatch(messageData, /\s([A-F0-9][A-F0-9])\s/);
        if (msg.positionRaw != null) {
          msg.position = getCoordTuple(msg.positionRaw);
        }
@@ -85,8 +94,8 @@
 
      function createBoardArray() {
        var out = [];
-       for (var i=0; i<10; i++) {
-         out.push( '??????????'.split('') );
+       for (var i=0; i<16; i++) {
+         out.push( '????????????????'.split('') );
        }
        return out;
      }
@@ -132,7 +141,7 @@
          }
 
          // shot
-         var action = msg.data.match(/(.+):\s([A-J][0-9])\s=>\s(.+)/);
+         var action = msg.data.match(/(.+):\s([A-F0-9][A-F0-9])\s=>\s(.+)/);
          if (action) {
            var player = $scope.player[0].name == action[1] ? 1 : 0;
            if (action[3] == 'hit') {
