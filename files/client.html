@@ -84,6 +84,8 @@ function onkey(event){ if(event.keyCode==13){ send(); } }
      <ul>
        <li><i>list</i> to show all currently connected players
        <li><i>start numberOfRounds playerOne playerTwo</i> to start a new match (there can be only one game running at a time)
+       <li><i>set output.wait 100</i> to set the waiting period between observer-messages/moves to 100 ms. Default=0. (same as with -D)
+       <li><i>set gameover.wait 1000</i> to set the waiting period between rounds to 1000 ms. Default=0. (same a swith -D)
      </ul>
    </li>
    <li><i>observe </i> to turn into an observer, who receives info about the games, but can't do anything</li>

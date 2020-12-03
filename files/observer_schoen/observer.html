@@ -1,0 +1,392 @@
+<html ng-app="observer">
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=windows-1252">
+    <title>Battleships - Observer</title>
+    
+    <link href="./lib/bootstrap.min.css" rel="stylesheet" media="screen"/>
+    <script src="./lib/jquery.min.js"></script>
+    <script src="./lib/bootstrap.min.js"></script>
+    <script src="./lib/angular.min.js"></script>
+    
+    <style>
+	     html,body{font:normal 0.9em arial,helvetica;}
+	     #log {width:512px; height:200px; border:1px solid #7F9DB9; overflow:auto;}
+	     #msg {width:402px;}
+	
+		.cell {
+		    height: 30px;
+		    margin: 0;
+		    padding: 2px;
+		    text-align: center;
+		    vertical-align: middle;
+		    width: 30px;
+		}
+	
+	     .grid {
+	       border: solid 1px black;       
+	       text-align: center;
+	       margin: 0px;
+	       padding: 0px;
+	      }
+	
+	     .unknown {
+	       background-color: rgba(0,0,0,0.1);
+	     }
+	
+	     .water {
+	       background-color: #4e909b;
+	     }
+	
+	     .hit {
+	       background-color: #CC0000;
+	     }
+     
+     	#scoreboard {
+		    border: 4px solid #005669;
+		    left: -170px;
+		    padding: 50px 10px 10px;
+		    position: absolute;
+		    top: 122px;
+		    width: 170px;
+		}
+
+		.scoreContent {
+			max-height:500px;
+			overflow-y:auto;
+		}
+
+		.container {
+		   background-color: white;
+		    border: 4px solid #005669;
+		    margin-top: 10px;
+		    padding: 0 0 70px !important;
+		    position: relative;
+		}
+		
+		
+		#header.gradient {
+			background: #feffff; /* Old browsers */
+			background: -moz-radial-gradient(center, ellipse cover, #feffff 0%, #ddf1f9 11%, #005669 100%); /* FF3.6+ */
+			background: -webkit-gradient(radial, center center, 0px, center center, 100%, color-stop(0%,#feffff), color-stop(11%,#ddf1f9), color-stop(100%,#005669)); /* Chrome,Safari4+ */
+			background: -webkit-radial-gradient(center, ellipse cover, #feffff 0%,#ddf1f9 11%,#005669 100%); /* Chrome10+,Safari5.1+ */
+			background: -o-radial-gradient(center, ellipse cover, #feffff 0%,#ddf1f9 11%,#005669 100%); /* Opera 12+ */
+			background: -ms-radial-gradient(center, ellipse cover, #feffff 0%,#ddf1f9 11%,#005669 100%); /* IE10+ */
+			background: radial-gradient(ellipse at center, #feffff 0%,#ddf1f9 11%,#005669 100%); /* W3C */
+			filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#feffff', endColorstr='#005669',GradientType=1 ); /* IE6-9 fallback on horizontal gradient */
+			height:100px;
+			margin: 0;
+		}
+		
+		#header h1 {
+		    color: #ffffff;
+		    font-size: 2.5em;
+		    font-weight: bold;
+		    line-height: 73px;
+		    margin: 0;
+		    padding: 0 20px;
+		}
+		
+		#header #logo {
+		    position: absolute;
+		    right: 44px;
+		    top: -11px;
+		}
+		
+		#nav,
+		#footer {
+		    background: linear-gradient(to bottom, #e0e0e0 34%, #b8b8b8 100%) repeat scroll 0 0 rgba(0, 0, 0, 0);
+		    height: 30px;
+		    margin: 0;
+		    min-height: 19px;
+		    text-align: center;
+		}
+		
+		#nav h2 {
+		    background-image: url("lib/img/mica_logo.png");
+		    background-position: center bottom;
+		    background-repeat: no-repeat;
+		    height: 206px;
+		    line-height: 50px;
+		    margin: 0;
+		    width: 293px;
+		    position: absolute;
+		    top: -50px;
+		    width: 100%;
+		}
+		
+		.col-md-5 {
+			z-index:1000;	
+		}
+		
+		div.col-md-5:nth-child(5) table {
+			background-image:url(lib/img/shark1.png);
+			background-size:cover;
+			background-color:white;
+		}
+		
+		 div.col-md-5:nth-child(6) table {
+			background-image:url(lib/img/shark2.png);
+			background-size:cover;
+			background-color:white;
+		}
+		
+		h4 {
+		    background-image: url("lib/img/scoreboard.png");
+		    height: 106px;
+		    position: absolute;
+		    right: -16px;
+		    top: -61px;
+		    width: 200px;
+		}
+		
+		#footer {
+		    bottom: -4px;
+		    position: absolute;
+		    width: 100%;
+		}
+		
+		#backgroundImage {
+		    background-image: url("lib/img/palmtrees.png");
+		    background-position: right bottom;
+		    background-repeat: no-repeat;
+		    bottom: -33px;
+		    height: 800px;
+		    position: absolute;
+		    right: -254px;
+		    width: 1024px;
+		    z-index: 0;
+		}
+		
+		#scoring-message {
+		    margin: 40px 40px 10px;
+		    z-index:1000;
+		}
+		
+    </style>
+
+    <script>
+     function log(msg) { 
+       console.log(msg);
+     }
+     
+     function getMatches(string, regex) {
+       var matches = [];
+       var match;
+       var i = 0;
+       while (match = regex.exec(string)) {
+         matches.push(match[1]);
+       }
+       return matches;
+     }
+
+     function getFirstMatch(string, regex) {
+       var match = string.match(regex);
+       return match ? match[1] : null;
+     }
+
+     function getCoordTuple(positionString) {
+        positionString = positionString.toUpperCase();
+	var myX = positionString.charCodeAt(0)-48;
+	if (myX > 15) {
+	  myX = myX - 7;
+	}
+	var myY = positionString.charCodeAt(1)-48;
+	if (myY > 15) {
+	  myY = myY - 7;
+	}
+
+       return { x: myX,
+                y: myY };
+     }
+
+     function parseMessage(messageData) {
+       var msg = {'data': messageData};
+       msg.code = getFirstMatch(messageData, /(\d\d):/);
+       msg.quoted = getMatches(messageData, /\'([^\']+)\'/g);
+       var noop  = /'/; //only for emacs syntax highlighting
+       msg.positionRaw = getFirstMatch(messageData, /\s([A-F0-9][A-F0-9])\s/);
+       if (msg.positionRaw != null) {
+         msg.position = getCoordTuple(msg.positionRaw);
+       }
+       return msg;
+     }
+     
+     //console.log(parseMessage("03: Player '#2' is now known as 'xxx'."));
+     //console.log(parseMessage('#1: A1 => hit'));
+
+     function createBoardArray() {
+       var out = [];
+       for (var i=0; i<16; i++) {
+         out.push( '????????????????'.split('') );
+       }
+       return out;
+     }
+
+     var app = angular.module('observer', []);
+
+     app.controller('ObserverCtrl', function($scope) {
+
+       var host = "ws://localhost:40000/battle";
+       var socket;
+       
+       $scope.player = [
+         { name: '#1',
+           board: [['']],
+           state: null
+         },
+         { name: '#2',
+           board: [['']],
+           state: null,
+         },
+       ];
+
+       $scope.messageLog = [];
+       $scope.scoringMessage = '';
+
+       $scope.initBoard = function(name0, name1) {
+         $scope.player[0].name = name0;
+         $scope.player[0].state = null;
+         $scope.player[0].board = createBoardArray();
+         $scope.player[1].name = name1;
+         $scope.player[1].state = null;
+         $scope.player[1].board = createBoardArray();
+       }
+
+       $scope.handleMessage = function(msgData) {
+         msg = parseMessage(msgData);
+
+         // rename
+         if (msg.code == '03') {
+           if ($scope.player[0].name == msg.quoted[0]) {
+             $scope.player[0].name = msg.quoted[1];
+           }
+           if ($scope.player[1].name == msg.quoted[0]) {
+             $scope.player[1].name = msg.quoted[1];
+           }
+         }
+
+         // shot
+         var action = msg.data.match(/(.+):\s([A-F0-9][A-F0-9])\s=>\s(.+)/);
+         if (action) {
+           var player = $scope.player[0].name == action[1] ? 1 : 0;
+           if (action[3] == 'hit') {
+             $scope.player[player].board[msg.position.x][msg.position.y] = 'x';
+           } if (action[3] == 'miss') {
+             $scope.player[player].board[msg.position.x][msg.position.y] = 'w';
+           }
+         }
+
+         // new match
+         var newMatch = msg.data.match(/A new game starts: (.+) vs\. (.+)/);
+         if (newMatch) {
+           $scope.initBoard(newMatch[1], newMatch[2]);
+           
+           $scope.scoringMessage = null;
+           $('#scoring-message').toggleClass('alert alert-success', false);
+         }
+
+         // matchOver
+         var matchOver = msg.data.match(/The match is over.+/);
+         if (matchOver) {
+           $scope.scoringMessage = msg.data;
+           $('#scoring-message').toggleClass('alert alert-success', true);
+         }
+
+         // gameOver
+         var gameOver = msg.data.match(/This game is over\. (.+) has lost by disconnecting\./);
+         if (gameOver) {
+           var player = $scope.player[0].name == gameOver[1] ? 0 : 1;
+           $scope.player[player].state = 'lost by disconnecting';
+           $scope.messageLog.push(gameOver[1] + ': lost by disconnecting');
+         }
+
+         // wins
+         var wins = msg.data.match(/Player (.+) wins/);
+         if (wins) {
+           var player = $scope.player[0].name == wins[1] ? 0 : 1;
+           $scope.player[player].state = 'Wins !!!';
+           $scope.messageLog.push(msg.data);
+         }
+
+
+       }
+
+       $scope.init = function() {
+         try{
+           socket = new WebSocket(host);
+           log('WebSocket - status '+socket.readyState);
+           socket.onmessage = function(msg){ 
+             log("< "+msg.data); 
+             $scope.$apply($scope.handleMessage(msg.data));
+           };
+           socket.onclose   = function(msg){ log("Disconnected - status "+this.readyState); };
+           
+           socket.onopen    = function(msg){ 
+             log("Connected - status "+this.readyState);
+             socket.send('observe');
+           };
+         }
+         catch(ex){ 
+           log(ex); 
+         }
+       }
+
+       $scope.init();
+
+       //$scope.handleMessage("03: Player '#2' is now known as 'xxx'.");
+       //$scope.handleMessage('xxx: A1 => hit');
+       //$scope.handleMessage('xxx: A0 => miss');
+       //$scope.handleMessage('This game is over. #2 has lost by disconnecting.');
+       
+     });
+    </script>
+    
+  </head>
+  <body ng-controller="ObserverCtrl">
+
+    <div class="container">
+    
+	    <div id="header" class="row gradient red">
+	      <div style="position:relative;margin:0;" class="span12">
+	        <span id="logo"><img alt="tarent Logo" src="lib/img/logo.png"></span>
+	      </div>
+	    </div>
+	    
+	    <div  id="nav" class="row">
+			<h2></h2>
+	    </div>
+
+	      <h1 id="scoring-message">{{scoringMessage}}</h1>
+	      
+	      <div id="scoreboard">
+	      	<h4>&nbsp;</h4>
+	      	<div class="scoreContent">
+	      	
+		        <div ng-repeat="log in messageLog track by $index">
+		          <h6>
+		            {{log}}
+		          </h6>
+		        </div>
+		     </div>
+	      </div>
+
+	      <div ng-repeat="p in player" class="col-md-5" style="margin-right:30px; margin-left:40px;">
+	        <h3>Player: {{p.name}}</h3>
+	        <div ng-if="p.state != undefined" class="alert" ng-class="{'alert-success' : p.state == 'Wins !!!', 'alert-warning' : p.state != 'Wins !!!'}">{{p.state}}</div>
+	        <table>
+	          <tr ng-repeat="row in p.board track by $index">
+	            <td ng-repeat="cell in row track by $index" class="grid">
+	              <div class="cell" ng-class="{'water' : cell == 'w', 'hit': cell == 'x', 'unknown': cell == '?'}">
+	                {{cell}}
+	              </div>
+	            </td>
+	          </tr>
+	        </table>
+	      </div>
+	      
+	      <div id="footer"></div>
+	      
+	      <div id="backgroundImage"></div>
+    </div>
+  </body>
+</html>
